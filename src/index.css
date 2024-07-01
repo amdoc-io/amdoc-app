@@ -88,3 +88,60 @@ samp {
 pre[class*=language-] {
   color: #f8fafc
 }
+
+.auth-bg {
+  background-image   : url("https://framerusercontent.com/images/RY0SJJzHYjZTeYJR7ESPymafTuc.jpg?scale-down-to=4096");
+  background-repeat  : no-repeat;
+  background-position: center;
+  background-size    : cover;
+}
+
+.outlined-button,
+.button {
+  padding        : 8px 16px;
+  border-radius  : 8px;
+  border         : 1px solid transparent;
+  transition     : all 0.3s;
+  text-align     : center;
+  font-size      : 14px;
+  font-weight    : 500;
+  width          : 100%;
+  cursor         : pointer;
+  justify-content: center;
+}
+
+.button {
+  box-shadow      : rgba(148, 85, 241, 0.1) 0px 1px 2px 0px, rgba(148, 85, 241, 0.2) 0px 1px 3px 0px, rgba(255, 255, 255, 0.2) 0px -1px 1px 1px inset;
+  border-color    : rgb(124, 47, 238);
+  background-color: rgb(148, 85, 241);
+  color           : white;
+}
+
+.button:hover {
+  background-color: rgb(124, 47, 238);
+}
+
+.outlined-button {
+  box-shadow      : rgba(3, 3, 13, 0.03) 0px 1px 2px 0px, rgba(3, 3, 13, 0.05) 0px 1px 3px 0px, rgba(255, 255, 255, 0.2) 0px -1px 1px 1px inset;
+  border-color    : rgb(224, 224, 230);
+  background-color: white;
+  color           : black;
+}
+
+.outlined-button:hover {
+  border-color: rgb(148, 148, 158);
+}
+
+.loading {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
