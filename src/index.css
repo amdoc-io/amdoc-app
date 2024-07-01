@@ -96,6 +96,15 @@ pre[class*=language-] {
   background-size    : cover;
 }
 
+.link {
+  text-decoration: underline;
+  transition     : all 0.3s;
+}
+
+.link:hover {
+  color: black;
+}
+
 .outlined-button,
 .button {
   padding        : 8px 16px;

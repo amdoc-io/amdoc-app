@@ -1,15 +1,81 @@
-import { OutlinedButton } from "../../actions/OutlinedButton";
-import { AuthContainer } from "../../layout/AuthContainer";
-import { RiGoogleLine } from "react-icons/ri";
-import { FaGithub } from "react-icons/fa";
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
-import { useState } from "react";
-import { AuthType } from "../../model/AccountModel";
 import axios from "axios";
-import { AIM_SIGN_IN_ENDPOINT } from "../../endpoints/AIMEndpoint";
+import { useCallback, useEffect, useState } from "react";
+import { FaGithub } from "react-icons/fa";
+import { RiGoogleLine } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { OutlinedButton } from "../../actions/OutlinedButton";
+import {
+  AIM_GET_GITHUB_ACCESS_TOKEN_PROXY_ENDPOINT,
+  AIM_SIGN_IN_ENDPOINT,
+} from "../../endpoints/AIMEndpoint";
+import { login, setGithubAccessToken } from "../../features/auth/authSlice";
+import { AuthContainer } from "../../layout/AuthContainer";
+import { AuthType, SignInResponse } from "../../model/AccountModel";
+import { GithubAccessToken } from "../../model/AuthModel";
 
 export const LoginPage = () => {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const searchParams = new URLSearchParams(location.search);
+  const code = searchParams.get("code");
   const [googleLoading, setGoogleLoading] = useState<boolean>(false);
+
+  const handleSystemSignIn = useCallback(
+    async (formData: any) => {
+      const signInResponse = await axios
+        .post(AIM_SIGN_IN_ENDPOINT, formData)
+        .then((res) => res.data as SignInResponse)
+        .catch((err) => {
+          console.error(err);
+          return undefined;
+        });
+
+      if (signInResponse) {
+        dispatch(
+          login({
+            account: signInResponse.account,
+            token: signInResponse.authToken,
+            signedInAt: signInResponse.createdAt,
+          })
+        );
+      }
+    },
+    [dispatch]
+  );
+
+  const handleGithubSuccessSignIn = useCallback(async () => {
+    if (code) {
+      const githubAccessToken = await axios
+        .get(`${AIM_GET_GITHUB_ACCESS_TOKEN_PROXY_ENDPOINT}?code=${code}`)
+        .then((res) => {
+          const data = res.data;
+          return {
+            accessToken: data.access_token,
+            expiresIn: data.expires_in,
+            refreshToken: data.refresh_token,
+            refreshTokenExpiresIn: data.refresh_token_expires_in,
+            scope: data.scope,
+            tokenType: data.token_type,
+          } as GithubAccessToken;
+        })
+        .catch((err) => undefined);
+
+      dispatch(setGithubAccessToken(githubAccessToken));
+
+      const formData = {
+        authType: AuthType.GITHUB,
+        accessToken: githubAccessToken?.accessToken,
+      };
+
+      handleSystemSignIn(formData);
+    }
+  }, [code, dispatch, handleSystemSignIn]);
+
+  useEffect(() => {
+    handleGithubSuccessSignIn();
+  }, [handleGithubSuccessSignIn]);
 
   const handleGoogleSuccessSignIn = async (
     tokenResponse: Omit<
@@ -35,14 +101,7 @@ export const LoginPage = () => {
       authType: AuthType.GOOGLE,
     };
 
-    const systemSignIn = await axios
-      .post(AIM_SIGN_IN_ENDPOINT, formData)
-      .then((res) => res.data)
-      .catch((err) => {
-        console.error(err);
-      });
-
-    console.log(systemSignIn);
+    handleSystemSignIn(formData);
 
     setGoogleLoading(false);
   };
@@ -90,6 +149,13 @@ export const LoginPage = () => {
       >
         Sign in with Github
       </OutlinedButton>
+
+      <p className="text-sm text-gray-600">
+        By signing in, you agree to our{" "}
+        <a href="/" className="link">
+          Terms of Service
+        </a>
+      </p>
     </AuthContainer>
   );
 };

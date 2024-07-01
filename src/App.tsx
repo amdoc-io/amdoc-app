@@ -10,6 +10,7 @@ import { SideBar } from "./layout/SideBar";
 import { CallToActionBanner } from "./layout/CallToActionBanner";
 import { useSelector } from "react-redux";
 import { LoginPage } from "./pages/auth/LoginPage";
+import { DemographicPage } from "./pages/auth/DemographicPage";
 
 function App() {
   const token = useSelector((state: any) => state.auth.token);
@@ -54,6 +55,10 @@ function App() {
             {
               path: "/",
               element: <LoginPage />,
+            },
+            {
+              path: "/demographic-information",
+              element: <DemographicPage />,
             },
           ]
         : [

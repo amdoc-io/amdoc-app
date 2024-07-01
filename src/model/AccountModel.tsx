@@ -1,3 +1,9 @@
+export interface SignInResponse {
+  account: DocAccount;
+  authToken: string;
+  createdAt: string;
+}
+
 export enum AuthType {
   "GOOGLE" = "GOOGLE",
   "GITHUB" = "GITHUB",
