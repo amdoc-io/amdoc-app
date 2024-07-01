@@ -64,7 +64,13 @@ export const LoginPage = () => {
 
   return (
     <AuthContainer>
-      <p className="mb-8">Amdoc</p>
+      <p className="text-center mb-6 flex flex-col gap-2 w-full">
+        <p className="font-semibold text-2xl">Log in to your account</p>
+
+        <p className="text-gray-600 text-sm">
+          To get started with automating documentation
+        </p>
+      </p>
 
       <OutlinedButton
         loading={googleLoading}
