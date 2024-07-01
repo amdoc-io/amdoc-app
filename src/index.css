@@ -1,13 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing : antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  font-family: "Inter", sans-serif;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family            : ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+  font-feature-settings  : normal;
+  font-variation-settings: normal;
+  font-size              : 1em
+}
+
+.default-doc-bg {
+  background-image   : url("https://utfs.io/f/80b3f4f6-91ce-42c9-a004-813352ef4ce2-eepx7k.png");
+  background-repeat  : no-repeat;
+  background-position: center;
+  background-size    : cover;
+}
+
+.link-button:hover .link-button-icon {
+  transform: rotate(45deg);
+}
+
+.token.class-name,
+.token.function,
+.token.selector,
+.token.selector .class,
+.token.selector.class,
+.token.tag {
+  color: #f472b6
+}
+
+.token.attr-name,
+.token.important,
+.token.keyword,
+.token.pseudo-class,
+.token.rule {
+  color: #cbd5e1
+}
+
+.token.module {
+  color: #f472b6
+}
+
+.token.attr-value,
+.token.class,
+.token.property,
+.token.string {
+  color: #7dd3fc
+}
+
+.token.attr-equals,
+.token.punctuation {
+  color: #64748b
+}
+
+.language-css .token.function,
+.token.unit {
+  color: #99f6e4
+}
+
+.token.combinator,
+.token.comment,
+.token.operator {
+  color: #94a3b8
+}
+
+pre[class*=language-] {
+  color: #f8fafc
 }

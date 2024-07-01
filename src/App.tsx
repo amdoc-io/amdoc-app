@@ -1,26 +1,52 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {
+  Outlet,
+  RouterProvider,
+  createBrowserRouter,
+  useLocation,
+} from "react-router-dom";
+import { HomePage } from "./pages/HomePage";
+import { Header } from "./layout/Header";
+import { SideBar } from "./layout/SideBar";
+import { CallToActionBanner } from "./layout/CallToActionBanner";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const Wrapper = () => {
+    const location = useLocation();
+
+    return (
+      <div>
+        <Header />
+
+        <div className="flex flex-col h-[100vh]">
+          {location.pathname === "/" && (
+            <div className="mt-16">
+              <CallToActionBanner />
+            </div>
+          )}
+          <div className="flex h-full">
+            <SideBar />
+            <div className="py-20 px-6 lg:p-20">
+              <Outlet />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const router = createBrowserRouter([
+    {
+      element: <Wrapper />,
+      children: [
+        {
+          path: "/",
+          element: <HomePage />,
+        },
+      ],
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
