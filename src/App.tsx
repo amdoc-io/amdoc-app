@@ -14,6 +14,7 @@ import { DocumentationPage } from "./pages/DocumentationPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { DomainPage } from "./pages/DomainPage";
 import { AnalyticsPage } from "./pages/AnalyticsPage";
+import { MobileSideBar } from "./layout/MobileSideBar";
 
 function App() {
   const token = useSelector((state: any) => state.auth.token);
@@ -34,7 +35,8 @@ function App() {
         <div className="flex flex-col h-[100vh]">
           <div className="flex h-full max-w-screen-2xl ml-auto mr-auto w-full mt-16">
             <SideBar />
-            <div className="py-[68px] px-4 lg:px-20">
+            <div className="py-[68px] px-4 lg:px-20 relative w-full">
+              <MobileSideBar />
               <Outlet />
             </div>
           </div>
