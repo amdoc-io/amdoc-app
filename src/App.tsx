@@ -1,5 +1,10 @@
 import { useSelector } from "react-redux";
-import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  Outlet,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import { Header } from "./layout/Header";
 import { SideBar } from "./layout/SideBar";
 import { HomePage } from "./pages/HomePage";
@@ -7,6 +12,8 @@ import { DemographicPage } from "./pages/auth/DemographicPage";
 import { LoginPage } from "./pages/auth/LoginPage";
 import { DocumentationPage } from "./pages/DocumentationPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { DomainPage } from "./pages/DomainPage";
+import { AnalyticsPage } from "./pages/AnalyticsPage";
 
 function App() {
   const token = useSelector((state: any) => state.auth.token);
@@ -27,7 +34,7 @@ function App() {
         <div className="flex flex-col h-[100vh]">
           <div className="flex h-full max-w-screen-2xl ml-auto mr-auto w-full mt-16">
             <SideBar />
-            <div className="py-20 px-4 lg:p-20">
+            <div className="py-[68px] px-4 lg:px-20">
               <Outlet />
             </div>
           </div>
@@ -49,6 +56,10 @@ function App() {
               path: "/demographic-information",
               element: <DemographicPage />,
             },
+            {
+              path: "*",
+              element: <Navigate to="/" replace />,
+            },
           ]
         : [
             {
@@ -58,6 +69,14 @@ function App() {
             {
               path: "/documentation",
               element: <DocumentationPage />,
+            },
+            {
+              path: "/analytics",
+              element: <AnalyticsPage />,
+            },
+            {
+              path: "/domain",
+              element: <DomainPage />,
             },
             {
               path: "/settings",

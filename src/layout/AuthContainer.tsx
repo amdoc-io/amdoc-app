@@ -23,11 +23,6 @@ export const AuthContainer = (props: {
       >
         <div className="max-w-screen-md ml-auto mr-auto gap-4 flex flex-col items-center w-full">
           <p className="mb-4 font-semibold text-xl flex items-center gap-2">
-            <img
-              alt="logo"
-              src="https://utfs.io/f/0233f85e-823c-4017-971a-f2a8ad0e5a26-ivgn8j.png"
-              className="h-10 w-10 rounded-full object-cover"
-            />
             Amdoc
           </p>
 

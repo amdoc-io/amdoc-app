@@ -1,13 +1,28 @@
-import { RxDashboard, RxFileText } from "react-icons/rx";
+import {
+  RxBarChart,
+  RxFileText,
+  RxGear,
+  RxGlobe,
+  RxHome,
+} from "react-icons/rx";
 import { useLocation } from "react-router-dom";
-import { RxGear } from "react-icons/rx";
 
 const menu = [
-  { label: "Dashboard", href: "/", icon: <RxDashboard /> },
+  { label: "Home", href: "/", icon: <RxHome /> },
   {
     label: "Documentation",
     href: "/documentation",
     icon: <RxFileText />,
+  },
+  {
+    label: "Analytics",
+    href: "/analytics",
+    icon: <RxBarChart />,
+  },
+  {
+    label: "Domain",
+    href: "/domain",
+    icon: <RxGlobe />,
   },
   {
     label: "Settings",

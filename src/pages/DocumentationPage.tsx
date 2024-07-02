@@ -1,7 +1,9 @@
+import { Heading } from "../display/Heading";
+
 export const DocumentationPage = () => {
   return (
     <div>
-      <h1>Coming soon...</h1>
+      <Heading level={1}>Documentation</Heading>
     </div>
   );
 };
