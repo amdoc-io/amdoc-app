@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RxCheck } from "react-icons/rx";
 
 export const Steps = (props: {
@@ -10,6 +10,10 @@ export const Steps = (props: {
   const { value = -1, className = "", steps = [], onChange = () => {} } = props;
 
   const [current, setCurrent] = useState<number>(value);
+
+  useEffect(() => {
+    setCurrent(value);
+  }, [value]);
 
   const getSpanOuterClassName = (i: number) => {
     if (current === i) {
@@ -36,7 +40,7 @@ export const Steps = (props: {
   return (
     <ul className={`flex flex-col gap-6 ${className}`}>
       {steps.map((step, i) => (
-        <li key={i} className="flex">
+        <li key={i} className="flex overflow-hidden">
           <div
             className="flex items-start gap-3 cursor-pointer step-hover"
             onClick={() => {
@@ -71,7 +75,13 @@ export const Steps = (props: {
               }`}
             >
               {step.title}
-              <div className="text-gray-500 mt-4">{step.description}</div>
+              <div
+                className={`text-gray-500 mt-4 transition-all duration-300 ${
+                  current === i ? "opacity-100" : "h-0 opacity-0"
+                }`}
+              >
+                {step.description}
+              </div>
             </div>
           </div>
         </li>

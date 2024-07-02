@@ -5,9 +5,16 @@ export const OutlinedButton = (
   props: React.DetailedHTMLProps<
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
-  > & { icon?: ReactNode; loading?: boolean }
+  > & { icon?: ReactNode; loading?: boolean; suffix?: ReactNode }
 ) => {
-  const { icon, loading = false, className, children, ...restProps } = props;
+  const {
+    icon,
+    loading = false,
+    className,
+    children,
+    suffix,
+    ...restProps
+  } = props;
 
   return (
     <button
@@ -15,8 +22,9 @@ export const OutlinedButton = (
       className={`outlined-button flex items-center gap-2 ${className}`}
     >
       {loading && <AiOutlineLoading3Quarters className="loading" />}
-      {icon && !loading && icon}
+      {icon && !loading && <div className="text-inherit">{icon}</div>}
       {children}
+      {suffix && <div className="text-inherit">{suffix}</div>}
     </button>
   );
 };

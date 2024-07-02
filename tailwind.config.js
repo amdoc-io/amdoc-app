@@ -5,7 +5,8 @@ module.exports = {
     extend: {
       colors: {
         "primary": "rgb(136, 85, 255)",
-        "disabled": "rgb(209, 213, 219)"
+        "disabled": "rgb(209, 213, 219)",
+        "description": "#737373"
       }
     },
   },
