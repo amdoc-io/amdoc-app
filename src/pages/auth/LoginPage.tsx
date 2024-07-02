@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { FaGithub } from "react-icons/fa";
 import { RiGoogleLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { OutlinedButton } from "../../actions/OutlinedButton";
 import {
   AIM_GET_GITHUB_ACCESS_TOKEN_PROXY_ENDPOINT,
@@ -18,9 +18,11 @@ import { GithubAccessToken } from "../../model/AuthModel";
 export const LoginPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get("code");
   const [googleLoading, setGoogleLoading] = useState<boolean>(false);
+  const [githubLoading, setGithubLoading] = useState<boolean>(false);
 
   const handleSystemSignIn = useCallback(
     async (formData: any) => {
@@ -47,6 +49,8 @@ export const LoginPage = () => {
 
   const handleGithubSuccessSignIn = useCallback(async () => {
     if (code) {
+      setGithubLoading(true);
+
       const githubAccessToken = await axios
         .get(`${AIM_GET_GITHUB_ACCESS_TOKEN_PROXY_ENDPOINT}?code=${code}`)
         .then((res) => {
@@ -69,9 +73,14 @@ export const LoginPage = () => {
         accessToken: githubAccessToken?.accessToken,
       };
 
+      console.log(formData);
+
       handleSystemSignIn(formData);
+
+      setGithubLoading(false);
+      navigate("/");
     }
-  }, [code, dispatch, handleSystemSignIn]);
+  }, [code, dispatch, handleSystemSignIn, navigate]);
 
   useEffect(() => {
     handleGithubSuccessSignIn();
@@ -143,6 +152,7 @@ export const LoginPage = () => {
       </OutlinedButton>
 
       <OutlinedButton
+        loading={githubLoading}
         icon={<FaGithub />}
         onClick={handleGithubLogin}
         className="!bg-black !text-white !border-none hover:!bg-black/85"
