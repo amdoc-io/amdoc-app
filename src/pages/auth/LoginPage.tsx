@@ -73,8 +73,6 @@ export const LoginPage = () => {
         accessToken: githubAccessToken?.accessToken,
       };
 
-      console.log(formData);
-
       handleSystemSignIn(formData);
 
       setGithubLoading(false);
