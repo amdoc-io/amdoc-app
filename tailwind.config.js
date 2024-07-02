@@ -4,7 +4,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "primary": "rgb(136, 85, 255)"
+        "primary": "rgb(136, 85, 255)",
+        "disabled": "rgb(209, 213, 219)"
       }
     },
   },

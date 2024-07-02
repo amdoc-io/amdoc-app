@@ -6,14 +6,11 @@ import { RiGoogleLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { OutlinedButton } from "../../actions/OutlinedButton";
-import {
-  AIM_GET_GITHUB_ACCESS_TOKEN_PROXY_ENDPOINT,
-  AIM_SIGN_IN_ENDPOINT,
-} from "../../endpoints/AIMEndpoint";
-import { login, setGithubAccessToken } from "../../features/auth/authSlice";
+import { AIM_SIGN_IN_ENDPOINT } from "../../endpoints/AIMEndpoint";
+import { login } from "../../features/auth/authSlice";
 import { AuthContainer } from "../../layout/AuthContainer";
 import { AuthType, SignInResponse } from "../../model/AccountModel";
-import { GithubAccessToken } from "../../model/AuthModel";
+import { getGithubAccessToken } from "../../utils/GithubFetchUtils";
 
 export const LoginPage = () => {
   const location = useLocation();
@@ -51,22 +48,7 @@ export const LoginPage = () => {
     if (code) {
       setGithubLoading(true);
 
-      const githubAccessToken = await axios
-        .get(`${AIM_GET_GITHUB_ACCESS_TOKEN_PROXY_ENDPOINT}?code=${code}`)
-        .then((res) => {
-          const data = res.data;
-          return {
-            accessToken: data.access_token,
-            expiresIn: data.expires_in,
-            refreshToken: data.refresh_token,
-            refreshTokenExpiresIn: data.refresh_token_expires_in,
-            scope: data.scope,
-            tokenType: data.token_type,
-          } as GithubAccessToken;
-        })
-        .catch((err) => undefined);
-
-      dispatch(setGithubAccessToken(githubAccessToken));
+      const githubAccessToken = await getGithubAccessToken(code);
 
       const formData = {
         authType: AuthType.GITHUB,
@@ -78,7 +60,7 @@ export const LoginPage = () => {
       setGithubLoading(false);
       navigate("/");
     }
-  }, [code, dispatch, handleSystemSignIn, navigate]);
+  }, [code, handleSystemSignIn, navigate]);
 
   useEffect(() => {
     handleGithubSuccessSignIn();
@@ -125,7 +107,7 @@ export const LoginPage = () => {
   });
 
   const handleGithubLogin = () => {
-    window.location.href = `https://github.com/login/oauth/authorize?scope=user&client_id=${process.env.REACT_APP_GITHUB_OAUTH_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GITHUB_OAUTH_CALLBACK_URL}`;
+    window.location.href = `https://github.com/login/oauth/authorize?scope=user&client_id=${process.env.REACT_APP_GITHUB_OAUTH_CLIENT_ID}`;
   };
 
   return (

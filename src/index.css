@@ -154,3 +154,20 @@ pre[class*=language-] {
     transform: rotate(360deg);
   }
 }
+
+.step-span {
+  background-color: rgb(209, 213, 219);
+  transition      : all 0.3s;
+}
+
+.step-paragraph {
+  color: rgb(107, 114, 128);
+}
+
+.step-hover:hover .step-span {
+  background-color: rgb(17, 24, 39);
+}
+
+.step-hover:hover .step-paragraph {
+  color: rgb(17, 24, 39);
+}
