@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { RxCross1, RxHamburgerMenu } from "react-icons/rx";
 import { Fragment } from "react/jsx-runtime";
 import { SideBarMenu } from "./SideBarMenu";
+import { Cross as Hamburger } from "hamburger-react";
 
 export const MobileSideBar = () => {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
@@ -9,11 +9,13 @@ export const MobileSideBar = () => {
   return (
     <Fragment>
       <div className="block lg:hidden absolute top-4 right-4">
-        <div
-          className="cursor-pointer text-[24px]"
-          onClick={() => setMenuOpen((prev) => !prev)}
-        >
-          {menuOpen ? <RxCross1 /> : <RxHamburgerMenu />}
+        <div className="cursor-pointer">
+          <Hamburger
+            size={24}
+            toggled={menuOpen}
+            toggle={setMenuOpen}
+            direction="right"
+          />
         </div>
       </div>
 
