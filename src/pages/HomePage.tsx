@@ -76,8 +76,8 @@ export const HomePage = () => {
                   <p>
                     You have successfully authorized using {gitProvider} OAuth
                     as{" "}
-                    <Link href={githubUser.html_url} target="_blank">
-                      {githubUser.login}
+                    <Link href={githubUser?.html_url} target="_blank">
+                      {githubUser?.login}
                     </Link>
                     !
                   </p>
