@@ -92,7 +92,7 @@ export const HomePage = () => {
                     You have successfully set up your initial documentation!
                     Access your repo:{" "}
                     <a
-                      className="underline cursor-pointer"
+                      className="underline cursor-pointer hover:text-gray-900 transition-all duration-300"
                       href={`${githubUser?.html_url}/${docInitialRepo}`}
                     >
                       {docInitialRepo}
