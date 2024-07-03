@@ -2,6 +2,7 @@ import { useState } from "react";
 import { RxPencil2 } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import { OutlinedButton } from "../actions/OutlinedButton";
+import { StepContainer } from "../layout/StepContainer";
 import { GithubAccessToken } from "../model/AuthModel";
 import { createRepoFromTemplate } from "../utils/GithubFetchUtils";
 
@@ -17,7 +18,6 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   );
   const handleCreateDoc = async () => {
     setCreateDocLoading(true);
-    console.log(githubUser);
     await createRepoFromTemplate(
       githubOAuthAccessToken.accessToken,
       githubUser.login
@@ -29,7 +29,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 items-start w-full">
+    <StepContainer>
       <p>Create a documentation project from a default template</p>
       <div className="flex">
         <OutlinedButton
@@ -40,6 +40,6 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
           Create an initial doc
         </OutlinedButton>
       </div>
-    </div>
+    </StepContainer>
   );
 };

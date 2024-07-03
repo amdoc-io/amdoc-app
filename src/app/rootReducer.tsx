@@ -3,9 +3,11 @@ import storage from "redux-persist/lib/storage";
 import authSlice from "../features/auth/authSlice";
 import persistedReducer from "./reduxPersistConfig";
 import { ReduxActionType } from "../model/ReduxModel";
+import onboardSlice from "../features/onboard/onboardSlice";
 
 const appReducer = combineReducers({
   auth: authSlice,
+  onboard: onboardSlice,
 });
 
 const rootReducer = (state: any, action: any) => {

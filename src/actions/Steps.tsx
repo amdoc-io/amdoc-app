@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { RxCheck } from "react-icons/rx";
 
 export const Steps = (props: {
@@ -9,17 +8,11 @@ export const Steps = (props: {
 }) => {
   const { value = -1, className = "", steps = [], onChange = () => {} } = props;
 
-  const [current, setCurrent] = useState<number>(value);
-
-  useEffect(() => {
-    setCurrent(value);
-  }, [value]);
-
   const getSpanOuterClassName = (i: number) => {
-    if (current === i) {
+    if (value === i) {
       return "bg-primary/20";
     }
-    if (current > i) {
+    if (value > i) {
       return "bg-primary";
     }
 
@@ -27,10 +20,10 @@ export const Steps = (props: {
   };
 
   const getSpanInnerClassName = (i: number) => {
-    if (current === i) {
+    if (value === i) {
       return "bg-primary";
     }
-    if (current > i) {
+    if (value > i) {
       return "bg-transparent";
     }
 
@@ -45,7 +38,6 @@ export const Steps = (props: {
             className="flex items-start gap-3 cursor-pointer step-hover"
             onClick={() => {
               onChange(i);
-              setCurrent(i);
               if (step.onClick && typeof step.onClick === "function") {
                 step.onClick();
               }
@@ -63,7 +55,7 @@ export const Steps = (props: {
               >
                 <RxCheck
                   className={`${
-                    current > i ? "block" : "hidden"
+                    value > i ? "block" : "hidden"
                   } absolute text-[12px]`}
                 />
               </span>
@@ -71,13 +63,13 @@ export const Steps = (props: {
 
             <div
               className={`-mt-[1px] text-sm font-medium transition-all duration-300 ${
-                current >= i ? "text-primary" : "step-paragraph"
+                value >= i ? "text-primary" : "step-paragraph"
               }`}
             >
               {step.title}
               <div
                 className={`text-gray-500 mt-4 transition-all duration-300 ${
-                  current === i ? "opacity-100" : "h-0 opacity-0"
+                  value === i ? "opacity-100" : "h-0 opacity-0"
                 }`}
               >
                 {step.description}

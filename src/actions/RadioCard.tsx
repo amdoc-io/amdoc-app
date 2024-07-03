@@ -1,23 +1,19 @@
-import { ReactNode, useState } from "react";
+import { ReactNode } from "react";
 
 export const RadioCard = (props: {
-  value?: boolean;
-  onChange?: (value: boolean) => void;
+  active?: boolean;
+  value?: string;
+  onChange?: (value: string) => void;
   children?: ReactNode;
 }) => {
-  const { value = false, onChange = () => {}, children } = props;
-
-  const [active, setActive] = useState<boolean>(value);
+  const { active = false, value = "", onChange = () => {}, children } = props;
 
   return (
     <div
       className={`flex flex-col gap-4 w-full rounded-lg border p-4 cursor-pointer transition-all duration-300 ${
         active ? "border-primary bg-primary/5" : "border-gray-300"
       }`}
-      onClick={() => {
-        onChange(!active);
-        setActive(!active);
-      }}
+      onClick={() => onChange(value)}
     >
       <div className="flex items-center gap-4">
         <span

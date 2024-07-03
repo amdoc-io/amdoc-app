@@ -1,21 +1,16 @@
 import { useCallback, useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
-import { RxGithubLogo } from "react-icons/rx";
+import { RxDownload } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { OutlinedButton } from "../actions/OutlinedButton";
+import { setGithubInstallationToken } from "../features/onboard/onboardSlice";
+import { StepContainer } from "../layout/StepContainer";
 import { getGithubAppJWT } from "../utils/AccountFetchUtils";
 import {
   InstallationToken,
-  getGithubAccessToken,
-  getGithubAuthenticatedUser,
   getGithubInstallationAccessTokens,
 } from "../utils/GithubFetchUtils";
-import {
-  setGithubInstallationToken,
-  setGithubOAuthAccessToken,
-  setGithubUser,
-} from "../features/auth/authSlice";
 
 export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   const { onComplete = () => {} } = props;
@@ -28,13 +23,12 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   );
   const searchParams = new URLSearchParams(location.search);
   const installationId = searchParams.get("installation_id");
-  const code = searchParams.get("code");
 
   const [githubLoading, setGithubLoading] = useState<boolean>(false);
   const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
 
   const handleGithubSuccessInstallation = useCallback(async () => {
-    if (installationId && code && !setupCompleted) {
+    if (installationId && !setupCompleted) {
       setGithubLoading(true);
 
       const jwt = await getGithubAppJWT(authToken);
@@ -42,20 +36,14 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
         jwt,
         installationId
       );
-      const githubOAuthAccessToken = await getGithubAccessToken(code);
-      const githubUser = await getGithubAuthenticatedUser(
-        githubOAuthAccessToken?.accessToken || ""
-      );
 
-      dispatch(setGithubOAuthAccessToken(githubOAuthAccessToken));
-      dispatch(setGithubUser(githubUser));
       dispatch(setGithubInstallationToken(githubInstallationToken));
 
       onComplete();
       setSetupCompleted(true);
       setGithubLoading(false);
     }
-  }, [installationId, onComplete, setupCompleted, authToken, dispatch, code]);
+  }, [installationId, onComplete, setupCompleted, authToken, dispatch]);
 
   useEffect(() => {
     if (
@@ -77,21 +65,21 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   };
 
   return (
-    <div className="flex flex-col gap-2 w-full">
-      <p>Deploy your application using one of the following providers:</p>
+    <StepContainer>
+      <p>Your resources will be managed within an application</p>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="flex">
         <OutlinedButton
           loading={githubLoading}
-          icon={<RxGithubLogo />}
           onClick={handleGithubConnect}
+          icon={<RxDownload />}
           suffix={
             setupCompleted && <FaCheckCircle className="text-green-500" />
           }
         >
-          Github
+          Install application
         </OutlinedButton>
       </div>
-    </div>
+    </StepContainer>
   );
 };

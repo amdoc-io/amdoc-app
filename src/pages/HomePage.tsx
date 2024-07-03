@@ -4,6 +4,8 @@ import { ConnectGitProvider } from "../components/ConnectGitProvider";
 import { Heading } from "../display/Heading";
 import { Paragraph } from "../display/Paragraph";
 import { SetupInitialDoc } from "../components/SetupInitialDoc";
+import { ChooseGitProvider } from "../components/ChooseGitProvider";
+import { AuthorizeGitOAuth } from "../components/AuthorizeGitOAuth";
 
 export const HomePage = () => {
   const [currentStep, setCurrentStep] = useState<number>(-1);
@@ -27,9 +29,21 @@ export const HomePage = () => {
             className="mt-2"
             steps={[
               {
+                title: "Choose a Git provider",
+                description: (
+                  <ChooseGitProvider onComplete={() => setCurrentStep(1)} />
+                ),
+              },
+              {
+                title: "Authorize with OAuth",
+                description: (
+                  <AuthorizeGitOAuth onComplete={() => setCurrentStep(2)} />
+                ),
+              },
+              {
                 title: "Connect to Git provider",
                 description: (
-                  <ConnectGitProvider onComplete={() => setCurrentStep(1)} />
+                  <ConnectGitProvider onComplete={() => setCurrentStep(3)} />
                 ),
               },
               {
