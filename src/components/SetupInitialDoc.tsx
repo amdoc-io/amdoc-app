@@ -9,6 +9,7 @@ import {
   createRepoFromTemplate,
 } from "../utils/GithubFetchUtils";
 import { setDocInitialRepo } from "../features/onboard/onboardSlice";
+import { Card } from "../layout/Card";
 
 export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   const dispatch = useDispatch();
@@ -75,7 +76,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
       </p>
 
       <form onSubmit={handleCreateDoc}>
-        <div className="flex">
+        <Card>
           <Input
             placeholder="Enter a repo name"
             className="min-w-72 lg:min-w-96"
@@ -84,7 +85,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
             label="Repository"
             onChange={handleInputChange}
           />
-        </div>
+        </Card>
 
         <div className="flex flex-col items-start mt-4">
           <div className="flex">

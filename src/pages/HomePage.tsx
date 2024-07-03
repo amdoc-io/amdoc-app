@@ -6,8 +6,13 @@ import { Paragraph } from "../display/Paragraph";
 import { SetupInitialDoc } from "../components/SetupInitialDoc";
 import { ChooseGitProvider } from "../components/ChooseGitProvider";
 import { AuthorizeGitOAuth } from "../components/AuthorizeGitOAuth";
+import { useSelector } from "react-redux";
 
 export const HomePage = () => {
+  const gitProvider: string = useSelector(
+    (state: any) => state.onboard.gitProvider
+  );
+
   const [currentStep, setCurrentStep] = useState<number>(-1);
 
   return (
@@ -33,24 +38,28 @@ export const HomePage = () => {
                 description: (
                   <ChooseGitProvider onComplete={() => setCurrentStep(1)} />
                 ),
+                postCompletion: `You have successfully selected ${gitProvider} as your Git provider!`,
               },
               {
                 title: "Authorize with OAuth",
                 description: (
                   <AuthorizeGitOAuth onComplete={() => setCurrentStep(2)} />
                 ),
+                postCompletion: `You have successfully authorized using ${gitProvider} OAuth!`,
               },
               {
                 title: "Connect to Git provider",
                 description: (
                   <ConnectGitProvider onComplete={() => setCurrentStep(3)} />
                 ),
+                postCompletion: `You have successfully installed the ${gitProvider} application!`,
               },
               {
                 title: "Set up your initial doc",
                 description: (
                   <SetupInitialDoc onComplete={() => setCurrentStep(4)} />
                 ),
+                postCompletion: `You have successfully set up your initial documentation!`,
               },
             ]}
           />

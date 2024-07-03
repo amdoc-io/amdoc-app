@@ -1,9 +1,17 @@
+import { ReactNode } from "react";
 import { RxCheck } from "react-icons/rx";
+
+export interface Step {
+  title?: ReactNode;
+  description?: ReactNode;
+  onClick?: () => void;
+  postCompletion?: ReactNode;
+}
 
 export const Steps = (props: {
   value?: number;
   className?: string;
-  steps?: any[];
+  steps?: Step[];
   onChange?: (value: number) => void;
 }) => {
   const { value = -1, className = "", steps = [], onChange = () => {} } = props;
@@ -74,6 +82,15 @@ export const Steps = (props: {
               >
                 {step.description}
               </div>
+              {step.postCompletion && (
+                <div
+                  className={`${
+                    value > i ? "block" : "hidden"
+                  } text-description`}
+                >
+                  {step.postCompletion}
+                </div>
+              )}
             </div>
           </div>
         </li>
