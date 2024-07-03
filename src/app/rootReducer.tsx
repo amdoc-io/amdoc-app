@@ -14,10 +14,7 @@ const rootReducer = (state: any, action: any) => {
   if (action.type === ReduxActionType.logout) {
     storage.removeItem("persist:root");
 
-    const resetState = appReducer(undefined, action);
-    return {
-      ...resetState,
-    };
+    return appReducer(undefined, action);
   }
   return appReducer(state, action);
 };
