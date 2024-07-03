@@ -9,6 +9,7 @@ import { Paragraph } from "../display/Paragraph";
 import { setCurrentStep } from "../features/onboard/onboardSlice";
 import { GithubAccessToken } from "../model/AuthModel";
 import { InstallationToken } from "../utils/GithubFetchUtils";
+import { Link } from "../actions/Link";
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -55,7 +56,13 @@ export const HomePage = () => {
                   />
                 ),
                 isCompleted: gitProvider !== undefined,
-                postCompletion: `You have successfully selected ${gitProvider} as your Git provider!`,
+                postCompletion: (
+                  <p>
+                    You have successfully selected{" "}
+                    <span className="text-gray-900">{gitProvider}</span> as your
+                    Git provider!
+                  </p>
+                ),
               },
               {
                 title: "Authorize with OAuth",
@@ -65,7 +72,16 @@ export const HomePage = () => {
                   />
                 ),
                 isCompleted: githubOAuthAccessToken !== undefined,
-                postCompletion: `You have successfully authorized using ${gitProvider} OAuth!`,
+                postCompletion: (
+                  <p>
+                    You have successfully authorized using {gitProvider} OAuth
+                    as{" "}
+                    <Link href={githubUser.html_url} target="_blank">
+                      {githubUser.login}
+                    </Link>
+                    !
+                  </p>
+                ),
               },
               {
                 title: "Connect to Git provider",
@@ -91,12 +107,12 @@ export const HomePage = () => {
                   <p>
                     You have successfully set up your initial documentation!
                     Access your repo:{" "}
-                    <a
-                      className="underline cursor-pointer hover:text-gray-900 transition-all duration-300"
+                    <Link
                       href={`${githubUser?.html_url}/${docInitialRepo}`}
+                      target="_blank"
                     >
                       {docInitialRepo}
-                    </a>
+                    </Link>
                   </p>
                 ),
               },
