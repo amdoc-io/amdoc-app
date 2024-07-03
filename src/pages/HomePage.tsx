@@ -74,7 +74,9 @@ export const HomePage = () => {
                     onComplete={() => dispatch(setCurrentStep(3))}
                   />
                 ),
-                isCompleted: githubInstallationToken !== undefined,
+                isCompleted: !!(
+                  githubInstallationToken && githubInstallationToken.token
+                ),
                 postCompletion: `You have successfully installed the ${gitProvider} application!`,
               },
               {
