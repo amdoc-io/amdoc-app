@@ -48,7 +48,7 @@ export const OutletWrapper = (
       return true;
     }
 
-    return isTokenValid(expires_at);
+    return !isTokenValid(expires_at);
   }, [
     githubInstallationToken,
     authToken,

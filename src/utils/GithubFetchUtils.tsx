@@ -71,7 +71,10 @@ export const getGithubInstallationAccessTokens = async (
       createHeader(jwt)
     )
     .then((res) => res.data as InstallationToken)
-    .catch((err) => undefined);
+    .catch((err) => {
+      console.error(err);
+      return undefined;
+    });
 };
 
 export const createRepoFromTemplate = async (

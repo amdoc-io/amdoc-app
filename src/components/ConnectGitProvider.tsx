@@ -86,7 +86,8 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
     );
     if (installation) {
       const searchParams = new URLSearchParams(location.search);
-      searchParams.set("installation_id", installation?.id.toString() || "");
+      const installationId = installation.id.toString();
+      searchParams.set("installation_id", installationId);
       setGithubLoading(false);
       navigate(`/?${searchParams}`);
     } else {
