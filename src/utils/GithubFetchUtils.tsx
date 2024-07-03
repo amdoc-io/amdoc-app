@@ -15,6 +15,16 @@ export interface InstallationToken {
   repository_selection: string;
 }
 
+export const getGithubAuthenticatedUser = async (token: string) => {
+  return await axios
+    .get(`https://api.github.com/user`, createHeader(token))
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return undefined;
+    });
+};
+
 export const getGithubAccessToken = async (code: string) => {
   return await axios
     .get(`${AIM_GET_GITHUB_ACCESS_TOKEN_PROXY_ENDPOINT}?code=${code}`)
@@ -53,16 +63,22 @@ export const getGithubInstallationAccessTokens = async (
     .catch((err) => undefined);
 };
 
-export const createRepoFromTemplate = async (token: string) => {
+export const createRepoFromTemplate = async (token: string, owner: string) => {
   return await axios
     .post(
       "https://api.github.com/repos/amdoc-io/amdoc-template/generate",
       {
-        name: "amdoc",
+        owner: owner,
+        name: "amdoc-documentation",
         description: "This is your starter Amdoc documentation",
+        include_all_branches: false,
+        private: false,
       },
       createHeader(token)
     )
     .then((res) => res.data)
-    .catch((err) => undefined);
+    .catch((err) => {
+      console.error(err);
+      return undefined;
+    });
 };

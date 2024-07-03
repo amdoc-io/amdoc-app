@@ -2,24 +2,26 @@ import { useState } from "react";
 import { RxPencil2 } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import { OutlinedButton } from "../actions/OutlinedButton";
-import {
-  InstallationToken,
-  createRepoFromTemplate,
-} from "../utils/GithubFetchUtils";
+import { GithubAccessToken } from "../model/AuthModel";
+import { createRepoFromTemplate } from "../utils/GithubFetchUtils";
 
 export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
+  const githubUser: any = useSelector((state: any) => state.auth.githubUser);
+
   const { onComplete = () => {} } = props;
 
   const [createDocLoading, setCreateDocLoading] = useState<boolean>(false);
 
-  const githubInstallationToken: InstallationToken = useSelector(
-    (state: any) => state.auth.githubInstallationToken
+  const githubOAuthAccessToken: GithubAccessToken = useSelector(
+    (state: any) => state.auth.githubOAuthAccessToken
   );
-
   const handleCreateDoc = async () => {
     setCreateDocLoading(true);
-
-    await createRepoFromTemplate(githubInstallationToken.token);
+    console.log(githubUser);
+    await createRepoFromTemplate(
+      githubOAuthAccessToken.accessToken,
+      githubUser.login
+    );
 
     onComplete();
 

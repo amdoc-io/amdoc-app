@@ -7,9 +7,15 @@ import { OutlinedButton } from "../actions/OutlinedButton";
 import { getGithubAppJWT } from "../utils/AccountFetchUtils";
 import {
   InstallationToken,
+  getGithubAccessToken,
+  getGithubAuthenticatedUser,
   getGithubInstallationAccessTokens,
 } from "../utils/GithubFetchUtils";
-import { setGithubInstallationToken } from "../features/auth/authSlice";
+import {
+  setGithubInstallationToken,
+  setGithubOAuthAccessToken,
+  setGithubUser,
+} from "../features/auth/authSlice";
 
 export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   const { onComplete = () => {} } = props;
@@ -22,12 +28,13 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   );
   const searchParams = new URLSearchParams(location.search);
   const installationId = searchParams.get("installation_id");
+  const code = searchParams.get("code");
 
   const [githubLoading, setGithubLoading] = useState<boolean>(false);
   const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
 
   const handleGithubSuccessInstallation = useCallback(async () => {
-    if (installationId && !setupCompleted) {
+    if (installationId && code && !setupCompleted) {
       setGithubLoading(true);
 
       const jwt = await getGithubAppJWT(authToken);
@@ -35,13 +42,20 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
         jwt,
         installationId
       );
+      const githubOAuthAccessToken = await getGithubAccessToken(code);
+      const githubUser = await getGithubAuthenticatedUser(
+        githubOAuthAccessToken?.accessToken || ""
+      );
+
+      dispatch(setGithubOAuthAccessToken(githubOAuthAccessToken));
+      dispatch(setGithubUser(githubUser));
       dispatch(setGithubInstallationToken(githubInstallationToken));
 
       onComplete();
       setSetupCompleted(true);
       setGithubLoading(false);
     }
-  }, [installationId, onComplete, setupCompleted, authToken, dispatch]);
+  }, [installationId, onComplete, setupCompleted, authToken, dispatch, code]);
 
   useEffect(() => {
     if (
