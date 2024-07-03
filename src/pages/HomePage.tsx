@@ -7,11 +7,23 @@ import { SetupInitialDoc } from "../components/SetupInitialDoc";
 import { ChooseGitProvider } from "../components/ChooseGitProvider";
 import { AuthorizeGitOAuth } from "../components/AuthorizeGitOAuth";
 import { useSelector } from "react-redux";
+import { GithubAccessToken } from "../model/AuthModel";
+import { InstallationToken } from "../utils/GithubFetchUtils";
 
 export const HomePage = () => {
   const gitProvider: string = useSelector(
     (state: any) => state.onboard.gitProvider
   );
+  const githubOAuthAccessToken: GithubAccessToken = useSelector(
+    (state: any) => state.onboard.githubOAuthAccessToken
+  );
+  const githubInstallationToken: InstallationToken = useSelector(
+    (state: any) => state.onboard.githubInstallationToken
+  );
+  const docInitialRepo: string = useSelector(
+    (state: any) => state.onboard.docInitialRepo
+  );
+  const githubUser: any = useSelector((state: any) => state.auth.githubUser);
 
   const [currentStep, setCurrentStep] = useState<number>(-1);
 
@@ -38,6 +50,7 @@ export const HomePage = () => {
                 description: (
                   <ChooseGitProvider onComplete={() => setCurrentStep(1)} />
                 ),
+                isCompleted: gitProvider !== undefined,
                 postCompletion: `You have successfully selected ${gitProvider} as your Git provider!`,
               },
               {
@@ -45,6 +58,7 @@ export const HomePage = () => {
                 description: (
                   <AuthorizeGitOAuth onComplete={() => setCurrentStep(2)} />
                 ),
+                isCompleted: githubOAuthAccessToken !== undefined,
                 postCompletion: `You have successfully authorized using ${gitProvider} OAuth!`,
               },
               {
@@ -52,6 +66,7 @@ export const HomePage = () => {
                 description: (
                   <ConnectGitProvider onComplete={() => setCurrentStep(3)} />
                 ),
+                isCompleted: githubInstallationToken !== undefined,
                 postCompletion: `You have successfully installed the ${gitProvider} application!`,
               },
               {
@@ -59,7 +74,16 @@ export const HomePage = () => {
                 description: (
                   <SetupInitialDoc onComplete={() => setCurrentStep(4)} />
                 ),
-                postCompletion: `You have successfully set up your initial documentation!`,
+                isCompleted: docInitialRepo !== undefined,
+                postCompletion: (
+                  <p>
+                    You have successfully set up your initial documentation!
+                    Access your repo:{" "}
+                    <a href={`${githubUser?.html_url}/${docInitialRepo}`}>
+                      {docInitialRepo}
+                    </a>
+                  </p>
+                ),
               },
             ]}
           />

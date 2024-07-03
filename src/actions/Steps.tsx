@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
-import { RxCheck } from "react-icons/rx";
+import { RxCheck, RxPause } from "react-icons/rx";
 
 export interface Step {
   title?: ReactNode;
   description?: ReactNode;
   onClick?: () => void;
   postCompletion?: ReactNode;
+  isCompleted?: boolean;
 }
 
 export const Steps = (props: {
@@ -61,11 +62,13 @@ export const Steps = (props: {
                   i
                 )}`}
               >
-                <RxCheck
+                <div
                   className={`${
                     value > i ? "block" : "hidden"
                   } absolute text-[12px]`}
-                />
+                >
+                  {step.isCompleted ? <RxCheck /> : <RxPause />}
+                </div>
               </span>
             </span>
 
@@ -88,7 +91,11 @@ export const Steps = (props: {
                     value > i ? "block" : "hidden"
                   } text-description`}
                 >
-                  {step.postCompletion}
+                  {step.isCompleted ? (
+                    step.postCompletion
+                  ) : (
+                    <p>You haven't completed this step!</p>
+                  )}
                 </div>
               )}
             </div>
