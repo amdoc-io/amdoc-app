@@ -1,6 +1,6 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { RxPencil2 } from "react-icons/rx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { OutlinedButton } from "../actions/OutlinedButton";
 import { Input } from "../forms/Input";
 import { StepContainer } from "../layout/StepContainer";
@@ -8,20 +8,26 @@ import {
   InstallationToken,
   createRepoFromTemplate,
 } from "../utils/GithubFetchUtils";
+import { setDocInitialRepo } from "../features/onboard/onboardSlice";
 
 export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
-  const githubUser: any = useSelector((state: any) => state.auth.githubUser);
+  const dispatch = useDispatch();
 
   const { onComplete = () => {} } = props;
+
+  const githubUser: any = useSelector((state: any) => state.auth.githubUser);
+  const docInitialRepo: string = useSelector(
+    (state: any) => state.onboard.docInitialRepo
+  );
+  const githubInstallationToken: InstallationToken = useSelector(
+    (state: any) => state.onboard.githubInstallationToken
+  );
 
   const [createDocLoading, setCreateDocLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<{ [key: string]: any }>({
     repoName: "amdoc-documentation",
   });
-
-  const githubInstallationToken: InstallationToken = useSelector(
-    (state: any) => state.onboard.githubInstallationToken
-  );
+  const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
@@ -49,10 +55,18 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
     if (res) {
       onComplete();
+      dispatch(setDocInitialRepo(formValues.repoName.toString()));
     }
 
     setCreateDocLoading(false);
   };
+
+  useEffect(() => {
+    if (docInitialRepo && !setupCompleted) {
+      onComplete();
+      setSetupCompleted(true);
+    }
+  }, [docInitialRepo, setupCompleted, onComplete]);
 
   return (
     <StepContainer>
