@@ -17,9 +17,6 @@ const rootReducer = (state: any, action: any) => {
     const resetState = appReducer(undefined, action);
     return {
       ...resetState,
-      auth: {
-        ...resetState.auth,
-      },
     };
   }
   return appReducer(state, action);
