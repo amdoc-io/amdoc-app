@@ -48,7 +48,9 @@ export const HomePage = () => {
               },
               {
                 title: "Set up your initial doc",
-                description: <SetupInitialDoc />,
+                description: (
+                  <SetupInitialDoc onComplete={() => setCurrentStep(4)} />
+                ),
               },
             ]}
           />

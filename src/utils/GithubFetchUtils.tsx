@@ -63,13 +63,17 @@ export const getGithubInstallationAccessTokens = async (
     .catch((err) => undefined);
 };
 
-export const createRepoFromTemplate = async (token: string, owner: string) => {
+export const createRepoFromTemplate = async (
+  token: string,
+  owner: string,
+  name: string | undefined
+) => {
   return await axios
     .post(
       "https://api.github.com/repos/amdoc-io/amdoc-template/generate",
       {
         owner: owner,
-        name: "amdoc-documentation",
+        name: name || "amdoc-documentation",
         description: "This is your starter Amdoc documentation",
         include_all_branches: false,
         private: false,

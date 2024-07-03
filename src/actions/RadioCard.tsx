@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { FaCheckCircle } from "react-icons/fa";
 
 export const RadioCard = (props: {
   active?: boolean;
@@ -10,25 +11,19 @@ export const RadioCard = (props: {
 
   return (
     <div
-      className={`flex flex-col relative gap-4 w-full rounded-lg border p-4 cursor-pointer transition-all duration-300 ${
-        active ? "border-primary bg-primary/5" : "border-gray-300"
+      className={`flex flex-col gap-4 w-full rounded-lg border p-4 cursor-pointer transition-all duration-300 ${
+        active ? "border-primary" : "border-gray-300"
       }`}
       onClick={() => onChange(value)}
     >
-      <div className="flex items-center gap-4">
-        <span
-          className={`h-4 w-4 absolute top-2 left-2 border transition-all duration-300 flex justify-center items-center rounded-full ${
-            active ? "bg-primary border-primary" : "bg-white border-gray-300"
+      <div className="flex items-center relative gap-4">
+        <FaCheckCircle
+          className={`text-primary text-[16px] absolute right-0 top-0 ${
+            active ? "block" : "hidden"
           }`}
-        >
-          <span
-            className={`h-2 w-2 bg-white rounded-full ${
-              active ? "block" : "hidden"
-            }`}
-          />
-        </span>
+        />
 
-        <div className="flex flex-col items-center gap-2 justify-center w-full">
+        <div className="flex flex-col gap-2 justify-center w-full">
           {children}
         </div>
       </div>
