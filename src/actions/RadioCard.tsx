@@ -10,14 +10,14 @@ export const RadioCard = (props: {
 
   return (
     <div
-      className={`flex flex-col gap-4 w-full rounded-lg border p-4 cursor-pointer transition-all duration-300 ${
+      className={`flex flex-col relative gap-4 w-full rounded-lg border p-4 cursor-pointer transition-all duration-300 ${
         active ? "border-primary bg-primary/5" : "border-gray-300"
       }`}
       onClick={() => onChange(value)}
     >
       <div className="flex items-center gap-4">
         <span
-          className={`h-4 w-4 border transition-all duration-300 flex justify-center items-center rounded-full ${
+          className={`h-4 w-4 absolute top-2 left-2 border transition-all duration-300 flex justify-center items-center rounded-full ${
             active ? "bg-primary border-primary" : "bg-white border-gray-300"
           }`}
         >
@@ -28,7 +28,9 @@ export const RadioCard = (props: {
           />
         </span>
 
-        <p className="flex items-center gap-2">{children}</p>
+        <div className="flex flex-col items-center gap-2 justify-center w-full">
+          {children}
+        </div>
       </div>
     </div>
   );

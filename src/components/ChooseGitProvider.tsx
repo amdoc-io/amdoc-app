@@ -25,13 +25,16 @@ export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
     <StepContainer>
       <p>Choose one of the following providers to deploy your application</p>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 w-full">
         <RadioCard
           active={gitProvider === "GitHub"}
           value="GitHub"
           onChange={(value) => dispatch(setGitProvider(value))}
         >
-          <RxGithubLogo /> GitHub
+          GitHub
+          <div className="text-[40px]">
+            <RxGithubLogo />
+          </div>
         </RadioCard>
       </div>
     </StepContainer>

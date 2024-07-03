@@ -19,7 +19,7 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   const dispatch = useDispatch();
   const authToken: string = useSelector((state: any) => state.auth.token);
   const githubInstallationToken: InstallationToken = useSelector(
-    (state: any) => state.auth.githubInstallationToken
+    (state: any) => state.onboard.githubInstallationToken
   );
   const searchParams = new URLSearchParams(location.search);
   const installationId = searchParams.get("installation_id");

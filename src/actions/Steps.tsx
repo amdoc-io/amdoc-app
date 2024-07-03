@@ -31,11 +31,11 @@ export const Steps = (props: {
   };
 
   return (
-    <ul className={`flex flex-col gap-6 ${className}`}>
+    <ul className={`flex flex-col gap-6 w-full ${className}`}>
       {steps.map((step, i) => (
         <li key={i} className="flex overflow-hidden">
           <div
-            className="flex items-start gap-3 cursor-pointer step-hover"
+            className="flex items-start gap-3 cursor-pointer step-hover w-full"
             onClick={() => {
               onChange(i);
               if (step.onClick && typeof step.onClick === "function") {
@@ -62,7 +62,7 @@ export const Steps = (props: {
             </span>
 
             <div
-              className={`-mt-[1px] text-sm font-medium transition-all duration-300 ${
+              className={`-mt-[1px] text-sm font-medium transition-all duration-300 w-full ${
                 value >= i ? "text-primary" : "step-paragraph"
               }`}
             >

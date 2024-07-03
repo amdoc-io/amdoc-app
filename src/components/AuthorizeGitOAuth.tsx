@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
-import { RxLockOpen1 } from "react-icons/rx";
+import { RxLockClosed, RxLockOpen1 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { OutlinedButton } from "../actions/OutlinedButton";
@@ -70,7 +70,13 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
       <div className="flex">
         <OutlinedButton
           loading={githubLoading}
-          icon={<RxLockOpen1 />}
+          icon={
+            githubOAuthAccessToken && githubOAuthAccessToken.accessToken ? (
+              <RxLockOpen1 />
+            ) : (
+              <RxLockClosed />
+            )
+          }
           onClick={handleAuthorizeGithub}
           suffix={
             githubOAuthAccessToken &&
