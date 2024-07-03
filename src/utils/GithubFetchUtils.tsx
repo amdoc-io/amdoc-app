@@ -2,6 +2,7 @@ import axios from "axios";
 import { AIM_GET_GITHUB_ACCESS_TOKEN_PROXY_ENDPOINT } from "../endpoints/AIMEndpoint";
 import { GithubAccessToken } from "../model/AuthModel";
 import { createHeader } from "./FetchUtils";
+import { GithubInstallation } from "../model/GithubModel";
 export interface Permissions {
   metadata: string;
   pull_requests: string;
@@ -47,6 +48,16 @@ export const getGithubAuthenticatedApp = async (jwt: string) => {
     .get("https://api.github.com/app", createHeader(jwt))
     .then((res) => res.data)
     .catch((err) => undefined);
+};
+
+export const getGithubAppInstallations = async (jwt: string) => {
+  return await axios
+    .get("https://api.github.com/app/installations", createHeader(jwt))
+    .then((res) => res.data as GithubInstallation[])
+    .catch((err) => {
+      console.error(err);
+      return [];
+    });
 };
 
 export const getGithubInstallationAccessTokens = async (

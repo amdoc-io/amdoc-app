@@ -42,7 +42,7 @@ export const Steps = (props: {
   return (
     <ul className={`flex flex-col gap-6 w-full ${className}`}>
       {steps.map((step, i) => (
-        <li key={i} className="flex overflow-hidden">
+        <li key={i} className="flex overflow-hidden flex-col">
           <div
             className="flex items-start gap-3 cursor-pointer step-hover w-full"
             onClick={() => {
@@ -79,27 +79,28 @@ export const Steps = (props: {
             >
               {step.title}
               <div
-                className={`text-gray-500 mt-4 transition-all duration-300 ${
+                className={`text-description mt-4 transition-all duration-300 ${
                   value === i ? "opacity-100" : "h-0 opacity-0"
                 }`}
               >
                 {step.description}
               </div>
-              {step.postCompletion && (
-                <div
-                  className={`${
-                    value > i ? "block" : "hidden"
-                  } text-description`}
-                >
-                  {step.isCompleted ? (
-                    step.postCompletion
-                  ) : (
-                    <p>You haven't completed this step!</p>
-                  )}
-                </div>
-              )}
             </div>
           </div>
+
+          {step.postCompletion && (
+            <div
+              className={`${
+                value > i ? "block" : "hidden"
+              } text-description pl-7 text-sm font-medium z-10`}
+            >
+              {step.isCompleted ? (
+                step.postCompletion
+              ) : (
+                <p>You haven't completed this step!</p>
+              )}
+            </div>
+          )}
         </li>
       ))}
     </ul>

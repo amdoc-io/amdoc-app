@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
 import { RxLockClosed, RxLockOpen1 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { OutlinedButton } from "../actions/OutlinedButton";
 import { setGithubUser } from "../features/auth/authSlice";
 import { setGithubOAuthAccessToken } from "../features/onboard/onboardSlice";
@@ -16,6 +16,7 @@ import {
 export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
   const { onComplete = () => {} } = props;
   const location = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get("code");
@@ -48,8 +49,9 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
       dispatch(setGithubOAuthAccessToken(githubAccessToken));
 
       setGithubLoading(false);
+      navigate("/");
     }
-  }, [code, dispatch, githubOAuthAccessToken]);
+  }, [code, dispatch, githubOAuthAccessToken, navigate]);
 
   useEffect(() => {
     handleGithubSuccessAuthorize();
