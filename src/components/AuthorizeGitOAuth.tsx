@@ -33,7 +33,10 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
   };
 
   const handleGithubSuccessAuthorize = useCallback(async () => {
-    if (code) {
+    if (
+      code &&
+      (!githubOAuthAccessToken || !githubOAuthAccessToken.accessToken)
+    ) {
       setGithubLoading(true);
 
       const githubAccessToken = await getGithubAccessToken(code);
@@ -46,7 +49,7 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
 
       setGithubLoading(false);
     }
-  }, [code, dispatch]);
+  }, [code, dispatch, githubOAuthAccessToken]);
 
   useEffect(() => {
     handleGithubSuccessAuthorize();

@@ -11,7 +11,6 @@ import {
 
 export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   const githubUser: any = useSelector((state: any) => state.auth.githubUser);
-  console.log(githubUser);
 
   const { onComplete = () => {} } = props;
 

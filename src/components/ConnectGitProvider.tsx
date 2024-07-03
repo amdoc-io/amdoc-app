@@ -37,6 +37,8 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
         installationId
       );
 
+      console.log(githubInstallationToken);
+
       dispatch(setGithubInstallationToken(githubInstallationToken));
 
       onComplete();
