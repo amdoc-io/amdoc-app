@@ -6,12 +6,14 @@ export interface OnboardState {
   gitProvider?: string;
   githubOAuthAccessToken?: GithubAccessToken;
   githubInstallationToken?: InstallationToken;
+  githubInstallationId?: string;
 }
 
 const initialState: OnboardState = {
   gitProvider: undefined,
   githubOAuthAccessToken: undefined,
   githubInstallationToken: undefined,
+  githubInstallationId: undefined,
 };
 
 export const onboardSlice = createSlice({
@@ -33,6 +35,9 @@ export const onboardSlice = createSlice({
     ) => {
       state.githubInstallationToken = action.payload;
     },
+    setGithubInstallationId: (state, action: PayloadAction<string>) => {
+      state.githubInstallationId = action.payload;
+    },
   },
 });
 
@@ -40,6 +45,7 @@ export const {
   setGitProvider,
   setGithubOAuthAccessToken,
   setGithubInstallationToken,
+  setGithubInstallationId,
 } = onboardSlice.actions;
 
 export default onboardSlice.reducer;

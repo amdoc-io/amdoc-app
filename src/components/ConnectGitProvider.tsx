@@ -4,7 +4,10 @@ import { RxDownload } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { OutlinedButton } from "../actions/OutlinedButton";
-import { setGithubInstallationToken } from "../features/onboard/onboardSlice";
+import {
+  setGithubInstallationId,
+  setGithubInstallationToken,
+} from "../features/onboard/onboardSlice";
 import { StepContainer } from "../layout/StepContainer";
 import { getGithubAppJWT } from "../utils/AccountFetchUtils";
 import {
@@ -30,6 +33,8 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   const handleGithubSuccessInstallation = useCallback(async () => {
     if (installationId && !setupCompleted) {
       setGithubLoading(true);
+
+      dispatch(setGithubInstallationId(installationId));
 
       const jwt = await getGithubAppJWT(authToken);
       const githubInstallationToken = await getGithubInstallationAccessTokens(

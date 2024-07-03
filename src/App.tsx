@@ -15,6 +15,7 @@ import { SettingsPage } from "./pages/SettingsPage";
 import { DomainPage } from "./pages/DomainPage";
 import { AnalyticsPage } from "./pages/AnalyticsPage";
 import { MobileSideBar } from "./layout/MobileSideBar";
+import { OutletWrapper } from "./layout/OutletWrapper";
 
 function App() {
   const token = useSelector((state: any) => state.auth.token);
@@ -37,7 +38,9 @@ function App() {
             <SideBar />
             <div className="py-[68px] px-4 lg:px-20 relative w-full">
               <MobileSideBar />
-              <Outlet />
+              <OutletWrapper>
+                <Outlet />
+              </OutletWrapper>
             </div>
           </div>
         </div>
