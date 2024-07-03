@@ -19,6 +19,12 @@ export const OutletWrapper = (
   const githubInstallationToken: InstallationToken = useSelector(
     (state: any) => state.onboard.githubInstallationToken
   );
+  const currentStep: number = useSelector(
+    (state: any) => state.onboard.currentStep
+  );
+  const gitProvider: string = useSelector(
+    (state: any) => state.onboard.gitProvider
+  );
   const githubInstallationId: string = useSelector(
     (state: any) => state.onboard.githubInstallationId
   );
@@ -28,7 +34,11 @@ export const OutletWrapper = (
       return false;
     }
 
-    if (!githubInstallationToken) {
+    if (gitProvider !== "GitHub") {
+      return false;
+    }
+
+    if (currentStep > 2 && !githubInstallationToken) {
       return true;
     }
 
@@ -39,7 +49,13 @@ export const OutletWrapper = (
     }
 
     return isTokenValid(expires_at);
-  }, [githubInstallationToken, authToken, githubInstallationId]);
+  }, [
+    githubInstallationToken,
+    authToken,
+    githubInstallationId,
+    gitProvider,
+    currentStep,
+  ]);
 
   const rotateGithubInstallationToken = useCallback(async () => {
     if (shouldRotate()) {

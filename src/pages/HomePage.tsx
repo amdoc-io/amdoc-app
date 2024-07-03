@@ -1,16 +1,17 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Steps } from "../actions/Steps";
+import { AuthorizeGitOAuth } from "../components/AuthorizeGitOAuth";
+import { ChooseGitProvider } from "../components/ChooseGitProvider";
 import { ConnectGitProvider } from "../components/ConnectGitProvider";
+import { SetupInitialDoc } from "../components/SetupInitialDoc";
 import { Heading } from "../display/Heading";
 import { Paragraph } from "../display/Paragraph";
-import { SetupInitialDoc } from "../components/SetupInitialDoc";
-import { ChooseGitProvider } from "../components/ChooseGitProvider";
-import { AuthorizeGitOAuth } from "../components/AuthorizeGitOAuth";
-import { useSelector } from "react-redux";
+import { setCurrentStep } from "../features/onboard/onboardSlice";
 import { GithubAccessToken } from "../model/AuthModel";
 import { InstallationToken } from "../utils/GithubFetchUtils";
 
 export const HomePage = () => {
+  const dispatch = useDispatch();
   const gitProvider: string = useSelector(
     (state: any) => state.onboard.gitProvider
   );
@@ -23,9 +24,10 @@ export const HomePage = () => {
   const docInitialRepo: string = useSelector(
     (state: any) => state.onboard.docInitialRepo
   );
+  const currentStep: number = useSelector(
+    (state: any) => state.onboard.currentStep
+  );
   const githubUser: any = useSelector((state: any) => state.auth.githubUser);
-
-  const [currentStep, setCurrentStep] = useState<number>(-1);
 
   return (
     <div>
@@ -42,13 +44,15 @@ export const HomePage = () => {
           </Paragraph>
           <Steps
             value={currentStep}
-            onChange={setCurrentStep}
+            onChange={(value) => dispatch(setCurrentStep(value))}
             className="mt-2"
             steps={[
               {
                 title: "Choose a Git provider",
                 description: (
-                  <ChooseGitProvider onComplete={() => setCurrentStep(1)} />
+                  <ChooseGitProvider
+                    onComplete={() => dispatch(setCurrentStep(1))}
+                  />
                 ),
                 isCompleted: gitProvider !== undefined,
                 postCompletion: `You have successfully selected ${gitProvider} as your Git provider!`,
@@ -56,7 +60,9 @@ export const HomePage = () => {
               {
                 title: "Authorize with OAuth",
                 description: (
-                  <AuthorizeGitOAuth onComplete={() => setCurrentStep(2)} />
+                  <AuthorizeGitOAuth
+                    onComplete={() => dispatch(setCurrentStep(2))}
+                  />
                 ),
                 isCompleted: githubOAuthAccessToken !== undefined,
                 postCompletion: `You have successfully authorized using ${gitProvider} OAuth!`,
@@ -64,7 +70,9 @@ export const HomePage = () => {
               {
                 title: "Connect to Git provider",
                 description: (
-                  <ConnectGitProvider onComplete={() => setCurrentStep(3)} />
+                  <ConnectGitProvider
+                    onComplete={() => dispatch(setCurrentStep(3))}
+                  />
                 ),
                 isCompleted: githubInstallationToken !== undefined,
                 postCompletion: `You have successfully installed the ${gitProvider} application!`,
@@ -72,7 +80,9 @@ export const HomePage = () => {
               {
                 title: "Set up your initial doc",
                 description: (
-                  <SetupInitialDoc onComplete={() => setCurrentStep(4)} />
+                  <SetupInitialDoc
+                    onComplete={() => dispatch(setCurrentStep(4))}
+                  />
                 ),
                 isCompleted: docInitialRepo !== undefined,
                 postCompletion: (

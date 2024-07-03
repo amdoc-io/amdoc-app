@@ -8,6 +8,7 @@ export interface OnboardState {
   githubInstallationToken?: InstallationToken;
   githubInstallationId?: string;
   docInitialRepo?: string;
+  currentStep?: number;
 }
 
 const initialState: OnboardState = {
@@ -16,12 +17,16 @@ const initialState: OnboardState = {
   githubInstallationToken: undefined,
   githubInstallationId: undefined,
   docInitialRepo: undefined,
+  currentStep: -1,
 };
 
 export const onboardSlice = createSlice({
   name: "onboard",
   initialState,
   reducers: {
+    setCurrentStep: (state, action: PayloadAction<number>) => {
+      state.currentStep = action.payload;
+    },
     setGitProvider: (state, action: PayloadAction<string>) => {
       state.gitProvider = action.payload;
     },
@@ -48,6 +53,7 @@ export const onboardSlice = createSlice({
 
 export const {
   setGitProvider,
+  setCurrentStep,
   setGithubOAuthAccessToken,
   setGithubInstallationToken,
   setGithubInstallationId,
