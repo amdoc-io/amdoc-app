@@ -4,51 +4,62 @@ import { RxGithubLogo } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { OutlinedButton } from "../actions/OutlinedButton";
-import { setGithubAccessToken } from "../features/auth/authSlice";
-import { GithubAccessToken } from "../model/AuthModel";
-import { getGithubAccessToken } from "../utils/GithubFetchUtils";
+import { getGithubAppJWT } from "../utils/AccountFetchUtils";
+import {
+  InstallationToken,
+  getGithubInstallationAccessTokens,
+} from "../utils/GithubFetchUtils";
+import { setGithubInstallationToken } from "../features/auth/authSlice";
 
 export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   const { onComplete = () => {} } = props;
 
   const location = useLocation();
   const dispatch = useDispatch();
-  const githubAccessToken: GithubAccessToken = useSelector(
-    (state: any) => state.auth.githubAccessToken
+  const authToken: string = useSelector((state: any) => state.auth.token);
+  const githubInstallationToken: InstallationToken = useSelector(
+    (state: any) => state.auth.githubInstallationToken
   );
   const searchParams = new URLSearchParams(location.search);
-  const code = searchParams.get("code");
+  const installationId = searchParams.get("installation_id");
 
   const [githubLoading, setGithubLoading] = useState<boolean>(false);
   const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
 
-  const handleGithubSuccessAuthorization = useCallback(async () => {
-    if (code && !setupCompleted) {
+  const handleGithubSuccessInstallation = useCallback(async () => {
+    if (installationId && !setupCompleted) {
       setGithubLoading(true);
 
-      const githubAccessToken = await getGithubAccessToken(code);
-      dispatch(setGithubAccessToken(githubAccessToken));
+      const jwt = await getGithubAppJWT(authToken);
+      const githubInstallationToken = await getGithubInstallationAccessTokens(
+        jwt,
+        installationId
+      );
+      dispatch(setGithubInstallationToken(githubInstallationToken));
 
+      onComplete();
+      setSetupCompleted(true);
       setGithubLoading(false);
+    }
+  }, [installationId, onComplete, setupCompleted, authToken, dispatch]);
 
+  useEffect(() => {
+    if (
+      githubInstallationToken &&
+      githubInstallationToken.token &&
+      !setupCompleted
+    ) {
       onComplete();
       setSetupCompleted(true);
     }
-  }, [code, dispatch, onComplete, setupCompleted]);
+  }, [githubInstallationToken, onComplete, setupCompleted]);
 
   useEffect(() => {
-    if (githubAccessToken && githubAccessToken.accessToken && !setupCompleted) {
-      onComplete();
-      setSetupCompleted(true);
-    }
-  }, [githubAccessToken, onComplete, setupCompleted]);
-
-  useEffect(() => {
-    handleGithubSuccessAuthorization();
-  }, [handleGithubSuccessAuthorization]);
+    handleGithubSuccessInstallation();
+  }, [handleGithubSuccessInstallation]);
 
   const handleGithubConnect = async () => {
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${process.env.REACT_APP_GITHUB_APP_CLIENT_ID}`;
+    window.location.href = "https://github.com/apps/amdoc-io/installations/new";
   };
 
   return (

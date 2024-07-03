@@ -8,10 +8,3 @@ export const getGithubAppJWT = async (authToken: string) => {
     .then((res) => res.data)
     .catch((err) => undefined);
 };
-
-export const installGithubApp = async (jwt: string) => {
-  return await axios
-    .get("https://api.github.com/app/installations", createHeader(jwt))
-    .then((res) => res.data)
-    .catch((err) => undefined);
-};

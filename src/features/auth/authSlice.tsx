@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { DocAccount } from "../../model/AccountModel";
-import { GithubAccessToken } from "../../model/AuthModel";
+import { InstallationToken } from "../../utils/GithubFetchUtils";
 
 export interface AuthState {
   token?: string;
   account?: DocAccount;
-  githubAccessToken?: GithubAccessToken;
+  githubInstallationToken?: InstallationToken;
   signedInAt?: string;
 }
 
@@ -13,7 +13,7 @@ const initialState: AuthState = {
   token: undefined,
   account: undefined,
   signedInAt: undefined,
-  githubAccessToken: undefined,
+  githubInstallationToken: undefined,
 };
 
 export const authSlice = createSlice({
@@ -31,16 +31,16 @@ export const authSlice = createSlice({
     setToken: (state, action: PayloadAction<string>) => {
       state.token = action.payload;
     },
-    setGithubAccessToken: (
+    setGithubInstallationToken: (
       state,
-      action: PayloadAction<GithubAccessToken | undefined>
+      action: PayloadAction<InstallationToken | undefined>
     ) => {
-      state.githubAccessToken = action.payload;
+      state.githubInstallationToken = action.payload;
     },
   },
 });
 
-export const { login, setAccount, setToken, setGithubAccessToken } =
+export const { login, setAccount, setToken, setGithubInstallationToken } =
   authSlice.actions;
 
 export default authSlice.reducer;
