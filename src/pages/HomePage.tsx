@@ -35,13 +35,13 @@ export const HomePage = () => {
       <Heading level={1}>Home</Heading>
 
       <div className="flex flex-col gap-12 py-6">
-        <Paragraph>Welcome to Amdoc!</Paragraph>
+        <Paragraph>Welcome to iGendoc!</Paragraph>
 
         <div className="flex flex-col gap-4">
           <Heading level={2}>Getting Started</Heading>
           <Paragraph>
-            To begin automating your documentation with Amdoc, follow the steps
-            below.
+            To begin automating your documentation with iGendoc, follow the
+            steps below.
           </Paragraph>
           <Steps
             value={currentStep}

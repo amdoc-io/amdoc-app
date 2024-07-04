@@ -23,7 +23,7 @@ export const AuthContainer = (props: {
       >
         <div className="max-w-screen-md ml-auto mr-auto gap-4 flex flex-col items-center w-full">
           <p className="mb-4 font-semibold text-xl flex items-center gap-2">
-            Amdoc
+            iGendoc
           </p>
 
           {props.children}

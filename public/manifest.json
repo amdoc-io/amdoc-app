@@ -1,6 +1,6 @@
 {
-  "short_name": "Amdoc",
-  "name": "AI Documentation",
+  "short_name": "iGendoc",
+  "name": "Generative AI Documentation Application",
   "icons": [
     {
       "src": "favicon.ico",

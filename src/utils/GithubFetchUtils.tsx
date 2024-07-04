@@ -87,8 +87,8 @@ export const createRepoFromTemplate = async (
       "https://api.github.com/repos/amdoc-io/amdoc-template/generate",
       {
         owner: owner,
-        name: name || "amdoc-documentation",
-        description: "This is your starter Amdoc documentation",
+        name: name || "igendoc-documentation",
+        description: "This is your starter iGendoc documentation",
         include_all_branches: false,
         private: false,
       },

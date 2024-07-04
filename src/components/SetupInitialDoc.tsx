@@ -2,14 +2,14 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { RxPencil2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { OutlinedButton } from "../actions/OutlinedButton";
+import { setDocInitialRepo } from "../features/onboard/onboardSlice";
 import { Input } from "../forms/Input";
+import { Card } from "../layout/Card";
 import { StepContainer } from "../layout/StepContainer";
 import {
   InstallationToken,
   createRepoFromTemplate,
 } from "../utils/GithubFetchUtils";
-import { setDocInitialRepo } from "../features/onboard/onboardSlice";
-import { Card } from "../layout/Card";
 
 export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
   const [createDocLoading, setCreateDocLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<{ [key: string]: any }>({
-    repoName: "amdoc-documentation",
+    repoName: "igendoc-documentation",
   });
   const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
 
@@ -75,7 +75,10 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
         Create a documentation project from a default template on your behalf
       </p>
 
-      <form onSubmit={handleCreateDoc}>
+      <form
+        onSubmit={handleCreateDoc}
+        className="flex flex-col items-start gap-4"
+      >
         <Card>
           <Input
             placeholder="Enter a repo name"
@@ -87,16 +90,14 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
           />
         </Card>
 
-        <div className="flex flex-col items-start mt-4">
-          <div className="flex">
-            <OutlinedButton
-              type="submit"
-              loading={createDocLoading}
-              icon={<RxPencil2 />}
-            >
-              Create an initial doc
-            </OutlinedButton>
-          </div>
+        <div className="flex">
+          <OutlinedButton
+            type="submit"
+            loading={createDocLoading}
+            icon={<RxPencil2 />}
+          >
+            Create an initial doc
+          </OutlinedButton>
         </div>
       </form>
     </StepContainer>
