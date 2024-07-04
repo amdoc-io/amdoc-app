@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { LogoText } from "../display/LogoText";
 
 export const AuthContainer = (props: {
   children?: ReactNode;
@@ -22,9 +23,7 @@ export const AuthContainer = (props: {
         className={`rounded-2xl border border-gray-200 px-12 lg:px-32 py-12 bg-white ${className}`}
       >
         <div className="max-w-screen-md ml-auto mr-auto gap-4 flex flex-col items-center w-full">
-          <p className="mb-4 font-semibold text-xl flex items-center gap-2">
-            iGendoc
-          </p>
+          <LogoText className="mb-4 text-xl" />
 
           {props.children}
         </div>

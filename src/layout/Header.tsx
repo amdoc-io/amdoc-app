@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { DocAccount } from "../model/AccountModel";
 import DropdownButton from "../actions/DropdownButton";
 import { RxExit } from "react-icons/rx";
+import { LogoText } from "../display/LogoText";
 
 export const Header = () => {
   const account: DocAccount = useSelector((state: any) => state.auth.account);
@@ -18,7 +19,7 @@ export const Header = () => {
   return (
     <header className="fixed h-16 top-0 left-0 right-0 border-b border-b-gray-200 py-4 z-50 backdrop-blur-lg flex items-center">
       <div className="max-w-screen-2xl ml-auto mr-auto flex items-center justify-between px-4 lg:px-8 w-full">
-        <a href="/">iGendoc</a>
+        <LogoText className="cursor-pointer" onClick={() => navigate("/")} />
 
         <DropdownButton
           variant="blank"
@@ -32,7 +33,7 @@ export const Header = () => {
           ]}
         >
           <img
-            alt="test"
+            alt="account"
             src={account.profileImageUrl}
             className="h-6 w-6 rounded-full"
           />
