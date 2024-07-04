@@ -30,6 +30,7 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
   const [githubLoading, setGithubLoading] = useState<boolean>(false);
 
   const handleAuthorizeGithub = () => {
+    setGithubLoading(true);
     window.location.href = `https://github.com/login/oauth/authorize?scope=user&client_id=${process.env.REACT_APP_GITHUB_OAUTH_CLIENT_ID}`;
   };
 
