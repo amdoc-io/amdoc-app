@@ -42,6 +42,10 @@ export const OutletWrapper = (
       return true;
     }
 
+    if (!githubInstallationToken) {
+      return true;
+    }
+
     const { token, expires_at } = githubInstallationToken;
 
     if (!token || !expires_at) {

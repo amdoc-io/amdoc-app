@@ -28,12 +28,13 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   );
   const searchParams = new URLSearchParams(location.search);
   const installationId = searchParams.get("installation_id");
+  const refreshToken = searchParams.get("refresh_token");
 
   const [githubLoading, setGithubLoading] = useState<boolean>(false);
   const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
 
   const handleGithubSuccessInstallation = useCallback(async () => {
-    if (installationId && !setupCompleted) {
+    if (installationId && (!setupCompleted || refreshToken)) {
       setGithubLoading(true);
 
       dispatch(setGithubInstallationId(installationId));
@@ -58,6 +59,7 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
     authToken,
     dispatch,
     navigate,
+    refreshToken,
   ]);
 
   useEffect(() => {
@@ -88,6 +90,10 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
       const searchParams = new URLSearchParams(location.search);
       const installationId = installation.id.toString();
       searchParams.set("installation_id", installationId);
+      searchParams.set(
+        "refresh_token",
+        Math.floor(10000 + Math.random() * 90000).toString()
+      );
       setGithubLoading(false);
       navigate(`/?${searchParams}`);
     } else {
