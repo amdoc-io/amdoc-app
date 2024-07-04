@@ -51,7 +51,7 @@ export const SideBarMenu = () => {
               className={`flex items-center gap-3 rounded-md pl-4 pr-32 py-2 transition-all duration-300 ${
                 isCurrentPage(item)
                   ? "bg-primary text-white"
-                  : "hover:bg-primary/15"
+                  : "hover:bg-gray-300/30"
               }`}
             >
               {item.icon}

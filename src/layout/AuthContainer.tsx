@@ -15,7 +15,7 @@ export const AuthContainer = (props: {
           className="h-full w-full object-cover object-center"
         />
 
-        <div className="absolute mix-blend-color overflow-hidden bg-[#5921b2] inset-0" />
+        <div className="absolute mix-blend-color overflow-hidden bg-primary inset-0" />
       </div>
 
       <div

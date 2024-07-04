@@ -19,10 +19,10 @@ export const Steps = (props: {
 
   const getSpanOuterClassName = (i: number) => {
     if (value === i) {
-      return "bg-primary/20";
+      return "bg-black/15";
     }
     if (value > i) {
-      return "bg-primary";
+      return "bg-black";
     }
 
     return "";
@@ -30,7 +30,7 @@ export const Steps = (props: {
 
   const getSpanInnerClassName = (i: number) => {
     if (value === i) {
-      return "bg-primary";
+      return "bg-black";
     }
     if (value > i) {
       return "bg-transparent";
@@ -74,7 +74,7 @@ export const Steps = (props: {
 
             <div
               className={`-mt-[1px] text-sm font-medium transition-all duration-300 w-full ${
-                value >= i ? "text-primary" : "step-paragraph"
+                value >= i ? "text-black" : "step-paragraph"
               }`}
             >
               {step.title}

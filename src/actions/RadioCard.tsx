@@ -12,13 +12,13 @@ export const RadioCard = (props: {
   return (
     <div
       className={`flex text-black flex-col gap-4 w-full rounded-md border p-4 cursor-pointer transition-all duration-300 ${
-        active ? "border-primary" : "border-gray-300"
+        active ? "border-black" : "border-gray-300"
       }`}
       onClick={() => onChange(value)}
     >
       <div className="flex items-center relative gap-4">
         <FaCheckCircle
-          className={`text-primary text-[16px] absolute right-0 top-0 ${
+          className={`text-black text-[16px] absolute right-0 top-0 ${
             active ? "block" : "hidden"
           }`}
         />
