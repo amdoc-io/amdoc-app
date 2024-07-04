@@ -11,7 +11,7 @@ export const RadioCard = (props: {
 
   return (
     <div
-      className={`flex text-black flex-col gap-4 w-full rounded-md border p-4 cursor-pointer transition-all duration-300 ${
+      className={`flex text-black flex-col gap-4 w-full rounded-md border-2 p-4 cursor-pointer transition-all duration-300 ${
         active ? "border-black" : "border-gray-300"
       }`}
       onClick={() => onChange(value)}
