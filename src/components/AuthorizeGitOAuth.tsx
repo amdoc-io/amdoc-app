@@ -20,6 +20,7 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
   const dispatch = useDispatch();
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get("code");
+  const error = searchParams.get("error");
   const githubOAuthAccessToken: GithubAccessToken = useSelector(
     (state: any) => state.onboard.githubOAuthAccessToken
   );
@@ -54,9 +55,22 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
     }
   }, [code, dispatch, githubOAuthAccessToken, navigate]);
 
+  const handleGithubErrorAuthorize = useCallback(() => {
+    if (error) {
+      if (error === "access_denied") {
+        dispatch(setGithubUser(undefined));
+        dispatch(setGithubOAuthAccessToken(undefined));
+      }
+    }
+  }, [error, dispatch]);
+
   useEffect(() => {
     handleGithubSuccessAuthorize();
   }, [handleGithubSuccessAuthorize]);
+
+  useEffect(() => {
+    handleGithubErrorAuthorize();
+  }, [handleGithubErrorAuthorize]);
 
   useEffect(() => {
     if (
