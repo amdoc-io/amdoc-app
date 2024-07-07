@@ -152,18 +152,20 @@ export const HomePage = () => {
             ]}
           />
 
-          <Paragraph className="flex items-center gap-2">
-            {createClientWebLoading && (
-              <AiOutlineLoading3Quarters className="animate-spin" />
-            )}
-            Your documentation website:
-            <a
-              className="link"
-              href={`https://${docInitialRepo}.igendoc.com`}
-              target="_blank"
-              rel="noreferrer"
-            >{`${docInitialRepo}`}</a>
-          </Paragraph>
+          {docInitialRepo && (
+            <Paragraph className="flex items-center gap-2">
+              {createClientWebLoading && (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              )}
+              Your documentation website:
+              <a
+                className="link"
+                href={`https://${docInitialRepo}.igendoc.com`}
+                target="_blank"
+                rel="noreferrer"
+              >{`${docInitialRepo}`}</a>
+            </Paragraph>
+          )}
         </div>
       </div>
     </div>
