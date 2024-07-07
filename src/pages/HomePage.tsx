@@ -159,7 +159,7 @@ export const HomePage = () => {
                   <>
                     <AiOutlineLoading3Quarters className="animate-spin" />
                     Your {docInitialRepo} documentation website is being
-                    prepared
+                    prepared. Ready in 1 minute.
                   </>
                 ) : (
                   <>
@@ -170,6 +170,7 @@ export const HomePage = () => {
                       target="_blank"
                       rel="noreferrer"
                     >{`${docInitialRepo}`}</a>
+                    .
                   </>
                 )}
               </Paragraph>
