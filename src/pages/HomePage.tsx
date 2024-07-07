@@ -170,7 +170,6 @@ export const HomePage = () => {
                       target="_blank"
                       rel="noreferrer"
                     >{`${docInitialRepo}`}</a>
-                    .
                   </>
                 )}
               </Paragraph>
