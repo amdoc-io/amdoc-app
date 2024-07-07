@@ -183,7 +183,7 @@ export const HomePage = () => {
                   <>
                     <AiOutlineLoading3Quarters className="animate-spin" />
                     Your {docInitialRepo} documentation website is being
-                    prepared. Ready in 1 minute.
+                    prepared. Ready in 90 seconds.
                   </>
                 ) : (
                   <>
