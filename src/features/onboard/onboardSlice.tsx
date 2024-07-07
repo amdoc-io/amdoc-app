@@ -9,6 +9,7 @@ export interface OnboardState {
   githubInstallationId?: string;
   docInitialRepo?: string;
   currentStep?: number;
+  clientWeb?: string;
 }
 
 const initialState: OnboardState = {
@@ -18,6 +19,7 @@ const initialState: OnboardState = {
   githubInstallationId: undefined,
   docInitialRepo: undefined,
   currentStep: -1,
+  clientWeb: undefined,
 };
 
 export const onboardSlice = createSlice({
@@ -48,6 +50,9 @@ export const onboardSlice = createSlice({
     setDocInitialRepo: (state, action: PayloadAction<string>) => {
       state.docInitialRepo = action.payload;
     },
+    setClientWeb: (state, action: PayloadAction<string>) => {
+      state.clientWeb = action.payload;
+    },
   },
 });
 
@@ -58,6 +63,7 @@ export const {
   setGithubInstallationToken,
   setGithubInstallationId,
   setDocInitialRepo,
+  setClientWeb,
 } = onboardSlice.actions;
 
 export default onboardSlice.reducer;

@@ -6,13 +6,17 @@ import { ConnectGitProvider } from "../components/ConnectGitProvider";
 import { SetupInitialDoc } from "../components/SetupInitialDoc";
 import { Heading } from "../display/Heading";
 import { Paragraph } from "../display/Paragraph";
-import { setCurrentStep } from "../features/onboard/onboardSlice";
+import { setClientWeb, setCurrentStep } from "../features/onboard/onboardSlice";
 import { GithubAccessToken } from "../model/AuthModel";
 import { InstallationToken } from "../utils/GithubFetchUtils";
 import { Link } from "../actions/Link";
+import { useCallback, useEffect, useState } from "react";
+import { createGitClientWebRepo } from "../utils/AccountFetchUtils";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 export const HomePage = () => {
   const dispatch = useDispatch();
+  const authToken: string = useSelector((state: any) => state.auth.token);
   const gitProvider: string = useSelector(
     (state: any) => state.onboard.gitProvider
   );
@@ -28,7 +32,36 @@ export const HomePage = () => {
   const currentStep: number = useSelector(
     (state: any) => state.onboard.currentStep
   );
+  const clientWeb: string = useSelector(
+    (state: any) => state.onboard.clientWeb
+  );
   const githubUser: any = useSelector((state: any) => state.auth.githubUser);
+
+  const [createClientWebLoading, setCreateClientWebLoading] =
+    useState<boolean>(false);
+
+  const createClientWeb = useCallback(async () => {
+    if (docInitialRepo && githubUser && !clientWeb) {
+      setCreateClientWebLoading(true);
+      const isCreated = await createGitClientWebRepo(
+        authToken,
+        docInitialRepo,
+        githubUser.login
+      );
+
+      if (isCreated) {
+        dispatch(setClientWeb(`https://${docInitialRepo}.igendoc.com`));
+      }
+
+      setTimeout(() => {
+        setCreateClientWebLoading(false);
+      }, 60000);
+    }
+  }, [docInitialRepo, authToken, githubUser, dispatch, clientWeb]);
+
+  useEffect(() => {
+    createClientWeb();
+  }, [createClientWeb]);
 
   return (
     <div>
@@ -46,7 +79,7 @@ export const HomePage = () => {
           <Steps
             value={currentStep}
             onChange={(value) => dispatch(setCurrentStep(value))}
-            className="mt-2"
+            className="my-2"
             steps={[
               {
                 title: "Choose a Git provider",
@@ -118,6 +151,19 @@ export const HomePage = () => {
               },
             ]}
           />
+
+          <Paragraph className="flex items-center gap-2">
+            {createClientWebLoading && (
+              <AiOutlineLoading3Quarters className="animate-spin" />
+            )}
+            Your documentation website:
+            <a
+              className="link"
+              href={`https://${docInitialRepo}.igendoc.com`}
+              target="_blank"
+              rel="noreferrer"
+            >{`${docInitialRepo}`}</a>
+          </Paragraph>
         </div>
       </div>
     </div>

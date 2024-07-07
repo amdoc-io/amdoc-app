@@ -5,3 +5,5 @@ export const AIM_GET_GITHUB_ACCESS_TOKEN_PROXY_ENDPOINT =
   AIM_BASE_URL + "/get-github-access-token-proxy";
 export const AIM_GET_GITHUB_APP_JWT_PROXY_ENDPOINT =
   AIM_BASE_URL + "/get-github-app-jwt-proxy";
+export const AIM_CREATE_GIT_CLIENT_WEB_APP_ENDPOINT =
+  AIM_BASE_URL + "/create-git-client-web-repo";
