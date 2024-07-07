@@ -167,7 +167,7 @@ export const HomePage = () => {
                   <>
                     <AiOutlineLoading3Quarters className="animate-spin" />
                     Your {docInitialRepo} documentation website is being
-                    prepared. Ready in 90 seconds.
+                    prepared. Ready in less than 2 minutes.
                   </>
                 ) : (
                   <>
@@ -186,6 +186,21 @@ export const HomePage = () => {
                   If the website is not ready, wait a few minutes and refresh.
                 </Paragraph>
               )}
+
+              <div
+                className="p-2 lg:p-3 bg-gray-200/40 rounded-xl cursor-pointer mt-4"
+                onClick={() =>
+                  window.open(`https://${docInitialRepo}.igendoc.com`, "_blank")
+                }
+              >
+                <div className="rounded-xl">
+                  <img
+                    alt="webpage"
+                    src={`https://api.apiflash.com/v1/urltoimage?access_key=${process.env.REACT_APP_SCREENSHOT_API_KEY}&wait_until=page_loaded&url=https://${docInitialRepo}.igendoc.com`}
+                    className="rounded-xl"
+                  />
+                </div>
+              </div>
             </>
           )}
         </div>
