@@ -9,6 +9,7 @@ import { ConnectGitProvider } from "../components/ConnectGitProvider";
 import { SetupInitialDoc } from "../components/SetupInitialDoc";
 import { Heading } from "../display/Heading";
 import { Paragraph } from "../display/Paragraph";
+import { WebDisplay } from "../display/WebDisplay";
 import { setClientWeb, setCurrentStep } from "../features/onboard/onboardSlice";
 import { GithubAccessToken } from "../model/AuthModel";
 import {
@@ -16,6 +17,7 @@ import {
   updateNetlifySite,
 } from "../utils/AccountFetchUtils";
 import { InstallationToken } from "../utils/GithubFetchUtils";
+import { ContentContainer } from "../layout/ContentContainer";
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -75,7 +77,7 @@ export const HomePage = () => {
     <div>
       <Heading level={1}>Home</Heading>
 
-      <div className="flex flex-col gap-12 py-6">
+      <ContentContainer>
         <Paragraph>Welcome to iGendoc!</Paragraph>
 
         <div className="flex flex-col gap-4">
@@ -162,19 +164,23 @@ export const HomePage = () => {
 
           {docInitialRepo && (
             <>
-              <Paragraph className="flex items-center gap-2">
+              <Paragraph
+                className={`${
+                  createClientWebLoading ? "flex items-center gap-2" : ""
+                }`}
+              >
                 {createClientWebLoading ? (
                   <>
-                    <AiOutlineLoading3Quarters className="animate-spin" />
+                    <AiOutlineLoading3Quarters className="animate-spin text-inherit" />
                     Your {docInitialRepo} documentation website is being
                     prepared. Ready in less than 2 minutes.
                   </>
                 ) : (
                   <>
-                    Your documentation website:
+                    Your documentation website:{" "}
                     <a
                       className="link"
-                      href={`https://${docInitialRepo}.igendoc.com`}
+                      href={clientWeb}
                       target="_blank"
                       rel="noreferrer"
                     >{`${docInitialRepo}`}</a>
@@ -187,24 +193,11 @@ export const HomePage = () => {
                 </Paragraph>
               )}
 
-              <div
-                className="p-2 lg:p-3 bg-gray-200/40 rounded-xl cursor-pointer mt-4"
-                onClick={() =>
-                  window.open(`https://${docInitialRepo}.igendoc.com`, "_blank")
-                }
-              >
-                <div className="rounded-xl">
-                  <img
-                    alt="webpage"
-                    src={`https://api.apiflash.com/v1/urltoimage?access_key=${process.env.REACT_APP_SCREENSHOT_API_KEY}&wait_until=page_loaded&url=https://${docInitialRepo}.igendoc.com`}
-                    className="rounded-xl"
-                  />
-                </div>
-              </div>
+              {clientWeb && <WebDisplay url={clientWeb} className="mt-4" />}
             </>
           )}
         </div>
-      </div>
+      </ContentContainer>
     </div>
   );
 };
