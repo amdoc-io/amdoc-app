@@ -11,8 +11,12 @@ import { GithubAccessToken } from "../model/AuthModel";
 import { InstallationToken } from "../utils/GithubFetchUtils";
 import { Link } from "../actions/Link";
 import { useCallback, useEffect, useState } from "react";
-import { createGitClientWebRepo } from "../utils/AccountFetchUtils";
+import {
+  createGitClientWebRepo,
+  updateNetlifySite,
+} from "../utils/AccountFetchUtils";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { isTokenValid } from "../utils/TokenUtils";
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -41,23 +45,43 @@ export const HomePage = () => {
     useState<boolean>(false);
 
   const createClientWeb = useCallback(async () => {
-    if (docInitialRepo && githubUser && !clientWeb) {
+    if (
+      docInitialRepo &&
+      githubUser &&
+      !clientWeb &&
+      githubInstallationToken &&
+      githubInstallationToken.token &&
+      isTokenValid(githubInstallationToken.expires_at)
+    ) {
       setCreateClientWebLoading(true);
-      const isCreated = await createGitClientWebRepo(
+      const site = await createGitClientWebRepo(
         authToken,
+        githubInstallationToken.token,
         docInitialRepo,
         githubUser.login
       );
 
-      if (isCreated) {
-        dispatch(setClientWeb(`https://${docInitialRepo}.igendoc.com`));
+      if (site) {
+        setTimeout(async () => {
+          const updatedSite = await updateNetlifySite(authToken, site);
+          if (updatedSite) {
+            dispatch(setClientWeb(`https://${docInitialRepo}.igendoc.com`));
+          }
+        }, 30000);
       }
 
       setTimeout(() => {
         setCreateClientWebLoading(false);
       }, 60000);
     }
-  }, [docInitialRepo, authToken, githubUser, dispatch, clientWeb]);
+  }, [
+    docInitialRepo,
+    authToken,
+    githubUser,
+    dispatch,
+    clientWeb,
+    githubInstallationToken,
+  ]);
 
   useEffect(() => {
     createClientWeb();
