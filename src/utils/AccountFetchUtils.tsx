@@ -15,14 +15,13 @@ export const getGithubAppJWT = async (authToken: string) => {
 
 export const createGitClientWebRepo = async (
   authToken: string,
-  installationToken: string,
   name: string,
   owner: string
 ) => {
   return axios
     .post(
       `${AIM_CREATE_GIT_CLIENT_WEB_APP_ENDPOINT}`,
-      { installationToken, name, owner },
+      { name, owner },
       createHeader(authToken)
     )
     .then((res) => res.data)

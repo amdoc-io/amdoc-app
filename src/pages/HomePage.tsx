@@ -1,4 +1,7 @@
+import { useCallback, useEffect, useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "../actions/Link";
 import { Steps } from "../actions/Steps";
 import { AuthorizeGitOAuth } from "../components/AuthorizeGitOAuth";
 import { ChooseGitProvider } from "../components/ChooseGitProvider";
@@ -8,15 +11,11 @@ import { Heading } from "../display/Heading";
 import { Paragraph } from "../display/Paragraph";
 import { setClientWeb, setCurrentStep } from "../features/onboard/onboardSlice";
 import { GithubAccessToken } from "../model/AuthModel";
-import { InstallationToken } from "../utils/GithubFetchUtils";
-import { Link } from "../actions/Link";
-import { useCallback, useEffect, useState } from "react";
 import {
   createGitClientWebRepo,
   updateNetlifySite,
 } from "../utils/AccountFetchUtils";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { isTokenValid } from "../utils/TokenUtils";
+import { InstallationToken } from "../utils/GithubFetchUtils";
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -45,18 +44,10 @@ export const HomePage = () => {
     useState<boolean>(false);
 
   const createClientWeb = useCallback(async () => {
-    if (
-      docInitialRepo &&
-      githubUser &&
-      !clientWeb &&
-      githubInstallationToken &&
-      githubInstallationToken.token &&
-      isTokenValid(githubInstallationToken.expires_at)
-    ) {
+    if (docInitialRepo && githubUser && !clientWeb) {
       setCreateClientWebLoading(true);
       const site = await createGitClientWebRepo(
         authToken,
-        githubInstallationToken.token,
         docInitialRepo,
         githubUser.login
       );
@@ -74,14 +65,7 @@ export const HomePage = () => {
         setCreateClientWebLoading(false);
       }, 60000);
     }
-  }, [
-    docInitialRepo,
-    authToken,
-    githubUser,
-    dispatch,
-    clientWeb,
-    githubInstallationToken,
-  ]);
+  }, [docInitialRepo, authToken, githubUser, dispatch, clientWeb]);
 
   useEffect(() => {
     createClientWeb();
