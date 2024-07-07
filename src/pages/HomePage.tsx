@@ -154,16 +154,22 @@ export const HomePage = () => {
 
           {docInitialRepo && (
             <Paragraph className="flex items-center gap-2">
-              {createClientWebLoading && (
-                <AiOutlineLoading3Quarters className="animate-spin" />
+              {createClientWebLoading ? (
+                <>
+                  <AiOutlineLoading3Quarters className="animate-spin" />
+                  Your {docInitialRepo} documentation website is being prepared
+                </>
+              ) : (
+                <>
+                  Your documentation website:
+                  <a
+                    className="link"
+                    href={`https://${docInitialRepo}.igendoc.com`}
+                    target="_blank"
+                    rel="noreferrer"
+                  >{`${docInitialRepo}`}</a>
+                </>
               )}
-              Your documentation website:
-              <a
-                className="link"
-                href={`https://${docInitialRepo}.igendoc.com`}
-                target="_blank"
-                rel="noreferrer"
-              >{`${docInitialRepo}`}</a>
             </Paragraph>
           )}
         </div>
