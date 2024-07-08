@@ -24,11 +24,11 @@ export const DemographicPage = () => {
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
-      target: { name, value },
+      target: { name, value, type, checked },
     } = event;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -132,12 +132,7 @@ export const DemographicPage = () => {
         <Checkbox
           name="isNewsSubscribed"
           checked={formData["isNewsSubscribed"]}
-          onChange={(e) =>
-            setFormData((prev) => ({
-              ...prev,
-              isNewsSubscribed: e.target.checked,
-            }))
-          }
+          onChange={handleInputChange}
         >
           Send me information about iGendoc products, events, and promotions.
           See{" "}

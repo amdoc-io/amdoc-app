@@ -47,11 +47,11 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
-      target: { name, value },
+      target: { name, value, type, checked },
     } = event;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
@@ -126,13 +126,9 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
               <Checkbox
                 className="mt-2 text-xs font-normal"
                 inputClassName="!h-4 !w-4"
+                name="existingRepoAcknowledged"
                 value={formData["existingRepoAcknowledged"]}
-                onChange={(e) =>
-                  setFormData((prev) => ({
-                    ...prev,
-                    existingRepoAcknowledged: e.target.checked,
-                  }))
-                }
+                onChange={handleInputChange}
               >
                 Acknowledge that the existing repository, {formData["repoName"]}
                 , can be used to generate your documentation website
