@@ -1,19 +1,18 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { RxPencil2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
+import { Checkbox } from "../actions/Checkbox";
 import { OutlinedButton } from "../actions/OutlinedButton";
 import { setDocInitialRepo } from "../features/onboard/onboardSlice";
 import { Input } from "../forms/Input";
 import { Card } from "../layout/Card";
 import { StepContainer } from "../layout/StepContainer";
+import { DocAccount } from "../model/AccountModel";
 import {
   InstallationToken,
   createRepoFromTemplate,
-  getRepo,
 } from "../utils/GithubFetchUtils";
-import { DocAccount } from "../model/AccountModel";
 import { titleCaseToSnakeCase } from "../utils/StringUtils";
-import { Checkbox } from "../actions/Checkbox";
 
 export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   const dispatch = useDispatch();
