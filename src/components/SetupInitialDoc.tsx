@@ -35,7 +35,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
   useEffect(() => {
     if (account?.organization) {
-      const repoName = titleCaseToSnakeCase(account.organization);
+      const repoName = titleCaseToSnakeCase(account.organization.toLowerCase());
       setFormData((prev) => ({
         ...prev,
         repoName: repoName,
