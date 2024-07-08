@@ -25,10 +25,10 @@ export default function DropdownButton(props: {
     <Menu as="div" className="relative inline-block text-left">
       <div className="flex items-center">
         <MenuButton
-          className={`inline-flex justify-between items-center w-full gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 ${
+          className={`inline-flex justify-between items-center w-full rounded-md text-sm text-gray-900 ring-inset ring-gray-300 ${
             variant === "blank"
-              ? "!ring-0 !py-0 !px-0 !gap-x-0 hover:!bg-white !shadow-none"
-              : ""
+              ? "ring-0 py-0 px-0 gap-x-0 hover:bg-transparent bg-transparent shadow-none"
+              : "bg-white hover:bg-gray-50 gap-x-1.5 px-3 py-2 ring-1 shadow-sm"
           }`}
         >
           <div className="flex items-center gap-2">{props.children}</div>
