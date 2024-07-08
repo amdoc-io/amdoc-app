@@ -3,6 +3,7 @@ import { DocAccount } from "../../model/AccountModel";
 
 export interface AuthState {
   token?: string;
+  setupCompleted?: boolean;
   account?: DocAccount;
   signedInAt?: string;
   githubUser?: any;
@@ -13,6 +14,7 @@ const initialState: AuthState = {
   account: undefined,
   signedInAt: undefined,
   githubUser: undefined,
+  setupCompleted: undefined,
 };
 
 export const authSlice = createSlice({
@@ -22,6 +24,7 @@ export const authSlice = createSlice({
     login: (state, action: PayloadAction<AuthState>) => {
       state.token = action.payload.token;
       state.account = action.payload.account;
+      state.setupCompleted = action.payload.account?.isSetupComplete;
       state.signedInAt = action.payload.signedInAt;
     },
     setAccount: (state, action: PayloadAction<DocAccount>) => {
@@ -33,9 +36,13 @@ export const authSlice = createSlice({
     setGithubUser: (state, action: PayloadAction<any | undefined>) => {
       state.githubUser = action.payload;
     },
+    setSetupCompleted: (state, action: PayloadAction<boolean | undefined>) => {
+      state.setupCompleted = action.payload;
+    },
   },
 });
 
-export const { login, setAccount, setToken, setGithubUser } = authSlice.actions;
+export const { login, setAccount, setToken, setGithubUser, setSetupCompleted } =
+  authSlice.actions;
 
 export default authSlice.reducer;

@@ -37,7 +37,7 @@ export const DocumentationPage = () => {
                 <Link
                   href={githubUser?.html_url}
                   target="_blank"
-                  className="text-black"
+                  className="text-black break-all"
                 >
                   {githubUser?.login}
                 </Link>
@@ -46,6 +46,7 @@ export const DocumentationPage = () => {
               <Paragraph className="inline-flex gap-1 items-center">
                 <IoFolderOpenOutline /> Repository:{" "}
                 <Link
+                  className="break-all"
                   href={`${githubUser?.html_url}/${docInitialRepo}`}
                   target="_blank"
                 >
@@ -57,6 +58,7 @@ export const DocumentationPage = () => {
                 <IoGitBranchOutline />
                 Branch:{" "}
                 <Link
+                  className="break-all"
                   href={`${githubUser?.html_url}/${docInitialRepo}/tree/main`}
                   target="_blank"
                 >
@@ -67,7 +69,7 @@ export const DocumentationPage = () => {
               <Paragraph className="inline-flex gap-1 items-center">
                 <IoEarthOutline />
                 Domain:{" "}
-                <Link href={clientWeb} target="_blank">
+                <Link href={clientWeb} target="_blank" className="break-all">
                   {`${docInitialRepo}.igendoc.com`}
                 </Link>
               </Paragraph>

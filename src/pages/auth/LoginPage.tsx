@@ -11,6 +11,7 @@ import { login } from "../../features/auth/authSlice";
 import { AuthContainer } from "../../layout/AuthContainer";
 import { AuthType, SignInResponse } from "../../model/AccountModel";
 import { getGithubAccessToken } from "../../utils/GithubFetchUtils";
+import { Link } from "../../actions/Link";
 
 export const LoginPage = () => {
   const location = useLocation();
@@ -22,7 +23,7 @@ export const LoginPage = () => {
   const [githubLoading, setGithubLoading] = useState<boolean>(false);
 
   const handleSystemSignIn = useCallback(
-    async (formData: any) => {
+    async (formData: any, callback: () => void) => {
       const signInResponse = await axios
         .post(AIM_SIGN_IN_ENDPOINT, formData)
         .then((res) => res.data as SignInResponse)
@@ -39,9 +40,15 @@ export const LoginPage = () => {
             signedInAt: signInResponse.createdAt,
           })
         );
+        callback();
+        if (signInResponse?.account?.isSetupComplete) {
+          navigate("/");
+        } else {
+          navigate("/complete-setup");
+        }
       }
     },
-    [dispatch]
+    [dispatch, navigate]
   );
 
   const handleGithubSuccessSignIn = useCallback(async () => {
@@ -55,12 +62,9 @@ export const LoginPage = () => {
         accessToken: githubAccessToken?.accessToken,
       };
 
-      handleSystemSignIn(formData);
-
-      setGithubLoading(false);
-      navigate("/");
+      handleSystemSignIn(formData, () => setGithubLoading(false));
     }
-  }, [code, handleSystemSignIn, navigate]);
+  }, [code, handleSystemSignIn]);
 
   useEffect(() => {
     handleGithubSuccessSignIn();
@@ -90,9 +94,7 @@ export const LoginPage = () => {
       authType: AuthType.GOOGLE,
     };
 
-    handleSystemSignIn(formData);
-
-    setGoogleLoading(false);
+    handleSystemSignIn(formData, () => setGoogleLoading(false));
   };
 
   const handleGoogleLogin = useGoogleLogin({
@@ -141,10 +143,7 @@ export const LoginPage = () => {
       </OutlinedButton>
 
       <p className="text-sm text-gray-600">
-        By signing in, you agree to our{" "}
-        <a href="/" className="link">
-          Terms of Service
-        </a>
+        By signing in, you agree to our <Link href="/">Terms of Service</Link>
       </p>
     </AuthContainer>
   );

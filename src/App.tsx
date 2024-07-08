@@ -18,7 +18,10 @@ import { MobileSideBar } from "./layout/MobileSideBar";
 import { OutletWrapper } from "./layout/OutletWrapper";
 
 function App() {
-  const token = useSelector((state: any) => state.auth.token);
+  const token: string = useSelector((state: any) => state.auth.token);
+  const setupCompleted: boolean = useSelector(
+    (state: any) => state.auth.setupCompleted
+  );
 
   const Wrapper = () => {
     if (!token) {
@@ -51,43 +54,44 @@ function App() {
   const router = createBrowserRouter([
     {
       element: <Wrapper />,
-      children: !token
-        ? [
-            {
-              path: "/",
-              element: <LoginPage />,
-            },
-            {
-              path: "/demographic-information",
-              element: <DemographicPage />,
-            },
-            {
-              path: "*",
-              element: <Navigate to="/" replace />,
-            },
-          ]
-        : [
-            {
-              path: "/",
-              element: <HomePage />,
-            },
-            {
-              path: "/documentation",
-              element: <DocumentationPage />,
-            },
-            {
-              path: "/analytics",
-              element: <AnalyticsPage />,
-            },
-            {
-              path: "/domain",
-              element: <DomainPage />,
-            },
-            {
-              path: "/settings",
-              element: <SettingsPage />,
-            },
-          ],
+      children:
+        !token || !setupCompleted
+          ? [
+              {
+                path: "/",
+                element: <LoginPage />,
+              },
+              {
+                path: "/complete-setup",
+                element: <DemographicPage />,
+              },
+              {
+                path: "*",
+                element: <Navigate to="/" replace />,
+              },
+            ]
+          : [
+              {
+                path: "/",
+                element: <HomePage />,
+              },
+              {
+                path: "/documentation",
+                element: <DocumentationPage />,
+              },
+              {
+                path: "/analytics",
+                element: <AnalyticsPage />,
+              },
+              {
+                path: "/domain",
+                element: <DomainPage />,
+              },
+              {
+                path: "/settings",
+                element: <SettingsPage />,
+              },
+            ],
     },
   ]);
 

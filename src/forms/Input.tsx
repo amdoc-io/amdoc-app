@@ -5,9 +5,10 @@ export const Input = (
   > & {
     prefix?: string;
     label?: string;
+    required?: boolean;
   }
 ) => {
-  const { prefix, id, label, className = "", ...restProps } = props;
+  const { prefix, id, label, className = "", required, ...restProps } = props;
   return (
     <div className={`sm:col-span-4 w-full ${className}`}>
       {label && (
@@ -15,7 +16,7 @@ export const Input = (
           htmlFor={id}
           className="block text-sm font-medium leading-6 text-description"
         >
-          {label}
+          {`${label}${required ? " *" : ""}`}
         </label>
       )}
       <div className="mt-2">

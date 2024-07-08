@@ -11,8 +11,8 @@ export enum AuthType {
 }
 
 export interface DocAccount {
-  id: string;
-  email: string;
+  id?: string;
+  email?: string;
   firstName?: string;
   lastName?: string;
   organization?: string;
@@ -20,14 +20,17 @@ export interface DocAccount {
   companyWebsite?: string;
   authType?: AuthType;
   accessToken?: string;
-  isEmailVerified: boolean;
+  isEmailVerified?: boolean;
   hashedPassword?: string;
   phoneNumber?: string;
   countryCode?: string;
   profileImageUrl?: string;
   subscriptionPlan?: string;
   authorities?: string[];
-  createdAt: string;
+  jobTitle?: string;
+  isNewsSubscribed?: boolean;
+  isSetupComplete?: boolean;
+  createdAt?: string;
   updatedAt?: string;
 }
 

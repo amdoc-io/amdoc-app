@@ -119,15 +119,14 @@ pre[class*=language-] {
   justify-content: center;
 }
 
-.button {
-  box-shadow      : rgba(148, 85, 241, 0.1) 0px 1px 2px 0px, rgba(148, 85, 241, 0.2) 0px 1px 3px 0px, rgba(255, 255, 255, 0.2) 0px -1px 1px 1px inset;
-  border-color    : rgb(124, 47, 238);
-  background-color: rgb(136, 85, 255);
-  color           : white;
+input {
+  font-size  : 0.875rem;
+  line-height: 1.5rem;
 }
 
-.button:hover {
-  background-color: rgb(124, 47, 238);
+.button {
+  box-shadow: rgba(148, 85, 241, 0.1) 0px 1px 2px 0px, rgba(148, 85, 241, 0.2) 0px 1px 3px 0px, rgba(255, 255, 255, 0.2) 0px -1px 1px 1px inset;
+  color     : white;
 }
 
 .outlined-button {

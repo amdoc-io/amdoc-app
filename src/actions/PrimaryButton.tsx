@@ -19,7 +19,7 @@ export const PrimaryButton = (
   return (
     <button
       {...restProps}
-      className={`button flex items-center gap-2 ${className}`}
+      className={`button bg-primary border-primary/90 hover:bg-primary/80 flex items-center gap-2 ${className}`}
     >
       {loading && <AiOutlineLoading3Quarters className="loading" />}
       {icon && !loading && <div className="text-inherit">{icon}</div>}

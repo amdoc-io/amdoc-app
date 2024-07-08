@@ -7,7 +7,8 @@ module.exports = {
         "primary": "#000080",
         "secondary": "#0000FF",
         "disabled": "rgb(209, 213, 219)",
-        "description": "#737373"
+        "description": "#737373",
+        "placeholder": "rgba(156,163,175,255)"
       }
     },
   },

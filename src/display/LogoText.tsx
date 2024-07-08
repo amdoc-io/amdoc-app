@@ -11,12 +11,13 @@ export const LogoText = (
   return (
     <div
       {...restProps}
-      className={`font-semibold flex items-center gap-3 ${className}`}
+      className={`font-semibold flex items-center gap-[3px] ${className}`}
     >
+      i
       <div className="text-black text-inherit">
         <LogoSvg />
       </div>
-      iGendoc
+      endoc
     </div>
   );
 };
