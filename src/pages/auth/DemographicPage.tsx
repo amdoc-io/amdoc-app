@@ -39,7 +39,7 @@ export const DemographicPage = () => {
     const request: UpdateAccountRequest = {
       account: {
         ...formData,
-        isNewsSubscribed: formData["isNewsSubscribed"] === "on" ? true : false,
+        isNewsSubscribed: formData["isNewsSubscribed"],
         email: account.email,
         isSetupComplete: true,
       },
@@ -132,7 +132,12 @@ export const DemographicPage = () => {
         <Checkbox
           name="isNewsSubscribed"
           checked={formData["isNewsSubscribed"]}
-          onChange={handleInputChange}
+          onChange={(e) =>
+            setFormData((prev) => ({
+              ...prev,
+              isNewsSubscribed: e.target.checked,
+            }))
+          }
         >
           Send me information about iGendoc products, events, and promotions.
           See{" "}
