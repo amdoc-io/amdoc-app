@@ -24,7 +24,7 @@ function App() {
   );
 
   const Wrapper = () => {
-    if (!token) {
+    if (!token || !setupCompleted) {
       return (
         <div className="h-[100vh]">
           <Outlet />
