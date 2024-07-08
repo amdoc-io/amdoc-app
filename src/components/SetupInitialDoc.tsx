@@ -13,6 +13,7 @@ import {
   createRepoFromTemplate,
 } from "../utils/GithubFetchUtils";
 import { titleCaseToSnakeCase } from "../utils/StringUtils";
+import { Link } from "../actions/Link";
 
 export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   const dispatch = useDispatch();
@@ -130,7 +131,13 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
                 value={formData["existingRepoAcknowledged"]}
                 onChange={handleInputChange}
               >
-                Acknowledge that the existing repository, {formData["repoName"]}
+                Acknowledge that the existing repository,{" "}
+                <Link
+                  href={`${githubUser?.html_url}/${formData["repoName"]}`}
+                  target="_blank"
+                >
+                  {formData["repoName"]}
+                </Link>
                 , can be used to generate your documentation website
               </Checkbox>
             )}
