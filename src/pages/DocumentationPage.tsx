@@ -1,11 +1,17 @@
+import {
+  IoEarthOutline,
+  IoFolderOpenOutline,
+  IoGitBranchOutline,
+  IoPersonOutline,
+} from "react-icons/io5";
+import { RxExternalLink, RxGlobe, RxPencil2 } from "react-icons/rx";
+import { useSelector } from "react-redux";
 import { Link } from "../actions/Link";
+import { OutlinedButton } from "../actions/OutlinedButton";
 import { Heading } from "../display/Heading";
 import { Paragraph } from "../display/Paragraph";
 import { WebDisplay } from "../display/WebDisplay";
-import { useSelector } from "react-redux";
 import { ContentContainer } from "../layout/ContentContainer";
-import { OutlinedButton } from "../actions/OutlinedButton";
-import { RxExternalLink, RxGlobe, RxPencil2 } from "react-icons/rx";
 
 export const DocumentationPage = () => {
   const docInitialRepo: string = useSelector(
@@ -24,8 +30,9 @@ export const DocumentationPage = () => {
         {clientWeb && githubUser && docInitialRepo && (
           <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row-dense gap-8 mt-4">
             <WebDisplay url={clientWeb} className="" />
-            <div className="flex flex-col gap-2">
-              <Paragraph>
+            <div className="flex flex-col gap-2 *:text-sm">
+              <Paragraph className="inline-flex gap-1 items-center">
+                <IoPersonOutline />
                 Owner:{" "}
                 <Link
                   href={githubUser?.html_url}
@@ -36,24 +43,31 @@ export const DocumentationPage = () => {
                 </Link>
               </Paragraph>
 
-              <Paragraph>
-                Git Repository:{" "}
+              <Paragraph className="inline-flex gap-1 items-center">
+                <IoFolderOpenOutline /> Repository:{" "}
                 <Link
                   href={`${githubUser?.html_url}/${docInitialRepo}`}
                   target="_blank"
-                  className="text-black"
                 >
                   {docInitialRepo}
                 </Link>
               </Paragraph>
 
-              <Paragraph>
-                Branch: <span className="text-black">main</span>
+              <Paragraph className="inline-flex gap-1 items-center">
+                <IoGitBranchOutline />
+                Branch:{" "}
+                <Link
+                  href={`${githubUser?.html_url}/${docInitialRepo}/tree/main`}
+                  target="_blank"
+                >
+                  main
+                </Link>
               </Paragraph>
 
-              <Paragraph>
-                Website:{" "}
-                <Link href={clientWeb} target="_blank" className="text-black">
+              <Paragraph className="inline-flex gap-1 items-center">
+                <IoEarthOutline />
+                Domain:{" "}
+                <Link href={clientWeb} target="_blank">
                   {`${docInitialRepo}.igendoc.com`}
                 </Link>
               </Paragraph>

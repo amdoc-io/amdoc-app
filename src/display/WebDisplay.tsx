@@ -13,13 +13,13 @@ export const WebDisplay = (
   return (
     <div
       {...restProps}
-      className={`p-2 lg:p-3 bg-gray-200/40 rounded-xl cursor-pointer flex justify-center items-center ${className}`}
+      className={`p-2 lg:p-3 bg-gray-200/30 rounded-lg cursor-pointer flex justify-center items-center ${className}`}
       onClick={() => window.open(url, "_blank")}
     >
       <img
         alt="webpage"
         src={`https://api.apiflash.com/v1/urltoimage?access_key=${process.env.REACT_APP_SCREENSHOT_API_KEY}&wait_until=page_loaded&url=${url}`}
-        className="rounded-xl h-full w-full"
+        className="rounded-lg h-full w-full"
       />
     </div>
   );

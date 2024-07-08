@@ -99,7 +99,7 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
     } else {
       setGithubLoading(false);
       window.location.href =
-        "https://github.com/apps/amdoc-io/installations/new";
+        "https://github.com/apps/igendoc/installations/new";
     }
   };
 

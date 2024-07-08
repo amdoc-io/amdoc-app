@@ -178,12 +178,11 @@ export const HomePage = () => {
                 ) : (
                   <>
                     Your documentation website:{" "}
-                    <a
-                      className="link"
+                    <Link
                       href={clientWeb}
                       target="_blank"
                       rel="noreferrer"
-                    >{`${docInitialRepo}`}</a>
+                    >{`${docInitialRepo}`}</Link>
                   </>
                 )}
               </Paragraph>

@@ -36,7 +36,7 @@ function App() {
         <div className="flex flex-col h-[100vh]">
           <div className="flex h-full max-w-screen-2xl ml-auto mr-auto w-full mt-16">
             <SideBar />
-            <div className="py-[68px] px-4 lg:px-20 relative w-full">
+            <div className="py-[68px] px-4 lg:px-12 relative w-full">
               <MobileSideBar />
               <OutletWrapper>
                 <Outlet />
