@@ -10,6 +10,8 @@ import {
   InstallationToken,
   createRepoFromTemplate,
 } from "../utils/GithubFetchUtils";
+import { DocAccount } from "../model/AccountModel";
+import { titleCaseToSnakeCase } from "../utils/StringUtils";
 
 export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   const dispatch = useDispatch();
@@ -17,6 +19,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   const { onComplete = () => {} } = props;
 
   const githubUser: any = useSelector((state: any) => state.auth.githubUser);
+  const account: DocAccount = useSelector((state: any) => state.auth.account);
   const docInitialRepo: string = useSelector(
     (state: any) => state.onboard.docInitialRepo
   );
@@ -26,9 +29,19 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
   const [createDocLoading, setCreateDocLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<{ [key: string]: any }>({
-    repoName: "igendoc-documentation",
+    repoName: "docs",
   });
   const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (account?.organization) {
+      const repoName = titleCaseToSnakeCase(account.organization);
+      setFormData((prev) => ({
+        ...prev,
+        repoName: repoName,
+      }));
+    }
+  }, [account]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
