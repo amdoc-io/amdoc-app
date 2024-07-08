@@ -87,13 +87,23 @@ export const createRepoFromTemplate = async (
       "https://api.github.com/repos/amdoc-io/amdoc-template/generate",
       {
         owner: owner,
-        name: name || "igendoc-documentation",
+        name: name,
         description: "This is your starter iGendoc documentation",
         include_all_branches: false,
         private: false,
       },
       createHeader(token)
     )
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return err?.response?.data || undefined;
+    });
+};
+
+export const getRepo = async (token: string, owner: string, name: string) => {
+  return await axios
+    .get(`https://api.github.com/repos/${owner}/${name}`, createHeader(token))
     .then((res) => res.data)
     .catch((err) => {
       console.error(err);

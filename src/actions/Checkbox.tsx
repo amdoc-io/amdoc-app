@@ -2,19 +2,21 @@ export const Checkbox = (
   props: React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
-  >
+  > & { inputClassName?: string }
 ) => {
-  const { children, ...restProps } = props;
+  const { children, className = "", inputClassName = "", ...restProps } = props;
 
   return (
-    <div className="inline-flex items-start gap-3 transition-all duration-300 text-sm">
+    <div
+      className={`inline-flex items-start gap-3 transition-all duration-300 text-sm ${className}`}
+    >
       <label
         className="relative flex items-center rounded-full cursor-pointer"
         htmlFor="check"
       >
         <input
           type="checkbox"
-          className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-gray-300 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:-translate-y-2/4 before:-translate-x-2/4 before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary checked:before:bg-primary hover:before:opacity-10"
+          className={`before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-gray-300 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:-translate-y-2/4 before:-translate-x-2/4 before:opacity-0 before:transition-opacity checked:border-primary checked:bg-primary checked:before:bg-primary hover:before:opacity-10 ${inputClassName}`}
           id="check"
           {...restProps}
         />

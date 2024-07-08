@@ -9,9 +9,11 @@ import { StepContainer } from "../layout/StepContainer";
 import {
   InstallationToken,
   createRepoFromTemplate,
+  getRepo,
 } from "../utils/GithubFetchUtils";
 import { DocAccount } from "../model/AccountModel";
 import { titleCaseToSnakeCase } from "../utils/StringUtils";
+import { Checkbox } from "../actions/Checkbox";
 
 export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   const dispatch = useDispatch();
@@ -32,6 +34,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
     repoName: "docs",
   });
   const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
+  const [repoCreationError, setRepoCreationError] = useState<string>();
 
   useEffect(() => {
     if (account?.organization) {
@@ -58,18 +61,27 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
     setCreateDocLoading(true);
 
-    const formData = new FormData(event.currentTarget);
-    const formValues = Object.fromEntries(formData.entries());
-
-    const res = await createRepoFromTemplate(
-      githubInstallationToken.token,
-      githubUser.login,
-      formValues.repoName.toString()
-    );
-
-    if (res) {
+    if (formData.existingRepoAcknowledged && repoCreationError) {
       onComplete();
-      dispatch(setDocInitialRepo(formValues.repoName.toString()));
+      dispatch(setDocInitialRepo(formData.repoName.toString()));
+    } else {
+      const res = await createRepoFromTemplate(
+        githubInstallationToken.token,
+        githubUser.login,
+        formData.repoName.toString()
+      );
+
+      if (res) {
+        if (res.status === "422" && res.message?.includes("already exists")) {
+          setRepoCreationError(res.message);
+        } else {
+          if (repoCreationError) {
+            setRepoCreationError(undefined);
+          }
+          onComplete();
+          dispatch(setDocInitialRepo(formData.repoName.toString()));
+        }
+      }
     }
 
     setCreateDocLoading(false);
@@ -90,17 +102,43 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
       <form
         onSubmit={handleCreateDoc}
-        className="flex flex-col items-start gap-4"
+        className="flex flex-col items-start gap-4 w-full"
       >
-        <Card>
+        <Card className="lg:max-w-[600px]">
           <Input
             placeholder="Enter a repo name"
-            className="min-w-72 lg:min-w-96"
             name="repoName"
             value={formData["repoName"]}
             label="Repository"
             onChange={handleInputChange}
+            error={repoCreationError}
+            note={
+              <div>
+                The repository name will serve as the default subdomain for your
+                documentation website {"("}e.g., https://{formData["repoName"]}
+                .igendoc.com
+                {")"}
+              </div>
+            }
           />
+
+          {repoCreationError &&
+            repoCreationError.includes("already exists") && (
+              <Checkbox
+                className="mt-2 text-xs font-normal"
+                inputClassName="!h-4 !w-4"
+                value={formData["existingRepoAcknowledged"]}
+                onChange={(e) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    existingRepoAcknowledged: e.target.checked,
+                  }))
+                }
+              >
+                Acknowledge that the existing repository, {formData["repoName"]}
+                , can be used to generate your documentation website
+              </Checkbox>
+            )}
         </Card>
 
         <div className="flex">
