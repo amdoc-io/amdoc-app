@@ -182,7 +182,7 @@ export const HomePage = () => {
                       href={clientWeb}
                       target="_blank"
                       rel="noreferrer"
-                    >{`${docInitialRepo}`}</Link>
+                    >{`${docInitialRepo}.igendoc.com`}</Link>
                   </>
                 )}
               </Paragraph>
