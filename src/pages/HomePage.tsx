@@ -154,7 +154,7 @@ export const HomePage = () => {
                       href={`${githubUser?.html_url}/${docInitialRepo}`}
                       target="_blank"
                     >
-                      {docInitialRepo}
+                      {`${githubUser?.login}/${docInitialRepo}`}
                     </Link>
                   </p>
                 ),
