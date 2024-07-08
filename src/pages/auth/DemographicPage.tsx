@@ -39,6 +39,7 @@ export const DemographicPage = () => {
     const request: UpdateAccountRequest = {
       account: {
         ...formData,
+        isNewsSubscribed: formData["isNewsSubscribed"] === "on" ? true : false,
         email: account.email,
         isSetupComplete: true,
       },
