@@ -51,7 +51,9 @@ export const Input = (
           />
         </div>
       </div>
-      {note && <div className="text-xs font-normal">{note}</div>}
+      {note && (
+        <div className="text-xs font-normal text-description">{note}</div>
+      )}
       {error && (
         <div className="text-xs font-normal text-red-500 inline-flex gap-2 items-start">
           <RxCrossCircled className="mt-[2px]" />

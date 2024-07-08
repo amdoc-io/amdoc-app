@@ -13,13 +13,15 @@ import {
 } from "../../utils/AccountFetchUtils";
 import { useNavigate } from "react-router-dom";
 import { setAccount, setSetupCompleted } from "../../features/auth/authSlice";
+import { isValidated } from "../../utils/ValidationUtils";
 
-export const DemographicPage = () => {
+export const CompleteSetupPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const account: DocAccount = useSelector((state: any) => state.auth.account);
   const authToken: string = useSelector((state: any) => state.auth.token);
   const [formData, setFormData] = useState<{ [key: string]: any }>({});
+  const [errorData, setErrorData] = useState<{ [key: string]: any }>({});
   const [loading, setLoading] = useState<boolean>(false);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -36,21 +38,38 @@ export const DemographicPage = () => {
     event.preventDefault();
     setLoading(true);
 
-    const request: UpdateAccountRequest = {
-      account: {
-        ...formData,
-        isNewsSubscribed: formData["isNewsSubscribed"],
-        email: account.email,
-        isSetupComplete: true,
-      },
+    const validation = {
+      organization: formData["organization"]
+        ? undefined
+        : "Missing organization input",
+      companySize: formData["companySize"]
+        ? undefined
+        : "Missing company size input",
+      jobTitle: formData["jobTitle"] ? undefined : "Missing job title input",
     };
 
-    const res = await updateAccount(authToken, request);
-    if (res) {
-      dispatch(setSetupCompleted(res.account.isSetupComplete));
-      dispatch(setAccount(res.account));
-      setLoading(false);
-      navigate("/");
+    setErrorData((prev) => ({
+      ...prev,
+      ...validation,
+    }));
+
+    if (isValidated(validation)) {
+      const request: UpdateAccountRequest = {
+        account: {
+          ...formData,
+          isNewsSubscribed: formData["isNewsSubscribed"],
+          email: account.email,
+          isSetupComplete: true,
+        },
+      };
+
+      const res = await updateAccount(authToken, request);
+      if (res) {
+        dispatch(setSetupCompleted(res.account.isSetupComplete));
+        dispatch(setAccount(res.account));
+        setLoading(false);
+        navigate("/");
+      }
     }
 
     setLoading(false);
@@ -71,6 +90,7 @@ export const DemographicPage = () => {
           label="Company name"
           name="organization"
           value={formData["organization"]}
+          error={errorData["organization"]}
           onChange={handleInputChange}
           placeholder="Enter your company name"
           required
@@ -80,6 +100,7 @@ export const DemographicPage = () => {
           label="Company size"
           required
           value={formData["companySize"]}
+          error={errorData["companySize"]}
           onChange={(value) =>
             setFormData((prev) => ({ ...prev, companySize: value }))
           }
@@ -126,6 +147,7 @@ export const DemographicPage = () => {
           name="jobTitle"
           required
           value={formData["jobTitle"]}
+          error={errorData["jobTitle"]}
           onChange={handleInputChange}
         />
 

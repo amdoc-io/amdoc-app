@@ -42,3 +42,11 @@ export enum CompanySize {
   FROM_501_TO_1000 = "FROM_501_TO_1000",
   FROM_1001_TO_INFINITY = "FROM_1001_TO_INFINITY",
 }
+
+export interface Organization {
+  id?: string;
+  name?: string;
+  country?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}

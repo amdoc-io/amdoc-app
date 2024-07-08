@@ -8,7 +8,7 @@ import {
 import { Header } from "./layout/Header";
 import { SideBar } from "./layout/SideBar";
 import { HomePage } from "./pages/HomePage";
-import { DemographicPage } from "./pages/auth/DemographicPage";
+import { CompleteSetupPage } from "./pages/auth/CompleteSetupPage";
 import { LoginPage } from "./pages/auth/LoginPage";
 import { DocumentationPage } from "./pages/DocumentationPage";
 import { SettingsPage } from "./pages/SettingsPage";
@@ -16,15 +16,26 @@ import { DomainPage } from "./pages/DomainPage";
 import { AnalyticsPage } from "./pages/AnalyticsPage";
 import { MobileSideBar } from "./layout/MobileSideBar";
 import { OutletWrapper } from "./layout/OutletWrapper";
+import { AddOrganizationPage } from "./pages/auth/AddOrganizationPage";
+import { Organization } from "./model/AccountModel";
+import { useMemo } from "react";
 
 function App() {
   const token: string = useSelector((state: any) => state.auth.token);
   const setupCompleted: boolean = useSelector(
     (state: any) => state.auth.setupCompleted
   );
+  const organizations: Organization[] = useSelector(
+    (state: any) => state.auth.organizations
+  );
+
+  const isAuthorized = useMemo(
+    () => token && setupCompleted && organizations.length > 0,
+    [token, setupCompleted, organizations]
+  );
 
   const Wrapper = () => {
-    if (!token || !setupCompleted) {
+    if (!isAuthorized) {
       return (
         <div className="h-[100vh]">
           <Outlet />
@@ -54,44 +65,47 @@ function App() {
   const router = createBrowserRouter([
     {
       element: <Wrapper />,
-      children:
-        !token || !setupCompleted
-          ? [
-              {
-                path: "/",
-                element: <LoginPage />,
-              },
-              {
-                path: "/complete-setup",
-                element: <DemographicPage />,
-              },
-              {
-                path: "*",
-                element: <Navigate to="/" replace />,
-              },
-            ]
-          : [
-              {
-                path: "/",
-                element: <HomePage />,
-              },
-              {
-                path: "/documentation",
-                element: <DocumentationPage />,
-              },
-              {
-                path: "/analytics",
-                element: <AnalyticsPage />,
-              },
-              {
-                path: "/domain",
-                element: <DomainPage />,
-              },
-              {
-                path: "/settings",
-                element: <SettingsPage />,
-              },
-            ],
+      children: !isAuthorized
+        ? [
+            {
+              path: "/",
+              element: <LoginPage />,
+            },
+            {
+              path: "/complete-setup",
+              element: <CompleteSetupPage />,
+            },
+            {
+              path: "/add-organization",
+              element: <AddOrganizationPage />,
+            },
+            {
+              path: "*",
+              element: <Navigate to="/" replace />,
+            },
+          ]
+        : [
+            {
+              path: "/",
+              element: <HomePage />,
+            },
+            {
+              path: "/documentation",
+              element: <DocumentationPage />,
+            },
+            {
+              path: "/analytics",
+              element: <AnalyticsPage />,
+            },
+            {
+              path: "/domain",
+              element: <DomainPage />,
+            },
+            {
+              path: "/settings",
+              element: <SettingsPage />,
+            },
+          ],
     },
   ]);
 

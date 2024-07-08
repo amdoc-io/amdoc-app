@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DocAccount } from "../../model/AccountModel";
+import { DocAccount, Organization } from "../../model/AccountModel";
 
 export interface AuthState {
   token?: string;
@@ -7,6 +7,7 @@ export interface AuthState {
   account?: DocAccount;
   signedInAt?: string;
   githubUser?: any;
+  organizations?: Organization[];
 }
 
 const initialState: AuthState = {
@@ -15,6 +16,7 @@ const initialState: AuthState = {
   signedInAt: undefined,
   githubUser: undefined,
   setupCompleted: undefined,
+  organizations: [],
 };
 
 export const authSlice = createSlice({
@@ -39,10 +41,22 @@ export const authSlice = createSlice({
     setSetupCompleted: (state, action: PayloadAction<boolean | undefined>) => {
       state.setupCompleted = action.payload;
     },
+    setOrganizations: (
+      state,
+      action: PayloadAction<Organization[] | undefined>
+    ) => {
+      state.organizations = action.payload || [];
+    },
   },
 });
 
-export const { login, setAccount, setToken, setGithubUser, setSetupCompleted } =
-  authSlice.actions;
+export const {
+  login,
+  setAccount,
+  setToken,
+  setGithubUser,
+  setSetupCompleted,
+  setOrganizations,
+} = authSlice.actions;
 
 export default authSlice.reducer;
