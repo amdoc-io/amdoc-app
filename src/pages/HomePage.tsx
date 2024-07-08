@@ -65,7 +65,7 @@ export const HomePage = () => {
 
       setTimeout(() => {
         setCreateClientWebLoading(false);
-      }, 60000);
+      }, 90000);
     }
   }, [docInitialRepo, authToken, githubUser, dispatch, clientWeb]);
 
