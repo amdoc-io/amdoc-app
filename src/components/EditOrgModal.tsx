@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { OutlinedButton } from "../actions/OutlinedButton";
 import { PrimaryButton } from "../actions/PrimaryButton";
-import { setOrganizations } from "../features/auth/authSlice";
+import { setOrganization, setOrganizations } from "../features/auth/authSlice";
 import { Input } from "../forms/Input";
 import Modal from "../layout/Modal";
 import { DocAccount, Organization } from "../model/AccountModel";
@@ -20,6 +20,9 @@ export const EditOrgModal = (props: {
   const dispatch = useDispatch();
 
   const account: DocAccount = useSelector((state: any) => state.auth.account);
+  const organization: Organization = useSelector(
+    (state: any) => state.auth.organization
+  );
   const authToken: string = useSelector((state: any) => state.auth.token);
 
   const { open, setOpen = () => {}, editingOrg } = props;
@@ -78,6 +81,9 @@ export const EditOrgModal = (props: {
           );
           if (res.organizations.length > 0) {
             dispatch(setOrganizations(res.organizations));
+            if (editingOrg.id === organization.id) {
+              dispatch(setOrganization(saveOrgRes.organization));
+            }
           }
           setOpen(false);
         } else {
