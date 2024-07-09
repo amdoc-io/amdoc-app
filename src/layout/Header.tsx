@@ -1,13 +1,20 @@
+import { IoBusinessOutline } from "react-icons/io5";
+import { RxExit, RxPlus } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
-import { ReduxActionType } from "../model/ReduxModel";
 import { useNavigate } from "react-router-dom";
-import { DocAccount } from "../model/AccountModel";
-import DropdownButton from "../actions/DropdownButton";
-import { RxExit } from "react-icons/rx";
-import { LogoText } from "../display/LogoText";
+import DropdownButton, { DropdownOption } from "../actions/DropdownButton";
+import { setOrganization } from "../features/auth/authSlice";
+import { DocAccount, Organization } from "../model/AccountModel";
+import { ReduxActionType } from "../model/ReduxModel";
 
 export const Header = () => {
   const account: DocAccount = useSelector((state: any) => state.auth.account);
+  const organizations: Organization[] = useSelector(
+    (state: any) => state.auth.organizations
+  );
+  const organization: Organization = useSelector(
+    (state: any) => state.auth.organization
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,7 +26,41 @@ export const Header = () => {
   return (
     <header className="fixed h-16 top-0 left-0 right-0 border-b border-b-gray-200 py-4 z-50 backdrop-blur-lg flex items-center">
       <div className="max-w-screen-2xl ml-auto mr-auto flex items-center justify-between px-4 lg:px-8 w-full">
-        <LogoText className="cursor-pointer" onClick={() => navigate("/")} />
+        <DropdownButton
+          value={organization.id}
+          showIcon
+          variant="blank"
+          position="left"
+          onChange={(value) =>
+            dispatch(
+              setOrganization(organizations.find((org) => org.id === value))
+            )
+          }
+          itemClassName="!w-72"
+          options={[
+            ...organizations.map(
+              (org) =>
+                ({
+                  label: org.name,
+                  value: org.id,
+                  onClick: () => {},
+                  icon: <IoBusinessOutline />,
+                } as DropdownOption)
+            ),
+            {
+              label: "Create new organization",
+              value: "create-org",
+              onClick: () => {},
+              icon: <RxPlus />,
+              divider: true,
+              iconPosition: "right",
+              className: "justify-between",
+            },
+          ]}
+        >
+          <IoBusinessOutline />
+          <p>{organization.name}</p>
+        </DropdownButton>
 
         <DropdownButton
           variant="blank"

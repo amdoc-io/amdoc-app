@@ -62,7 +62,7 @@ export default function Select(props: {
     <Menu
       ref={ref}
       as="div"
-      className="relative inline-block text-left transition-all duration-300 flex flex-col gap-2"
+      className="relative text-left transition-all duration-300 flex flex-col gap-2"
     >
       {label && (
         <label

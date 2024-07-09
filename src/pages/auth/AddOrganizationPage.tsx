@@ -6,7 +6,10 @@ import { AuthBrandingContainer } from "../../layout/AuthBrandingContainer";
 import { Countries } from "../config/BusinessConfig";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setOrganizations } from "../../features/auth/authSlice";
+import {
+  setOrganization,
+  setOrganizations,
+} from "../../features/auth/authSlice";
 import { isValidated } from "../../utils/ValidationUtils";
 import { DocAccount, Organization } from "../../model/AccountModel";
 import {
@@ -59,6 +62,7 @@ export const AddOrganizationPage = () => {
       await saveOrganization(authToken, organization);
       const res = await getOrganizationsByEmail(authToken, account.email || "");
       dispatch(setOrganizations(res.organizations));
+      dispatch(setOrganization(res.organizations[0]));
       navigate("/");
     }
 

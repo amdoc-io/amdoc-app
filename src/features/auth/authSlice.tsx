@@ -8,6 +8,7 @@ export interface AuthState {
   signedInAt?: string;
   githubUser?: any;
   organizations?: Organization[];
+  organization?: Organization;
 }
 
 const initialState: AuthState = {
@@ -17,6 +18,7 @@ const initialState: AuthState = {
   githubUser: undefined,
   setupCompleted: undefined,
   organizations: [],
+  organization: undefined,
 };
 
 export const authSlice = createSlice({
@@ -47,6 +49,12 @@ export const authSlice = createSlice({
     ) => {
       state.organizations = action.payload || [];
     },
+    setOrganization: (
+      state,
+      action: PayloadAction<Organization | undefined>
+    ) => {
+      state.organization = action.payload;
+    },
   },
 });
 
@@ -57,6 +65,7 @@ export const {
   setGithubUser,
   setSetupCompleted,
   setOrganizations,
+  setOrganization,
 } = authSlice.actions;
 
 export default authSlice.reducer;

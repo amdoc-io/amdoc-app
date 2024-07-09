@@ -7,7 +7,11 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { OutlinedButton } from "../../actions/OutlinedButton";
 import { AIM_SIGN_IN_ENDPOINT } from "../../endpoints/AIMEndpoint";
-import { login, setOrganizations } from "../../features/auth/authSlice";
+import {
+  login,
+  setOrganization,
+  setOrganizations,
+} from "../../features/auth/authSlice";
 import { AuthContainer } from "../../layout/AuthContainer";
 import { AuthType, SignInResponse } from "../../model/AccountModel";
 import { getGithubAccessToken } from "../../utils/GithubFetchUtils";
@@ -45,6 +49,7 @@ export const LoginPage = () => {
             nextRoute = "/add-organization";
           } else {
             dispatch(setOrganizations(res.organizations));
+            dispatch(setOrganization(res.organizations[0]));
             nextRoute = "/";
           }
         } else {
