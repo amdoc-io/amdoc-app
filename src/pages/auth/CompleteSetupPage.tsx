@@ -68,7 +68,7 @@ export const CompleteSetupPage = () => {
         dispatch(setSetupCompleted(res.account.isSetupComplete));
         dispatch(setAccount(res.account));
         setLoading(false);
-        navigate("/");
+        navigate("/add-organization");
       }
     }
 
