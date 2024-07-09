@@ -62,7 +62,7 @@ export const LoginPage = () => {
   );
 
   const handleGithubSuccessSignIn = useCallback(async () => {
-    if (code) {
+    if (code && !githubLoading) {
       setGithubLoading(true);
 
       const githubAccessToken = await getGithubAccessToken(code);
@@ -74,7 +74,7 @@ export const LoginPage = () => {
 
       handleSystemSignIn(formData, () => setGithubLoading(false));
     }
-  }, [code, handleSystemSignIn]);
+  }, [code, handleSystemSignIn, githubLoading]);
 
   useEffect(() => {
     handleGithubSuccessSignIn();
