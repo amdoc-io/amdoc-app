@@ -35,6 +35,21 @@ export const LoginPage = () => {
         });
 
       if (signInResponse) {
+        let nextRoute = "/";
+        if (signInResponse?.account?.isSetupComplete) {
+          const res = await getOrganizationsByEmail(
+            signInResponse.authToken,
+            signInResponse.account?.email || ""
+          );
+          if (res.organizations.length === 0) {
+            nextRoute = "/add-organization";
+          } else {
+            dispatch(setOrganizations(res.organizations));
+            nextRoute = "/";
+          }
+        } else {
+          nextRoute = "/complete-setup";
+        }
         dispatch(
           login({
             account: signInResponse.account,
@@ -42,20 +57,7 @@ export const LoginPage = () => {
             signedInAt: signInResponse.createdAt,
           })
         );
-        if (signInResponse?.account?.isSetupComplete) {
-          const res = await getOrganizationsByEmail(
-            signInResponse.authToken,
-            signInResponse.account?.email || ""
-          );
-          if (res.organizations.length === 0) {
-            navigate("/add-organization");
-          } else {
-            dispatch(setOrganizations(res.organizations));
-            navigate("/");
-          }
-        } else {
-          navigate("/complete-setup");
-        }
+        navigate(nextRoute);
       }
       callback();
     },
