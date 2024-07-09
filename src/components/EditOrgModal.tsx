@@ -20,7 +20,7 @@ export const EditOrgModal = (props: {
   const dispatch = useDispatch();
 
   const account: DocAccount = useSelector((state: any) => state.auth.account);
-  const organization: Organization = useSelector(
+  const currentOrg: Organization = useSelector(
     (state: any) => state.auth.organization
   );
   const authToken: string = useSelector((state: any) => state.auth.token);
@@ -81,7 +81,7 @@ export const EditOrgModal = (props: {
           );
           if (res.organizations.length > 0) {
             dispatch(setOrganizations(res.organizations));
-            if (editingOrg.id === organization.id) {
+            if (editingOrg.id === currentOrg.id) {
               dispatch(setOrganization(saveOrgRes.organization));
             }
           }
