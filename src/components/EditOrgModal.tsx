@@ -104,7 +104,7 @@ export const EditOrgModal = (props: {
     <Modal
       open={open}
       setOpen={setOpen}
-      title="Create a new organization"
+      title="Edit organization name"
       action={
         <>
           <div>
