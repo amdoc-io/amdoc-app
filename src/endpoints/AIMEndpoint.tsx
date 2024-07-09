@@ -10,3 +10,7 @@ export const AIM_CREATE_GIT_CLIENT_WEB_APP_ENDPOINT =
 export const AIM_UPDATE_NETLIFY_SITE_ENDPOINT =
   AIM_BASE_URL + "/update-netlify-site";
 export const AIM_UPDATE_ACCOUNT_ENDPOINT = AIM_BASE_URL + "/update-account";
+export const AIM_SAVE_ORGANIZATION_ENDPOINT =
+  AIM_BASE_URL + "/save-organization";
+export const AIM_GET_ORGANIZATIONS_BY_EMAIL_ENDPOINT =
+  AIM_BASE_URL + "/get-organizations-by-email";

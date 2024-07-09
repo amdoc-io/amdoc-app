@@ -45,6 +45,7 @@ export enum CompanySize {
 
 export interface Organization {
   id?: string;
+  email?: string;
   name?: string;
   country?: string;
   createdAt?: string;

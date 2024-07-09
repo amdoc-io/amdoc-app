@@ -2,11 +2,13 @@ import axios from "axios";
 import {
   AIM_CREATE_GIT_CLIENT_WEB_APP_ENDPOINT,
   AIM_GET_GITHUB_APP_JWT_PROXY_ENDPOINT,
+  AIM_GET_ORGANIZATIONS_BY_EMAIL_ENDPOINT,
+  AIM_SAVE_ORGANIZATION_ENDPOINT,
   AIM_UPDATE_ACCOUNT_ENDPOINT,
   AIM_UPDATE_NETLIFY_SITE_ENDPOINT,
 } from "../endpoints/AIMEndpoint";
 import { createHeader } from "./FetchUtils";
-import { DocAccount } from "../model/AccountModel";
+import { DocAccount, Organization } from "../model/AccountModel";
 
 export interface UpdateAccountRequest {
   account: DocAccount;
@@ -14,6 +16,14 @@ export interface UpdateAccountRequest {
 
 export interface UpdateAccountResponse {
   account: DocAccount;
+}
+
+export interface SaveOrganizationResponse {
+  organization: Organization;
+}
+
+export interface GetOrganizationsByEmailResponse {
+  organizations: Organization[];
 }
 
 export const getGithubAppJWT = async (authToken: string) => {
@@ -65,5 +75,40 @@ export const updateAccount = async (
     .catch((err) => {
       console.error(err);
       return undefined;
+    });
+};
+
+export const saveOrganization = async (
+  authToken: string,
+  organization: Organization
+) => {
+  return await axios
+    .post(
+      AIM_SAVE_ORGANIZATION_ENDPOINT,
+      { organization },
+      createHeader(authToken)
+    )
+    .then((res) => res.data as SaveOrganizationResponse)
+    .catch((err) => {
+      console.error(err);
+      return undefined;
+    });
+};
+
+export const getOrganizationsByEmail = async (
+  authToken: string,
+  email: string
+) => {
+  return await axios
+    .get(
+      `${AIM_GET_ORGANIZATIONS_BY_EMAIL_ENDPOINT}?email=${email}`,
+      createHeader(authToken)
+    )
+    .then((res) => res.data as GetOrganizationsByEmailResponse)
+    .catch((err) => {
+      console.error(err);
+      return {
+        organizations: [],
+      } as GetOrganizationsByEmailResponse;
     });
 };

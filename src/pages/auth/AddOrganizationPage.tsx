@@ -5,13 +5,21 @@ import { Input } from "../../forms/Input";
 import { AuthBrandingContainer } from "../../layout/AuthBrandingContainer";
 import { Countries } from "../config/BusinessConfig";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setOrganizations } from "../../features/auth/authSlice";
 import { isValidated } from "../../utils/ValidationUtils";
+import { DocAccount, Organization } from "../../model/AccountModel";
+import {
+  getOrganizationsByEmail,
+  saveOrganization,
+} from "../../utils/AccountFetchUtils";
 
 export const AddOrganizationPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const account: DocAccount = useSelector((state: any) => state.auth.account);
+  const authToken: string = useSelector((state: any) => state.auth.token);
 
   const [formData, setFormData] = useState<{ [key: string]: any }>({});
   const [errorData, setErrorData] = useState<{
@@ -19,7 +27,7 @@ export const AddOrganizationPage = () => {
   }>({});
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
@@ -34,15 +42,13 @@ export const AddOrganizationPage = () => {
     }));
 
     if (isValidated(validation)) {
-      dispatch(
-        setOrganizations([
-          {
-            ...formData,
-            id: "org_1234",
-            createdAt: new Date().toISOString(),
-          },
-        ])
-      );
+      const organization: Organization = {
+        ...formData,
+        email: account.email,
+      };
+      await saveOrganization(authToken, organization);
+      const res = await getOrganizationsByEmail(authToken, account.email || "");
+      dispatch(setOrganizations(res.organizations));
       navigate("/");
     }
 
