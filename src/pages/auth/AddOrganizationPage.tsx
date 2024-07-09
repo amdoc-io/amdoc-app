@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { PrimaryButton } from "../../actions/PrimaryButton";
 import Select from "../../actions/Select";
 import { Input } from "../../forms/Input";
@@ -26,6 +26,16 @@ export const AddOrganizationPage = () => {
     [key: string]: any;
   }>({});
   const [loading, setLoading] = useState<boolean>(false);
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { name, value, type, checked },
+    } = event;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,6 +81,7 @@ export const AddOrganizationPage = () => {
           name="name"
           value={formData["name"]}
           error={errorData["name"]}
+          onChange={handleInputChange}
           placeholder="Enter an organization name"
           note="Your organization is a workspace where you can invite members, collaborate, and manage resources with your team. You can update this name at any time"
           required

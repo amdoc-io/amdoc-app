@@ -7,11 +7,12 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { OutlinedButton } from "../../actions/OutlinedButton";
 import { AIM_SIGN_IN_ENDPOINT } from "../../endpoints/AIMEndpoint";
-import { login } from "../../features/auth/authSlice";
+import { login, setOrganizations } from "../../features/auth/authSlice";
 import { AuthContainer } from "../../layout/AuthContainer";
 import { AuthType, SignInResponse } from "../../model/AccountModel";
 import { getGithubAccessToken } from "../../utils/GithubFetchUtils";
 import { Link } from "../../actions/Link";
+import { getOrganizationsByEmail } from "../../utils/AccountFetchUtils";
 
 export const LoginPage = () => {
   const location = useLocation();
@@ -42,7 +43,16 @@ export const LoginPage = () => {
         );
         callback();
         if (signInResponse?.account?.isSetupComplete) {
-          navigate("/");
+          const res = await getOrganizationsByEmail(
+            signInResponse.authToken,
+            signInResponse.account?.email || ""
+          );
+          if (res.organizations.length === 0) {
+            navigate("/add-organization");
+          } else {
+            dispatch(setOrganizations(res.organizations));
+            navigate("/");
+          }
         } else {
           navigate("/complete-setup");
         }
