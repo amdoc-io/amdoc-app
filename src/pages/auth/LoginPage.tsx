@@ -22,6 +22,7 @@ export const LoginPage = () => {
   const code = searchParams.get("code");
   const [googleLoading, setGoogleLoading] = useState<boolean>(false);
   const [githubLoading, setGithubLoading] = useState<boolean>(false);
+  const [githubProcessed, setGithubProcessed] = useState<boolean>(false);
 
   const handleSystemSignIn = useCallback(
     async (formData: any, callback: () => void) => {
@@ -62,7 +63,7 @@ export const LoginPage = () => {
   );
 
   const handleGithubSuccessSignIn = useCallback(async () => {
-    if (code && !githubLoading) {
+    if (code && !githubProcessed) {
       setGithubLoading(true);
 
       const githubAccessToken = await getGithubAccessToken(code);
@@ -72,9 +73,12 @@ export const LoginPage = () => {
         accessToken: githubAccessToken?.accessToken,
       };
 
-      handleSystemSignIn(formData, () => setGithubLoading(false));
+      handleSystemSignIn(formData, () => {
+        setGithubLoading(false);
+        setGithubProcessed(true);
+      });
     }
-  }, [code, handleSystemSignIn, githubLoading]);
+  }, [code, handleSystemSignIn, githubProcessed]);
 
   useEffect(() => {
     handleGithubSuccessSignIn();
