@@ -1,27 +1,18 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { IoBusinessOutline } from "react-icons/io5";
 import { RxExit, RxPlus } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import DropdownButton, { DropdownOption } from "../actions/DropdownButton";
-import { OutlinedButton } from "../actions/OutlinedButton";
-import { PrimaryButton } from "../actions/PrimaryButton";
-import Select from "../actions/Select";
-import { setOrganization, setOrganizations } from "../features/auth/authSlice";
-import { Input } from "../forms/Input";
+import { LinkButton } from "../actions/LinkButton";
+import { CreateOrgModal } from "../components/CreateOrgModal";
+import { setOrganization } from "../features/auth/authSlice";
 import { DocAccount, Organization } from "../model/AccountModel";
 import { ReduxActionType } from "../model/ReduxModel";
-import { Countries } from "../pages/config/BusinessConfig";
-import {
-  getOrganizationsByEmail,
-  saveOrganization,
-} from "../utils/AccountFetchUtils";
-import { isValidated } from "../utils/ValidationUtils";
-import Modal from "./Modal";
+import { EditOrgModal } from "../components/EditOrgModal";
 
 export const Header = () => {
   const account: DocAccount = useSelector((state: any) => state.auth.account);
-  const authToken: string = useSelector((state: any) => state.auth.token);
   const organizations: Organization[] = useSelector(
     (state: any) => state.auth.organizations
   );
@@ -31,53 +22,13 @@ export const Header = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [formData, setFormData] = useState<{ [key: string]: any }>({});
-  const [errorData, setErrorData] = useState<{
-    [key: string]: any;
-  }>({});
-  const [loading, setLoading] = useState<boolean>(false);
+  const [createOrgModalOpen, setCreateOrgModalOpen] = useState<boolean>(false);
+  const [editOrgModalOpen, setEditOrgModalOpen] = useState<boolean>(false);
+  const [editingOrg, setEditingOrg] = useState<Organization>();
 
   const handleLogout = () => {
     dispatch({ type: ReduxActionType.logout });
     navigate("/");
-  };
-
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { name, value, type, checked },
-    } = event;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  const handleSubmit = async () => {
-    setLoading(true);
-
-    const validation = {
-      name: formData["name"] ? undefined : "Missing organization name input",
-      country: formData["country"] ? undefined : "Missing country input",
-    };
-
-    setErrorData((prev) => ({
-      ...prev,
-      ...validation,
-    }));
-
-    if (isValidated(validation)) {
-      const organization: Organization = {
-        ...formData,
-        email: account.email,
-      };
-      await saveOrganization(authToken, organization);
-      const res = await getOrganizationsByEmail(authToken, account.email || "");
-      dispatch(setOrganizations(res.organizations));
-      setModalOpen(false);
-    }
-
-    setLoading(false);
   };
 
   return (
@@ -101,13 +52,23 @@ export const Header = () => {
                   ({
                     label: org.name,
                     value: org.id,
+                    suffix: (
+                      <LinkButton
+                        onClick={() => {
+                          setEditingOrg(org);
+                          setEditOrgModalOpen(true);
+                        }}
+                      >
+                        Edit
+                      </LinkButton>
+                    ),
                     icon: <IoBusinessOutline />,
                   } as DropdownOption)
               ),
               {
                 label: "Create new organization",
                 value: "create-org",
-                onClick: () => setModalOpen(true),
+                onClick: () => setCreateOrgModalOpen(true),
                 icon: <RxPlus />,
                 divider: true,
                 iconPosition: "right",
@@ -146,52 +107,15 @@ export const Header = () => {
           </DropdownButton>
         </div>
       </header>
-      <Modal
-        open={modalOpen}
-        setOpen={setModalOpen}
-        title="Create a new organization"
-        action={
-          <>
-            <div>
-              <PrimaryButton loading={loading} onClick={handleSubmit}>
-                Create
-              </PrimaryButton>
-            </div>
-            <div>
-              <OutlinedButton onClick={() => setModalOpen(false)}>
-                Cancel
-              </OutlinedButton>
-            </div>
-          </>
-        }
-      >
-        <form className="w-full flex flex-col gap-4">
-          <Input
-            label="Organization"
-            name="name"
-            value={formData["name"]}
-            error={errorData["name"]}
-            onChange={handleInputChange}
-            placeholder="Enter an organization name"
-            note="Your organization is a workspace where you can invite members, collaborate, and manage resources with your team. You can update this name at any time"
-            required
-          />
-          <Select
-            label="Country of operation"
-            placeholder="Select a country"
-            required
-            options={Countries}
-            value={formData["country"]}
-            error={errorData["country"]}
-            onChange={(value) =>
-              setFormData((prev) => ({
-                ...prev,
-                country: value,
-              }))
-            }
-          />
-        </form>
-      </Modal>
+      <EditOrgModal
+        open={editOrgModalOpen}
+        setOpen={setEditOrgModalOpen}
+        editingOrg={editingOrg}
+      />
+      <CreateOrgModal
+        open={createOrgModalOpen}
+        setOpen={setCreateOrgModalOpen}
+      />
     </>
   );
 };

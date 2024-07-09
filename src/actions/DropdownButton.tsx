@@ -15,6 +15,7 @@ export interface DropdownOption {
   divider?: boolean;
   iconPosition?: "left" | "right";
   className?: string;
+  suffix?: ReactNode;
 }
 
 export default function DropdownButton(props: {
@@ -59,12 +60,10 @@ export default function DropdownButton(props: {
           props.position === "left" ? "left-0" : "right-0"
         }`}
       >
-        <div className="py-1">
-          {startDecorator && (
-            <div className="px-4 py-2 text-sm">{startDecorator}</div>
-          )}
+        <div className="py-1 text-sm">
+          {startDecorator && <div className="px-4 py-2">{startDecorator}</div>}
           {options.map((option, i) => (
-            <Fragment key={i}>
+            <div key={i} className="relative">
               {option.divider && <Divider className="my-1" />}
               <MenuItem>
                 {({ focus }) => (
@@ -80,7 +79,7 @@ export default function DropdownButton(props: {
                       focus || (value && option.value === value)
                         ? "bg-gray-100 text-gray-900"
                         : "text-gray-700",
-                      `flex items-center gap-2 px-4 py-2 text-sm cursor-pointer ${
+                      `flex items-center gap-2 px-4 py-2 cursor-pointer ${
                         option.className || ""
                       }`
                     )}
@@ -95,7 +94,13 @@ export default function DropdownButton(props: {
                   </div>
                 )}
               </MenuItem>
-            </Fragment>
+
+              {option.suffix && (
+                <div className="absolute right-4 top-2 z-20">
+                  {option.suffix}
+                </div>
+              )}
+            </div>
           ))}
         </div>
       </MenuItems>
