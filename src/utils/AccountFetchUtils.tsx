@@ -88,10 +88,14 @@ export const saveOrganization = async (
       { organization },
       createHeader(authToken)
     )
-    .then((res) => res.data as SaveOrganizationResponse)
+    .then((res) => res.data)
     .catch((err) => {
       console.error(err);
-      return undefined;
+      return {
+        error: {
+          message: err.response?.data?.message,
+        },
+      };
     });
 };
 

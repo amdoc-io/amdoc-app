@@ -31,13 +31,16 @@ export const EditOrgModal = (props: {
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (editingOrg) {
-      setFormData((prev) => ({
-        ...prev,
-        name: editingOrg.name,
-      }));
+    if (open) {
+      setErrorData({});
+      if (editingOrg) {
+        setFormData((prev) => ({
+          ...prev,
+          name: editingOrg.name,
+        }));
+      }
     }
-  }, [editingOrg]);
+  }, [editingOrg, open]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
@@ -68,7 +71,7 @@ export const EditOrgModal = (props: {
           id: editingOrg.id,
         };
         const saveOrgRes = await saveOrganization(authToken, organization);
-        if (saveOrgRes) {
+        if (!saveOrgRes.error) {
           const res = await getOrganizationsByEmail(
             authToken,
             account.email || ""
@@ -76,9 +79,16 @@ export const EditOrgModal = (props: {
           if (res.organizations.length > 0) {
             dispatch(setOrganizations(res.organizations));
           }
+          setOpen(false);
+        } else {
+          if ((saveOrgRes.error?.message || "").includes("already existed")) {
+            setErrorData((prev) => ({
+              ...prev,
+              name: "Organization already existed",
+            }));
+          }
         }
       }
-      setOpen(false);
     }
 
     setLoading(false);

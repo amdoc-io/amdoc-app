@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { OutlinedButton } from "../actions/OutlinedButton";
 import { PrimaryButton } from "../actions/PrimaryButton";
 import Select from "../actions/Select";
@@ -31,6 +31,11 @@ export const CreateOrgModal = (props: {
   }>({});
   const [loading, setLoading] = useState<boolean>(false);
 
+  useEffect(() => {
+    setFormData({});
+    setErrorData({});
+  }, [open]);
+
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
       target: { name, value, type, checked },
@@ -60,7 +65,7 @@ export const CreateOrgModal = (props: {
         email: account.email,
       };
       const saveOrgRes = await saveOrganization(authToken, organization);
-      if (saveOrgRes) {
+      if (!saveOrgRes.error) {
         const res = await getOrganizationsByEmail(
           authToken,
           account.email || ""
@@ -68,8 +73,15 @@ export const CreateOrgModal = (props: {
         if (res.organizations.length > 0) {
           dispatch(setOrganizations(res.organizations));
         }
+        setOpen(false);
+      } else {
+        if ((saveOrgRes.error?.message || "").includes("already existed")) {
+          setErrorData((prev) => ({
+            ...prev,
+            name: "Organization already existed",
+          }));
+        }
       }
-      setOpen(false);
     }
 
     setLoading(false);
