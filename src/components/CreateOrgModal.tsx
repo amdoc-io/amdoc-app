@@ -59,9 +59,16 @@ export const CreateOrgModal = (props: {
         ...formData,
         email: account.email,
       };
-      await saveOrganization(authToken, organization);
-      const res = await getOrganizationsByEmail(authToken, account.email || "");
-      dispatch(setOrganizations(res.organizations));
+      const saveOrgRes = await saveOrganization(authToken, organization);
+      if (saveOrgRes) {
+        const res = await getOrganizationsByEmail(
+          authToken,
+          account.email || ""
+        );
+        if (res.organizations.length > 0) {
+          dispatch(setOrganizations(res.organizations));
+        }
+      }
       setOpen(false);
     }
 

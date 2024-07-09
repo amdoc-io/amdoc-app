@@ -59,11 +59,18 @@ export const AddOrganizationPage = () => {
         ...formData,
         email: account.email,
       };
-      await saveOrganization(authToken, organization);
-      const res = await getOrganizationsByEmail(authToken, account.email || "");
-      dispatch(setOrganizations(res.organizations));
-      dispatch(setOrganization(res.organizations[0]));
-      navigate("/");
+      const saveOrgRes = await saveOrganization(authToken, organization);
+      if (saveOrgRes) {
+        const res = await getOrganizationsByEmail(
+          authToken,
+          account.email || ""
+        );
+        if (res.organizations.length > 0) {
+          dispatch(setOrganizations(res.organizations));
+          dispatch(setOrganization(res.organizations[0]));
+          navigate("/");
+        }
+      }
     }
 
     setLoading(false);
