@@ -64,7 +64,7 @@ export default function DropdownButton(props: {
           {startDecorator && <div className="px-4 py-2">{startDecorator}</div>}
           {options.map((option, i) => (
             <div key={i} className="relative">
-              {option.divider && <Divider className="my-1" />}
+              {option.divider && <Divider className="!my-1" />}
               <MenuItem>
                 {({ focus }) => (
                   <div
