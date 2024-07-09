@@ -41,7 +41,6 @@ export const LoginPage = () => {
             signedInAt: signInResponse.createdAt,
           })
         );
-        callback();
         if (signInResponse?.account?.isSetupComplete) {
           const res = await getOrganizationsByEmail(
             signInResponse.authToken,
@@ -57,6 +56,7 @@ export const LoginPage = () => {
           navigate("/complete-setup");
         }
       }
+      callback();
     },
     [dispatch, navigate]
   );
