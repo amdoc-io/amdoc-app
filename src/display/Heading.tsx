@@ -30,6 +30,17 @@ export const Heading = (
     );
   }
 
+  if (level === 3) {
+    return (
+      <h3
+        {...restProps}
+        className={`text-[16px] leading-6 font-medium ${className}`}
+      >
+        {children}
+      </h3>
+    );
+  }
+
   return (
     <p {...restProps} className={`${className}`}>
       {children}

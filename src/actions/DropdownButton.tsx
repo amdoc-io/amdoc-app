@@ -26,6 +26,7 @@ export default function DropdownButton(props: {
   variant?: "blank" | "default";
   itemClassName?: string;
   value?: string;
+  startDecorator?: ReactNode;
 }) {
   const {
     options = [],
@@ -34,6 +35,7 @@ export default function DropdownButton(props: {
     variant = "default",
     itemClassName = "",
     value,
+    startDecorator,
   } = props;
 
   return (
@@ -58,10 +60,13 @@ export default function DropdownButton(props: {
         }`}
       >
         <div className="py-1">
+          {startDecorator && (
+            <div className="px-4 py-2 text-sm">{startDecorator}</div>
+          )}
           {options.map((option, i) => (
-            <Fragment>
+            <Fragment key={i}>
               {option.divider && <Divider className="my-1" />}
-              <MenuItem key={i}>
+              <MenuItem>
                 {({ focus }) => (
                   <div
                     onClick={() => {
@@ -72,7 +77,7 @@ export default function DropdownButton(props: {
                       }
                     }}
                     className={classNames(
-                      focus || option.value === value
+                      focus || (value && option.value === value)
                         ? "bg-gray-100 text-gray-900"
                         : "text-gray-700",
                       `flex items-center gap-2 px-4 py-2 text-sm cursor-pointer ${

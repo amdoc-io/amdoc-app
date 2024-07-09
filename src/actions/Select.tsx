@@ -85,7 +85,7 @@ export default function Select(props: {
 
       <MenuItems
         transition
-        className={`absolute z-10 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in left-0 right-0 overflow-auto max-h-[200px] ${
+        className={`absolute z-30 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in left-0 right-0 overflow-auto max-h-[200px] ${
           isBottomRectReached ? "bottom-12" : "top-[70px]"
         }`}
       >
