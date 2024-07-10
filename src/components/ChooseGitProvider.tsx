@@ -16,7 +16,10 @@ export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
   const { gitProvider } = infrastructure;
 
   const saveGitProvider = async (value: string) => {
-    if (value === gitProvider) return;
+    if (value === gitProvider) {
+      onComplete();
+      return;
+    }
 
     const res = await saveInfrastructure(authToken, {
       id: infrastructure.id,
