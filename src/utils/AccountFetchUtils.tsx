@@ -165,7 +165,16 @@ export const getInfrastructureByOrganizationId = async (
 export const getLinkedInAccessToken = async (code: string) => {
   return await axios
     .get(`${AIM_GET_LINKEDIN_ACCESS_TOKEN_PROXY_ENDPOINT}?code=${code}`)
-    .then((res) => res.data as LinkedInAccessToken)
+    .then((res) => {
+      const token = res.data;
+      return {
+        accessToken: token.access_token,
+        expiresIn: token.expires_in,
+        refreshToken: token.refresh_token,
+        refreshTokenExpiresIn: token.refresh_token_expires_in,
+        scope: token.scope,
+      } as LinkedInAccessToken;
+    })
     .catch((err) => {
       console.error(err);
       return undefined;
