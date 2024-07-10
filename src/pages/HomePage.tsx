@@ -105,7 +105,7 @@ export const HomePage = () => {
             steps below.
           </Paragraph>
           <Steps
-            value={currentStep || -1}
+            value={currentStep === null ? -1 : currentStep}
             onChange={(value) => updateStep(value)}
             className="my-2"
             steps={[
@@ -114,7 +114,7 @@ export const HomePage = () => {
                 description: (
                   <ChooseGitProvider onComplete={() => updateStep(1)} />
                 ),
-                isCompleted: gitProvider !== undefined,
+                isCompleted: gitProvider !== undefined && gitProvider !== null,
                 postCompletion: (
                   <p>
                     You have successfully selected{" "}
@@ -128,7 +128,8 @@ export const HomePage = () => {
                 description: (
                   <AuthorizeGitOAuth onComplete={() => updateStep(2)} />
                 ),
-                isCompleted: gitOauthToken !== undefined,
+                isCompleted:
+                  gitOauthToken !== undefined && gitOauthToken !== null,
                 postCompletion: (
                   <p>
                     You have successfully authorized using {gitProvider} OAuth
@@ -155,7 +156,8 @@ export const HomePage = () => {
                 description: (
                   <SetupInitialDoc onComplete={() => updateStep(4)} />
                 ),
-                isCompleted: docInitialRepo !== undefined,
+                isCompleted:
+                  docInitialRepo !== undefined && docInitialRepo !== null,
                 postCompletion: (
                   <p>
                     You have successfully set up your initial documentation!
