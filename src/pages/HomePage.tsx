@@ -16,7 +16,6 @@ import { Infrastructure } from "../model/AccountModel";
 import {
   createGitClientWebRepo,
   saveInfrastructure,
-  updateNetlifySite,
 } from "../utils/AccountFetchUtils";
 
 export const HomePage = () => {
@@ -50,18 +49,13 @@ export const HomePage = () => {
       );
 
       if (site) {
-        setTimeout(async () => {
-          const updatedSite = await updateNetlifySite(authToken, site);
-          if (updatedSite) {
-            const savedInfraRes = await saveInfrastructure(authToken, {
-              id: infraId,
-              docInitialWebsite: `https://${docInitialRepo}.igendoc.com`,
-            });
-            if (savedInfraRes) {
-              dispatch(setInfrastructure(savedInfraRes.infrastructure));
-            }
-          }
-        }, 30000);
+        const savedInfraRes = await saveInfrastructure(authToken, {
+          id: infraId,
+          docInitialWebsite: `https://${docInitialRepo}.igendoc.com`,
+        });
+        if (savedInfraRes) {
+          dispatch(setInfrastructure(savedInfraRes.infrastructure));
+        }
       }
 
       setTimeout(() => {
