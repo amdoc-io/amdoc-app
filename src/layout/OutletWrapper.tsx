@@ -29,6 +29,7 @@ export const OutletWrapper = (
   const organization: Organization = useSelector(
     (state: any) => state.auth.organization
   );
+  const githubUser = useSelector((state: any) => state.auth.githubUser);
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
@@ -98,13 +99,13 @@ export const OutletWrapper = (
   }, [authToken, githubInstallationId, dispatch, shouldRotate, infrastructure]);
 
   const fetchGithubUser = useCallback(async () => {
-    if (infrastructure && infrastructure.gitOauthToken) {
+    if (infrastructure && infrastructure.gitOauthToken && !githubUser) {
       const githubUser = await getGithubAuthenticatedUser(
         infrastructure.gitOauthToken.accessToken
       );
       dispatch(setGithubUser(githubUser));
     }
-  }, [infrastructure, dispatch]);
+  }, [infrastructure, dispatch, githubUser]);
 
   const fetchInfrastructure = useCallback(async () => {
     if (authToken && organization?.id) {
