@@ -15,6 +15,7 @@ import {
 } from "../utils/GithubFetchUtils";
 
 export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
+  const { onComplete = () => {} } = props;
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -52,11 +53,12 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
       }
 
       dispatch(setGithubUser(githubUser));
+      onComplete();
 
       setGithubLoading(false);
       navigate("/");
     }
-  }, [code, dispatch, gitOauthToken, navigate, infraId, authToken]);
+  }, [code, dispatch, gitOauthToken, navigate, infraId, authToken, onComplete]);
 
   const handleGithubErrorAuthorize = useCallback(async () => {
     if (error) {

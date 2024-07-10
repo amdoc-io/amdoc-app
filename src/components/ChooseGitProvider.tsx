@@ -7,6 +7,7 @@ import { Infrastructure } from "../model/AccountModel";
 import { saveInfrastructure } from "../utils/AccountFetchUtils";
 
 export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
+  const { onComplete = () => {} } = props;
   const dispatch = useDispatch();
   const authToken: string = useSelector((state: any) => state.auth.token);
   const infrastructure: Infrastructure = useSelector(
@@ -21,6 +22,7 @@ export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
     });
     if (res) {
       dispatch(setInfrastructure(res.infrastructure));
+      onComplete();
     }
   };
 
