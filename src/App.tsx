@@ -77,6 +77,14 @@ function App() {
               element: <LoginPage />,
             },
             {
+              path: "/linkedin",
+              element: <LoginPage />,
+            },
+            {
+              path: "/github",
+              element: <LoginPage />,
+            },
+            {
               path: "/complete-setup",
               element: <CompleteSetupPage />,
             },

@@ -1,7 +1,7 @@
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { RiGoogleLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -13,6 +13,7 @@ import { AuthContainer } from "../../layout/AuthContainer";
 import { AuthType, SignInResponse } from "../../model/AccountModel";
 import { getOrganizationsByEmail } from "../../utils/AccountFetchUtils";
 import { getGithubAccessToken } from "../../utils/GithubFetchUtils";
+import { PrimaryButton } from "../../actions/PrimaryButton";
 
 export const LoginPage = () => {
   const location = useLocation();
@@ -22,7 +23,7 @@ export const LoginPage = () => {
   const code = searchParams.get("code");
   const [googleLoading, setGoogleLoading] = useState<boolean>(false);
   const [githubLoading, setGithubLoading] = useState<boolean>(false);
-  const [githubProcessed, setGithubProcessed] = useState<boolean>(false);
+  const [linkedInLoading, setLinkedInLoading] = useState<boolean>(false);
 
   const handleSystemSignIn = useCallback(
     async (formData: any, callback: () => void) => {
@@ -61,8 +62,16 @@ export const LoginPage = () => {
     [dispatch, navigate]
   );
 
+  const handleLinkedInSuccessSignIn = useCallback(async () => {
+    if (location.pathname.endsWith("linkedin") && code) {
+      setLinkedInLoading(true);
+
+      setLinkedInLoading(false);
+    }
+  }, [location, code]);
+
   const handleGithubSuccessSignIn = useCallback(async () => {
-    if (code && !githubProcessed) {
+    if (location.pathname.endsWith("github") && code) {
       setGithubLoading(true);
 
       const githubAccessToken = await getGithubAccessToken(code);
@@ -72,12 +81,13 @@ export const LoginPage = () => {
         accessToken: githubAccessToken?.accessToken,
       };
 
-      handleSystemSignIn(formData, () => {
-        setGithubLoading(false);
-        setGithubProcessed(true);
-      });
+      handleSystemSignIn(formData, () => setGithubLoading(false));
     }
-  }, [code, handleSystemSignIn, githubProcessed]);
+  }, [code, handleSystemSignIn, location]);
+
+  useEffect(() => {
+    handleLinkedInSuccessSignIn();
+  }, [handleLinkedInSuccessSignIn]);
 
   useEffect(() => {
     handleGithubSuccessSignIn();
@@ -125,6 +135,21 @@ export const LoginPage = () => {
     window.location.href = `https://github.com/login/oauth/authorize?scope=user&client_id=${process.env.REACT_APP_GITHUB_OAUTH_CLIENT_ID}`;
   };
 
+  const handleLinkedInLogin = () => {
+    const params = new URLSearchParams();
+    params.set("response_type", "code");
+    params.set(
+      "client_id",
+      process.env.REACT_APP_LINKEDIN_OAUTH_CLIENT_ID as string
+    );
+    params.set(
+      "redirect_uri",
+      process.env.REACT_APP_DEV_OAUTH_REDIRECT_URL as string
+    );
+    params.set("scope", "profile email");
+    window.location.href = `https://www.linkedin.com/oauth/v2/authorization?${params}`;
+  };
+
   return (
     <AuthContainer>
       <div className="text-center mb-6 flex flex-col gap-2 w-full">
@@ -146,14 +171,23 @@ export const LoginPage = () => {
         Sign in with Google
       </OutlinedButton>
 
-      <OutlinedButton
+      <PrimaryButton
         loading={githubLoading}
         icon={<FaGithub />}
         onClick={handleGithubLogin}
-        className="!bg-black !text-white !border-none hover:!bg-black/85"
+        className="!bg-black !border-none hover:!bg-black/80"
       >
         Sign in with Github
-      </OutlinedButton>
+      </PrimaryButton>
+
+      <PrimaryButton
+        icon={<FaLinkedin />}
+        loading={linkedInLoading}
+        onClick={handleLinkedInLogin}
+        className="!bg-linkedin !border-none hover:!bg-linkedin/80"
+      >
+        Sign in with LinkedIn
+      </PrimaryButton>
 
       <p className="text-sm text-gray-600">
         By signing in, you agree to our <Link href="/">Terms of Service</Link>

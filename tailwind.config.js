@@ -8,7 +8,8 @@ module.exports = {
         "secondary": "#0000FF",
         "disabled": "rgb(209, 213, 219)",
         "description": "#737373",
-        "placeholder": "rgba(156,163,175,255)"
+        "placeholder": "rgba(156,163,175,255)",
+        "linkedin": "#0077B5"
       }
     },
   },
