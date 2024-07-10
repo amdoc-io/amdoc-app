@@ -159,7 +159,7 @@ export const LoginPage = () => {
     );
     params.set(
       "redirect_uri",
-      process.env.REACT_APP_DEV_OAUTH_REDIRECT_URL as string
+      process.env.REACT_APP_PROD_OAUTH_REDIRECT_URL as string
     );
     params.set("scope", "profile email");
     window.location.href = `https://www.linkedin.com/oauth/v2/authorization?${params}`;
