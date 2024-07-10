@@ -1,7 +1,7 @@
-import { FacebookLoginClient } from "@greatsumini/react-facebook-login";
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import { FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
 import { RiGoogleLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
@@ -102,12 +102,6 @@ export const LoginPage = () => {
   }, [code, handleSystemSignIn, location]);
 
   useEffect(() => {
-    FacebookLoginClient.init({
-      appId: process.env.REACT_APP_FACEBOOK_OAUTH_CLIENT_ID as string,
-    });
-  }, []);
-
-  useEffect(() => {
     handleLinkedInSuccessSignIn();
   }, [handleLinkedInSuccessSignIn]);
 
@@ -153,15 +147,8 @@ export const LoginPage = () => {
     },
   });
 
-  const handleFacebookLogin = async () => {
-    FacebookLoginClient.login(
-      (res) => {
-        console.log(res);
-      },
-      {
-        scope: "email,public_profile",
-      }
-    );
+  const handleFacebookLogin = async (res: any) => {
+    console.log(res);
   };
 
   const handleGithubLogin = () => {
@@ -204,13 +191,21 @@ export const LoginPage = () => {
         Sign in with Google
       </OutlinedButton>
 
-      <PrimaryButton
-        icon={<FaFacebook />}
-        className="!bg-facebook !border-none hover:!bg-facebook/80"
-        onClick={handleFacebookLogin}
-      >
-        Sign in with Facebook
-      </PrimaryButton>
+      <FacebookLogin
+        fields="email,public_profile"
+        appId={process.env.REACT_APP_FACEBOOK_OAUTH_CLIENT_ID as string}
+        callback={handleFacebookLogin}
+        autoLoad={false}
+        render={(renderProps) => (
+          <PrimaryButton
+            icon={<FaFacebook />}
+            className="!bg-facebook !border-none hover:!bg-facebook/80"
+            onClick={renderProps.onClick}
+          >
+            Sign in with Facebook
+          </PrimaryButton>
+        )}
+      />
 
       <PrimaryButton
         loading={githubLoading}
