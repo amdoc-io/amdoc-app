@@ -10,6 +10,7 @@ import { DocAccount, Organization } from "../model/AccountModel";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getOrganizationsByEmail,
+  saveInfrastructure,
   saveOrganization,
 } from "../utils/AccountFetchUtils";
 import { setOrganizations } from "../features/auth/authSlice";
@@ -66,14 +67,20 @@ export const CreateOrgModal = (props: {
       };
       const saveOrgRes = await saveOrganization(authToken, organization);
       if (!saveOrgRes.error) {
-        const res = await getOrganizationsByEmail(
-          authToken,
-          account.email || ""
-        );
-        if (res.organizations.length > 0) {
-          dispatch(setOrganizations(res.organizations));
+        const savedInfraRes = await saveInfrastructure(authToken, {
+          email: account.email,
+          organizationId: organization.id,
+        });
+        if (savedInfraRes) {
+          const res = await getOrganizationsByEmail(
+            authToken,
+            account.email || ""
+          );
+          if (res.organizations.length > 0) {
+            dispatch(setOrganizations(res.organizations));
+          }
+          setOpen(false);
         }
-        setOpen(false);
       } else {
         if ((saveOrgRes.error?.message || "").includes("already existed")) {
           setErrorData((prev) => ({

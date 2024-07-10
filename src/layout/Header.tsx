@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 import DropdownButton, { DropdownOption } from "../actions/DropdownButton";
 import { LinkButton } from "../actions/LinkButton";
 import { CreateOrgModal } from "../components/CreateOrgModal";
-import { setOrganization } from "../features/auth/authSlice";
+import { EditOrgModal } from "../components/EditOrgModal";
+import { SwitchOrganizationModal } from "../components/SwitchOrganizationModal";
 import { DocAccount, Organization } from "../model/AccountModel";
 import { ReduxActionType } from "../model/ReduxModel";
-import { EditOrgModal } from "../components/EditOrgModal";
 
 export const Header = () => {
   const account: DocAccount = useSelector((state: any) => state.auth.account);
@@ -24,11 +24,18 @@ export const Header = () => {
 
   const [createOrgModalOpen, setCreateOrgModalOpen] = useState<boolean>(false);
   const [editOrgModalOpen, setEditOrgModalOpen] = useState<boolean>(false);
+  const [switchOrgModalOpen, setSwitchOrgModalOpen] = useState<boolean>(false);
   const [editingOrg, setEditingOrg] = useState<Organization>();
+  const [selectedOrg, setSelectedOrg] = useState<Organization>();
 
   const handleLogout = () => {
     dispatch({ type: ReduxActionType.logout });
     navigate("/");
+  };
+
+  const handleSelectOrg = (value: string | undefined) => {
+    setSelectedOrg(organizations.find((org) => org.id === value));
+    setSwitchOrgModalOpen(true);
   };
 
   return (
@@ -40,11 +47,7 @@ export const Header = () => {
             showIcon
             variant="blank"
             position="left"
-            onChange={(value) =>
-              dispatch(
-                setOrganization(organizations.find((org) => org.id === value))
-              )
-            }
+            onChange={handleSelectOrg}
             itemClassName="!w-72"
             options={[
               ...organizations.map(
@@ -115,6 +118,11 @@ export const Header = () => {
       <CreateOrgModal
         open={createOrgModalOpen}
         setOpen={setCreateOrgModalOpen}
+      />
+      <SwitchOrganizationModal
+        open={switchOrgModalOpen}
+        setOpen={setSwitchOrgModalOpen}
+        selectedOrg={selectedOrg}
       />
     </>
   );
