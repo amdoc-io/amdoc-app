@@ -42,6 +42,14 @@ export const SwitchOrganizationModal = (props: {
   }, [selectedOrg, authToken, dispatch]);
 
   useEffect(() => {
+    if (open) {
+      setCompletion({
+        infrastructure: false,
+      });
+    }
+  }, [open]);
+
+  useEffect(() => {
     if (Object.values(completion).every((value) => value) && open) {
       setTimeout(() => {
         setOpen(false);
