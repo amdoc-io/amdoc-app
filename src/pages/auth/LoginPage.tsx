@@ -192,7 +192,7 @@ export const LoginPage = () => {
       </OutlinedButton>
 
       <FacebookLogin
-        fields="email,public_profile"
+        fields="email,name,picture"
         appId={process.env.REACT_APP_FACEBOOK_OAUTH_CLIENT_ID as string}
         callback={handleFacebookLogin}
         autoLoad={false}
