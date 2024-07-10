@@ -6,8 +6,12 @@ import {
   getGithubAppJWT,
   saveInfrastructure,
 } from "../utils/AccountFetchUtils";
-import { getGithubInstallationAccessTokens } from "../utils/GithubFetchUtils";
+import {
+  getGithubAuthenticatedUser,
+  getGithubInstallationAccessTokens,
+} from "../utils/GithubFetchUtils";
 import { isTokenValid, mapInstallationToken } from "../utils/TokenUtils";
+import { setGithubUser } from "../features/auth/authSlice";
 
 export const OutletWrapper = (
   props: React.DetailedHTMLProps<
@@ -84,6 +88,19 @@ export const OutletWrapper = (
       }
     }
   }, [authToken, githubInstallationId, dispatch, shouldRotate, infrastructure]);
+
+  const fetchGithubUser = useCallback(async () => {
+    if (infrastructure && infrastructure.gitOauthToken) {
+      const githubUser = await getGithubAuthenticatedUser(
+        infrastructure.gitOauthToken.accessToken
+      );
+      dispatch(setGithubUser(githubUser));
+    }
+  }, [infrastructure, dispatch]);
+
+  useEffect(() => {
+    fetchGithubUser();
+  }, [fetchGithubUser]);
 
   useEffect(() => {
     rotateGithubInstallationToken();
