@@ -112,8 +112,10 @@ export const PrepareApplicationPage = () => {
 
   useEffect(() => {
     if (Object.values(completion).every((value) => value)) {
-      dispatch(setPrepareCompleted(true));
-      navigate("/");
+      setTimeout(() => {
+        dispatch(setPrepareCompleted(true));
+        navigate("/");
+      }, 500);
     }
   }, [completion, navigate, dispatch]);
 
