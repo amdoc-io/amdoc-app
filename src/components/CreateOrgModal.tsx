@@ -1,19 +1,19 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { OutlinedButton } from "../actions/OutlinedButton";
 import { PrimaryButton } from "../actions/PrimaryButton";
 import Select from "../actions/Select";
+import { setOrganizations } from "../features/auth/authSlice";
 import { Input } from "../forms/Input";
 import Modal from "../layout/Modal";
-import { Countries } from "../pages/config/BusinessConfig";
-import { isValidated } from "../utils/ValidationUtils";
 import { DocAccount, Organization } from "../model/AccountModel";
-import { useDispatch, useSelector } from "react-redux";
+import { Countries } from "../pages/config/BusinessConfig";
 import {
   getOrganizationsByEmail,
   saveInfrastructure,
   saveOrganization,
 } from "../utils/AccountFetchUtils";
-import { setOrganizations } from "../features/auth/authSlice";
+import { isValidated } from "../utils/ValidationUtils";
 
 export const CreateOrgModal = (props: {
   open?: boolean;
@@ -31,11 +31,6 @@ export const CreateOrgModal = (props: {
     [key: string]: any;
   }>({});
   const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    setFormData({});
-    setErrorData({});
-  }, [open]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {

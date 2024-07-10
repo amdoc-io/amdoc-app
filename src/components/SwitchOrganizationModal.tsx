@@ -22,7 +22,6 @@ export const SwitchOrganizationModal = (props: {
   });
 
   const fetchInfrastructure = useCallback(async () => {
-    console.log(selectedOrg);
     if (selectedOrg?.id) {
       const res = await getInfrastructureByOrganizationId(
         authToken,
@@ -40,14 +39,6 @@ export const SwitchOrganizationModal = (props: {
       }
     }
   }, [selectedOrg, authToken, dispatch]);
-
-  useEffect(() => {
-    if (open) {
-      setCompletion({
-        infrastructure: false,
-      });
-    }
-  }, [open]);
 
   useEffect(() => {
     if (Object.values(completion).every((value) => value) && open) {

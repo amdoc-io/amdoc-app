@@ -10,6 +10,7 @@ import { EditOrgModal } from "../components/EditOrgModal";
 import { SwitchOrganizationModal } from "../components/SwitchOrganizationModal";
 import { DocAccount, Organization } from "../model/AccountModel";
 import { ReduxActionType } from "../model/ReduxModel";
+import { v4 } from "uuid";
 
 export const Header = () => {
   const account: DocAccount = useSelector((state: any) => state.auth.account);
@@ -34,8 +35,10 @@ export const Header = () => {
   };
 
   const handleSelectOrg = (value: string | undefined) => {
-    setSelectedOrg(organizations.find((org) => org.id === value));
-    setSwitchOrgModalOpen(true);
+    if (value !== organization.id) {
+      setSelectedOrg(organizations.find((org) => org.id === value));
+      setSwitchOrgModalOpen(true);
+    }
   };
 
   return (
@@ -111,15 +114,18 @@ export const Header = () => {
         </div>
       </header>
       <EditOrgModal
+        key={v4()}
         open={editOrgModalOpen}
         setOpen={setEditOrgModalOpen}
         editingOrg={editingOrg}
       />
       <CreateOrgModal
+        key={v4()}
         open={createOrgModalOpen}
         setOpen={setCreateOrgModalOpen}
       />
       <SwitchOrganizationModal
+        key={v4()}
         open={switchOrgModalOpen}
         setOpen={setSwitchOrgModalOpen}
         selectedOrg={selectedOrg}
