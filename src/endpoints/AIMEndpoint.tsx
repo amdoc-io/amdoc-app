@@ -14,3 +14,7 @@ export const AIM_SAVE_ORGANIZATION_ENDPOINT =
   AIM_BASE_URL + "/save-organization";
 export const AIM_GET_ORGANIZATIONS_BY_EMAIL_ENDPOINT =
   AIM_BASE_URL + "/get-organizations-by-email";
+export const AIM_SAVE_INFRASTRUCTURE_ENDPOINT =
+  AIM_BASE_URL + "/save-infrastructure";
+export const AIM_GET_INFRASTRUCTURE_BY_ORGANIZATION_ID_ENDPOINT =
+  AIM_BASE_URL + "/get-infrastructure-by-organization-id";

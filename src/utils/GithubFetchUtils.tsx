@@ -1,8 +1,8 @@
 import axios from "axios";
 import { AIM_GET_GITHUB_ACCESS_TOKEN_PROXY_ENDPOINT } from "../endpoints/AIMEndpoint";
-import { GithubAccessToken } from "../model/AuthModel";
-import { createHeader } from "./FetchUtils";
+import { GitOAuthToken } from "../model/AccountModel";
 import { GithubInstallation } from "../model/GithubModel";
+import { createHeader } from "./FetchUtils";
 export interface Permissions {
   metadata: string;
   pull_requests: string;
@@ -38,7 +38,7 @@ export const getGithubAccessToken = async (code: string) => {
         refreshTokenExpiresIn: data.refresh_token_expires_in,
         scope: data.scope,
         tokenType: data.token_type,
-      } as GithubAccessToken;
+      } as GitOAuthToken;
     })
     .catch((err) => undefined);
 };

@@ -1,25 +1,17 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { PrimaryButton } from "../../actions/PrimaryButton";
 import Select from "../../actions/Select";
 import { Input } from "../../forms/Input";
 import { AuthBrandingContainer } from "../../layout/AuthBrandingContainer";
-import { Countries } from "../config/BusinessConfig";
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  setOrganization,
-  setOrganizations,
-} from "../../features/auth/authSlice";
-import { isValidated } from "../../utils/ValidationUtils";
 import { DocAccount, Organization } from "../../model/AccountModel";
-import {
-  getOrganizationsByEmail,
-  saveOrganization,
-} from "../../utils/AccountFetchUtils";
+import { saveOrganization } from "../../utils/AccountFetchUtils";
+import { isValidated } from "../../utils/ValidationUtils";
+import { Countries } from "../config/BusinessConfig";
 
 export const AddOrganizationPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const account: DocAccount = useSelector((state: any) => state.auth.account);
   const authToken: string = useSelector((state: any) => state.auth.token);
@@ -61,15 +53,7 @@ export const AddOrganizationPage = () => {
       };
       const saveOrgRes = await saveOrganization(authToken, organization);
       if (saveOrgRes) {
-        const res = await getOrganizationsByEmail(
-          authToken,
-          account.email || ""
-        );
-        if (res.organizations.length > 0) {
-          dispatch(setOrganizations(res.organizations));
-          dispatch(setOrganization(res.organizations[0]));
-          navigate("/");
-        }
+        navigate("/prepare-application");
       }
     }
 

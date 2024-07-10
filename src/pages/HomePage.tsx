@@ -10,43 +10,38 @@ import { SetupInitialDoc } from "../components/SetupInitialDoc";
 import { Heading } from "../display/Heading";
 import { Paragraph } from "../display/Paragraph";
 import { WebDisplay } from "../display/WebDisplay";
-import { setClientWeb, setCurrentStep } from "../features/onboard/onboardSlice";
-import { GithubAccessToken } from "../model/AuthModel";
+import { setInfrastructure } from "../features/onboard/onboardSlice";
+import { ContentContainer } from "../layout/ContentContainer";
+import { Infrastructure } from "../model/AccountModel";
 import {
   createGitClientWebRepo,
+  saveInfrastructure,
   updateNetlifySite,
 } from "../utils/AccountFetchUtils";
-import { InstallationToken } from "../utils/GithubFetchUtils";
-import { ContentContainer } from "../layout/ContentContainer";
 
 export const HomePage = () => {
   const dispatch = useDispatch();
   const authToken: string = useSelector((state: any) => state.auth.token);
-  const gitProvider: string = useSelector(
-    (state: any) => state.onboard.gitProvider
+  const infrastructure: Infrastructure = useSelector(
+    (state: any) => state.onboard.infrastructure
   );
-  const githubOAuthAccessToken: GithubAccessToken = useSelector(
-    (state: any) => state.onboard.githubOAuthAccessToken
-  );
-  const githubInstallationToken: InstallationToken = useSelector(
-    (state: any) => state.onboard.githubInstallationToken
-  );
-  const docInitialRepo: string = useSelector(
-    (state: any) => state.onboard.docInitialRepo
-  );
-  const currentStep: number = useSelector(
-    (state: any) => state.onboard.currentStep
-  );
-  const clientWeb: string = useSelector(
-    (state: any) => state.onboard.clientWeb
-  );
+  const {
+    gitProvider,
+    gitInstallationToken,
+    gitOauthToken,
+    docInitialRepo,
+    docInitialWebsite,
+    currentStep,
+    id: infraId,
+  } = infrastructure || {};
+
   const githubUser: any = useSelector((state: any) => state.auth.githubUser);
 
   const [createClientWebLoading, setCreateClientWebLoading] =
     useState<boolean>(false);
 
   const createClientWeb = useCallback(async () => {
-    if (docInitialRepo && githubUser && !clientWeb) {
+    if (docInitialRepo && githubUser && !docInitialWebsite) {
       setCreateClientWebLoading(true);
       const site = await createGitClientWebRepo(
         authToken,
@@ -58,7 +53,13 @@ export const HomePage = () => {
         setTimeout(async () => {
           const updatedSite = await updateNetlifySite(authToken, site);
           if (updatedSite) {
-            dispatch(setClientWeb(`https://${docInitialRepo}.igendoc.com`));
+            const savedInfraRes = await saveInfrastructure(authToken, {
+              id: infraId,
+              docInitialWebsite: `https://${docInitialRepo}.igendoc.com`,
+            });
+            if (savedInfraRes) {
+              dispatch(setInfrastructure(savedInfraRes.infrastructure));
+            }
           }
         }, 30000);
       }
@@ -67,7 +68,24 @@ export const HomePage = () => {
         setCreateClientWebLoading(false);
       }, 90000);
     }
-  }, [docInitialRepo, authToken, githubUser, dispatch, clientWeb]);
+  }, [
+    docInitialRepo,
+    authToken,
+    githubUser,
+    dispatch,
+    docInitialWebsite,
+    infraId,
+  ]);
+
+  const updateStep = async (value: number) => {
+    const res = await saveInfrastructure(authToken, {
+      id: infraId,
+      currentStep: value,
+    });
+    if (res) {
+      dispatch(setInfrastructure(res.infrastructure));
+    }
+  };
 
   useEffect(() => {
     createClientWeb();
@@ -87,16 +105,14 @@ export const HomePage = () => {
             steps below.
           </Paragraph>
           <Steps
-            value={currentStep}
-            onChange={(value) => dispatch(setCurrentStep(value))}
+            value={currentStep || -1}
+            onChange={(value) => updateStep(value)}
             className="my-2"
             steps={[
               {
                 title: "Choose a Git provider",
                 description: (
-                  <ChooseGitProvider
-                    onComplete={() => dispatch(setCurrentStep(1))}
-                  />
+                  <ChooseGitProvider onComplete={() => updateStep(1)} />
                 ),
                 isCompleted: gitProvider !== undefined,
                 postCompletion: (
@@ -110,11 +126,9 @@ export const HomePage = () => {
               {
                 title: "Authorize with OAuth",
                 description: (
-                  <AuthorizeGitOAuth
-                    onComplete={() => dispatch(setCurrentStep(2))}
-                  />
+                  <AuthorizeGitOAuth onComplete={() => updateStep(2)} />
                 ),
-                isCompleted: githubOAuthAccessToken !== undefined,
+                isCompleted: gitOauthToken !== undefined,
                 postCompletion: (
                   <p>
                     You have successfully authorized using {gitProvider} OAuth
@@ -129,21 +143,17 @@ export const HomePage = () => {
               {
                 title: "Connect to Git provider",
                 description: (
-                  <ConnectGitProvider
-                    onComplete={() => dispatch(setCurrentStep(3))}
-                  />
+                  <ConnectGitProvider onComplete={() => updateStep(3)} />
                 ),
                 isCompleted: !!(
-                  githubInstallationToken && githubInstallationToken.token
+                  gitInstallationToken && gitInstallationToken.token
                 ),
                 postCompletion: `You have successfully installed the ${gitProvider} application!`,
               },
               {
                 title: "Set up your initial doc",
                 description: (
-                  <SetupInitialDoc
-                    onComplete={() => dispatch(setCurrentStep(4))}
-                  />
+                  <SetupInitialDoc onComplete={() => updateStep(4)} />
                 ),
                 isCompleted: docInitialRepo !== undefined,
                 postCompletion: (
@@ -179,7 +189,7 @@ export const HomePage = () => {
                   <>
                     Your documentation website:{" "}
                     <Link
-                      href={clientWeb}
+                      href={docInitialWebsite}
                       target="_blank"
                       rel="noreferrer"
                     >{`${docInitialRepo}.igendoc.com`}</Link>
@@ -192,7 +202,9 @@ export const HomePage = () => {
                 </Paragraph>
               )}
 
-              {clientWeb && <WebDisplay url={clientWeb} className="mt-4" />}
+              {docInitialWebsite && (
+                <WebDisplay url={docInitialWebsite} className="mt-4" />
+              )}
             </>
           )}
         </div>

@@ -51,3 +51,40 @@ export interface Organization {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface Infrastructure {
+  id?: string;
+  email?: string;
+  organizationId?: string;
+  gitProvider?: string;
+  gitOauthToken?: GitOAuthToken;
+  gitInstallationToken?: GitInstallationToken;
+  gitInstallationId?: string;
+  docInitialRepo?: string;
+  currentStep?: number;
+  docInitialWebsite?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface GitOAuthToken {
+  accessToken: string;
+  expiresIn: number;
+  refreshToken: string;
+  refreshTokenExpiresIn: number;
+  scope: string;
+  tokenType: string;
+}
+
+export interface GitPermissions {
+  metadata: string;
+  pullRequests: string;
+  repositoryProjects: string;
+}
+
+export interface GitInstallationToken {
+  token: string;
+  expiresAt: string;
+  permissions: GitPermissions;
+  repositorySelection: string;
+}

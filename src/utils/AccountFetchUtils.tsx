@@ -2,13 +2,19 @@ import axios from "axios";
 import {
   AIM_CREATE_GIT_CLIENT_WEB_APP_ENDPOINT,
   AIM_GET_GITHUB_APP_JWT_PROXY_ENDPOINT,
+  AIM_GET_INFRASTRUCTURE_BY_ORGANIZATION_ID_ENDPOINT,
   AIM_GET_ORGANIZATIONS_BY_EMAIL_ENDPOINT,
+  AIM_SAVE_INFRASTRUCTURE_ENDPOINT,
   AIM_SAVE_ORGANIZATION_ENDPOINT,
   AIM_UPDATE_ACCOUNT_ENDPOINT,
   AIM_UPDATE_NETLIFY_SITE_ENDPOINT,
 } from "../endpoints/AIMEndpoint";
+import {
+  DocAccount,
+  Infrastructure,
+  Organization,
+} from "../model/AccountModel";
 import { createHeader } from "./FetchUtils";
-import { DocAccount, Organization } from "../model/AccountModel";
 
 export interface UpdateAccountRequest {
   account: DocAccount;
@@ -24,6 +30,10 @@ export interface SaveOrganizationResponse {
 
 export interface GetOrganizationsByEmailResponse {
   organizations: Organization[];
+}
+
+export interface SaveInfrastructureResponse {
+  infrastructure: Infrastructure;
 }
 
 export const getGithubAppJWT = async (authToken: string) => {
@@ -114,5 +124,38 @@ export const getOrganizationsByEmail = async (
       return {
         organizations: [],
       } as GetOrganizationsByEmailResponse;
+    });
+};
+
+export const saveInfrastructure = async (
+  authToken: string,
+  infrastructure: Infrastructure
+) => {
+  return await axios
+    .post(
+      AIM_SAVE_INFRASTRUCTURE_ENDPOINT,
+      { infrastructure },
+      createHeader(authToken)
+    )
+    .then((res) => res.data as SaveInfrastructureResponse)
+    .catch((err) => {
+      console.error(err);
+      return undefined;
+    });
+};
+
+export const getInfrastructureByOrganizationId = async (
+  authToken: string,
+  organizationId: string
+) => {
+  return await axios
+    .get(
+      `${AIM_GET_INFRASTRUCTURE_BY_ORGANIZATION_ID_ENDPOINT}?organizationId=${organizationId}`,
+      createHeader(authToken)
+    )
+    .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return undefined;
     });
 };

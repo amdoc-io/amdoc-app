@@ -19,19 +19,24 @@ import { OutletWrapper } from "./layout/OutletWrapper";
 import { AddOrganizationPage } from "./pages/auth/AddOrganizationPage";
 import { Organization } from "./model/AccountModel";
 import { useMemo } from "react";
+import { PrepareApplicationPage } from "./pages/auth/PrepareApplicationPage";
 
 function App() {
   const token: string = useSelector((state: any) => state.auth.token);
   const setupCompleted: boolean = useSelector(
     (state: any) => state.auth.setupCompleted
   );
+  const prepareCompleted: boolean = useSelector(
+    (state: any) => state.auth.prepareCompleted
+  );
   const organizations: Organization[] = useSelector(
     (state: any) => state.auth.organizations
   );
 
   const isAuthorized = useMemo(
-    () => token && setupCompleted && organizations.length > 0,
-    [token, setupCompleted, organizations]
+    () =>
+      token && setupCompleted && organizations.length > 0 && prepareCompleted,
+    [token, setupCompleted, organizations, prepareCompleted]
   );
 
   const Wrapper = () => {
@@ -80,6 +85,10 @@ function App() {
               element: <AddOrganizationPage />,
             },
             {
+              path: "/prepare-application",
+              element: <PrepareApplicationPage />,
+            },
+            {
               path: "*",
               element: <Navigate to="/" replace />,
             },
@@ -104,6 +113,10 @@ function App() {
             {
               path: "/settings",
               element: <SettingsPage />,
+            },
+            {
+              path: "*",
+              element: <Navigate to="/" replace />,
             },
           ],
     },

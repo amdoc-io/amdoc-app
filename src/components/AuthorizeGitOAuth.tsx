@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { OutlinedButton } from "../actions/OutlinedButton";
 import { setGithubUser } from "../features/auth/authSlice";
-import { setGithubOAuthAccessToken } from "../features/onboard/onboardSlice";
+import { setInfrastructure } from "../features/onboard/onboardSlice";
 import { StepContainer } from "../layout/StepContainer";
-import { GithubAccessToken } from "../model/AuthModel";
+import { Infrastructure } from "../model/AccountModel";
+import { saveInfrastructure } from "../utils/AccountFetchUtils";
 import {
   getGithubAccessToken,
   getGithubAuthenticatedUser,
@@ -21,12 +22,12 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
   const searchParams = new URLSearchParams(location.search);
   const code = searchParams.get("code");
   const error = searchParams.get("error");
-  const githubOAuthAccessToken: GithubAccessToken = useSelector(
-    (state: any) => state.onboard.githubOAuthAccessToken
+
+  const authToken: string = useSelector((state: any) => state.auth.token);
+  const infrastructure: Infrastructure = useSelector(
+    (state: any) => state.onboard.infrastructure
   );
-  const gitProvider: string = useSelector(
-    (state: any) => state.onboard.gitProvider
-  );
+  const { gitProvider, gitOauthToken, id: infraId } = infrastructure;
   const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
   const [githubLoading, setGithubLoading] = useState<boolean>(false);
 
@@ -36,10 +37,7 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
   };
 
   const handleGithubSuccessAuthorize = useCallback(async () => {
-    if (
-      code &&
-      (!githubOAuthAccessToken || !githubOAuthAccessToken.accessToken)
-    ) {
+    if (code && (!gitOauthToken || !gitOauthToken.accessToken)) {
       setGithubLoading(true);
 
       const githubAccessToken = await getGithubAccessToken(code);
@@ -47,22 +45,27 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
         githubAccessToken?.accessToken || ""
       );
 
+      const savedInfraRes = await saveInfrastructure(authToken, {
+        id: infraId,
+        gitOauthToken: githubAccessToken,
+      });
+      if (savedInfraRes) {
+        dispatch(setInfrastructure(savedInfraRes.infrastructure));
+      }
+
       dispatch(setGithubUser(githubUser));
-      dispatch(setGithubOAuthAccessToken(githubAccessToken));
 
       setGithubLoading(false);
       navigate("/");
     }
-  }, [code, dispatch, githubOAuthAccessToken, navigate]);
+  }, [code, dispatch, gitOauthToken, navigate, infraId, authToken]);
 
-  const handleGithubErrorAuthorize = useCallback(() => {
+  const handleGithubErrorAuthorize = useCallback(async () => {
     if (error) {
       if (error === "access_denied") {
-        dispatch(setGithubUser(undefined));
-        dispatch(setGithubOAuthAccessToken(undefined));
       }
     }
-  }, [error, dispatch]);
+  }, [error]);
 
   useEffect(() => {
     handleGithubSuccessAuthorize();
@@ -73,15 +76,11 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
   }, [handleGithubErrorAuthorize]);
 
   useEffect(() => {
-    if (
-      githubOAuthAccessToken &&
-      githubOAuthAccessToken.accessToken &&
-      !setupCompleted
-    ) {
+    if (gitOauthToken && gitOauthToken.accessToken && !setupCompleted) {
       onComplete();
       setSetupCompleted(true);
     }
-  }, [onComplete, githubOAuthAccessToken, setupCompleted]);
+  }, [onComplete, gitOauthToken, setupCompleted]);
 
   return (
     <StepContainer>
@@ -91,7 +90,7 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
         <OutlinedButton
           loading={githubLoading}
           icon={
-            githubOAuthAccessToken && githubOAuthAccessToken.accessToken ? (
+            gitOauthToken && gitOauthToken.accessToken ? (
               <RxLockOpen1 />
             ) : (
               <RxLockClosed />
@@ -99,8 +98,8 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
           }
           onClick={handleAuthorizeGithub}
           suffix={
-            githubOAuthAccessToken &&
-            githubOAuthAccessToken.accessToken && (
+            gitOauthToken &&
+            gitOauthToken.accessToken && (
               <FaCheckCircle className="text-green-500" />
             )
           }

@@ -2,17 +2,31 @@ import { useEffect, useState } from "react";
 import { RxGithubLogo } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioCard } from "../actions/RadioCard";
-import { setGitProvider } from "../features/onboard/onboardSlice";
+import { setInfrastructure } from "../features/onboard/onboardSlice";
 import { StepContainer } from "../layout/StepContainer";
+import { Infrastructure } from "../model/AccountModel";
+import { saveInfrastructure } from "../utils/AccountFetchUtils";
 
 export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
   const { onComplete = () => {} } = props;
   const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
 
   const dispatch = useDispatch();
-  const gitProvider: string = useSelector(
-    (state: any) => state.onboard.gitProvider
+  const authToken: string = useSelector((state: any) => state.auth.token);
+  const infrastructure: Infrastructure = useSelector(
+    (state: any) => state.onboard.infrastructure
   );
+  const { gitProvider } = infrastructure;
+
+  const saveGitProvider = async (value: string) => {
+    const res = await saveInfrastructure(authToken, {
+      id: infrastructure.id,
+      gitProvider: value,
+    });
+    if (res) {
+      dispatch(setInfrastructure(res.infrastructure));
+    }
+  };
 
   useEffect(() => {
     if (gitProvider && !setupCompleted) {
@@ -29,7 +43,7 @@ export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
         <RadioCard
           active={gitProvider === "GitHub"}
           value="GitHub"
-          onChange={(value) => dispatch(setGitProvider(value))}
+          onChange={saveGitProvider}
         >
           GitHub
           <div className="text-[40px]">

@@ -4,6 +4,7 @@ import { DocAccount, Organization } from "../../model/AccountModel";
 export interface AuthState {
   token?: string;
   setupCompleted?: boolean;
+  prepareCompleted?: boolean;
   account?: DocAccount;
   signedInAt?: string;
   githubUser?: any;
@@ -17,6 +18,7 @@ const initialState: AuthState = {
   signedInAt: undefined,
   githubUser: undefined,
   setupCompleted: undefined,
+  prepareCompleted: undefined,
   organizations: [],
   organization: undefined,
 };
@@ -55,6 +57,12 @@ export const authSlice = createSlice({
     ) => {
       state.organization = action.payload;
     },
+    setPrepareCompleted: (
+      state,
+      action: PayloadAction<boolean | undefined>
+    ) => {
+      state.prepareCompleted = action.payload;
+    },
   },
 });
 
@@ -66,6 +74,7 @@ export const {
   setSetupCompleted,
   setOrganizations,
   setOrganization,
+  setPrepareCompleted,
 } = authSlice.actions;
 
 export default authSlice.reducer;

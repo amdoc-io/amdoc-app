@@ -1,12 +1,13 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { setInfrastructure } from "../features/onboard/onboardSlice";
+import { GitInstallationToken, Infrastructure } from "../model/AccountModel";
 import {
-  InstallationToken,
-  getGithubInstallationAccessTokens,
-} from "../utils/GithubFetchUtils";
-import { getGithubAppJWT } from "../utils/AccountFetchUtils";
-import { isTokenValid } from "../utils/TokenUtils";
-import { setGithubInstallationToken } from "../features/onboard/onboardSlice";
+  getGithubAppJWT,
+  saveInfrastructure,
+} from "../utils/AccountFetchUtils";
+import { getGithubInstallationAccessTokens } from "../utils/GithubFetchUtils";
+import { isTokenValid, mapInstallationToken } from "../utils/TokenUtils";
 
 export const OutletWrapper = (
   props: React.DetailedHTMLProps<
@@ -16,9 +17,10 @@ export const OutletWrapper = (
 ) => {
   const dispatch = useDispatch();
   const authToken: string = useSelector((state: any) => state.auth.token);
-  const githubInstallationToken: InstallationToken = useSelector(
-    (state: any) => state.onboard.githubInstallationToken
+  const infrastructure: Infrastructure = useSelector(
+    (state: any) => state.onboard.infrastructure
   );
+
   const currentStep: number = useSelector(
     (state: any) => state.onboard.currentStep
   );
@@ -38,23 +40,23 @@ export const OutletWrapper = (
       return false;
     }
 
-    if (currentStep > 2 && !githubInstallationToken) {
+    if (currentStep > 2 && !infrastructure.gitInstallationToken) {
       return true;
     }
 
-    if (!githubInstallationToken) {
+    if (!infrastructure.gitInstallationToken) {
       return true;
     }
 
-    const { token, expires_at } = githubInstallationToken;
+    const { token, expiresAt } = infrastructure.gitInstallationToken;
 
-    if (!token || !expires_at) {
+    if (!token || !expiresAt) {
       return true;
     }
 
-    return !isTokenValid(expires_at);
+    return !isTokenValid(expiresAt);
   }, [
-    githubInstallationToken,
+    infrastructure,
     authToken,
     githubInstallationId,
     gitProvider,
@@ -64,13 +66,24 @@ export const OutletWrapper = (
   const rotateGithubInstallationToken = useCallback(async () => {
     if (shouldRotate()) {
       const jwt = await getGithubAppJWT(authToken);
-      const githubInstallationToken = await getGithubInstallationAccessTokens(
+      const githubToken = await getGithubInstallationAccessTokens(
         jwt,
         githubInstallationId
       );
-      dispatch(setGithubInstallationToken(githubInstallationToken));
+      if (githubToken) {
+        const gitInstallationToken: GitInstallationToken =
+          mapInstallationToken(githubToken);
+        const savingInfra: Infrastructure = {
+          id: infrastructure.id,
+          gitInstallationToken: gitInstallationToken,
+        };
+        const savedInfraRes = await saveInfrastructure(authToken, savingInfra);
+        if (savedInfraRes) {
+          dispatch(setInfrastructure(savedInfraRes.infrastructure));
+        }
+      }
     }
-  }, [authToken, githubInstallationId, dispatch, shouldRotate]);
+  }, [authToken, githubInstallationId, dispatch, shouldRotate, infrastructure]);
 
   useEffect(() => {
     rotateGithubInstallationToken();

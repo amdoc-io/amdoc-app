@@ -4,17 +4,18 @@ import { RxDownload } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { OutlinedButton } from "../actions/OutlinedButton";
-import {
-  setGithubInstallationId,
-  setGithubInstallationToken,
-} from "../features/onboard/onboardSlice";
+import { setInfrastructure } from "../features/onboard/onboardSlice";
 import { StepContainer } from "../layout/StepContainer";
-import { getGithubAppJWT } from "../utils/AccountFetchUtils";
+import { GitInstallationToken, Infrastructure } from "../model/AccountModel";
 import {
-  InstallationToken,
+  getGithubAppJWT,
+  saveInfrastructure,
+} from "../utils/AccountFetchUtils";
+import {
   getGithubAppInstallations,
   getGithubInstallationAccessTokens,
 } from "../utils/GithubFetchUtils";
+import { mapInstallationToken } from "../utils/TokenUtils";
 
 export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   const { onComplete = () => {} } = props;
@@ -23,9 +24,10 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const authToken: string = useSelector((state: any) => state.auth.token);
-  const githubInstallationToken: InstallationToken = useSelector(
-    (state: any) => state.onboard.githubInstallationToken
+  const infrastructure: Infrastructure = useSelector(
+    (state: any) => state.onboard.infrastructure
   );
+  const { gitInstallationToken, id: infraId } = infrastructure;
   const searchParams = new URLSearchParams(location.search);
   const installationId = searchParams.get("installation_id");
   const refreshToken = searchParams.get("refresh_token");
@@ -37,20 +39,28 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
     if (installationId && (!setupCompleted || refreshToken)) {
       setGithubLoading(true);
 
-      dispatch(setGithubInstallationId(installationId));
-
       const jwt = await getGithubAppJWT(authToken);
       const githubInstallationToken = await getGithubInstallationAccessTokens(
         jwt,
         installationId
       );
-
-      dispatch(setGithubInstallationToken(githubInstallationToken));
-
-      onComplete();
-      setSetupCompleted(true);
-      setGithubLoading(false);
-      navigate("/");
+      if (githubInstallationToken) {
+        const gitInstallationToken: GitInstallationToken = mapInstallationToken(
+          githubInstallationToken
+        );
+        const savedInfraRes = await saveInfrastructure(authToken, {
+          id: infraId,
+          gitInstallationToken: gitInstallationToken,
+          gitInstallationId: installationId,
+        });
+        if (savedInfraRes) {
+          dispatch(setInfrastructure(savedInfraRes.infrastructure));
+          onComplete();
+          setSetupCompleted(true);
+          setGithubLoading(false);
+          navigate("/");
+        }
+      }
     }
   }, [
     installationId,
@@ -60,18 +70,15 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
     dispatch,
     navigate,
     refreshToken,
+    infraId,
   ]);
 
   useEffect(() => {
-    if (
-      githubInstallationToken &&
-      githubInstallationToken.token &&
-      !setupCompleted
-    ) {
+    if (gitInstallationToken && gitInstallationToken.token && !setupCompleted) {
       onComplete();
       setSetupCompleted(true);
     }
-  }, [githubInstallationToken, onComplete, setupCompleted]);
+  }, [gitInstallationToken, onComplete, setupCompleted]);
 
   useEffect(() => {
     handleGithubSuccessInstallation();

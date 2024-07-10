@@ -2,18 +2,16 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { RxPencil2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { Checkbox } from "../actions/Checkbox";
+import { Link } from "../actions/Link";
 import { OutlinedButton } from "../actions/OutlinedButton";
-import { setDocInitialRepo } from "../features/onboard/onboardSlice";
+import { setInfrastructure } from "../features/onboard/onboardSlice";
 import { Input } from "../forms/Input";
 import { Card } from "../layout/Card";
 import { StepContainer } from "../layout/StepContainer";
-import { DocAccount } from "../model/AccountModel";
-import {
-  InstallationToken,
-  createRepoFromTemplate,
-} from "../utils/GithubFetchUtils";
+import { DocAccount, Infrastructure } from "../model/AccountModel";
+import { saveInfrastructure } from "../utils/AccountFetchUtils";
+import { createRepoFromTemplate } from "../utils/GithubFetchUtils";
 import { titleCaseToSnakeCase } from "../utils/StringUtils";
-import { Link } from "../actions/Link";
 
 export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   const dispatch = useDispatch();
@@ -22,12 +20,12 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
   const githubUser: any = useSelector((state: any) => state.auth.githubUser);
   const account: DocAccount = useSelector((state: any) => state.auth.account);
-  const docInitialRepo: string = useSelector(
-    (state: any) => state.onboard.docInitialRepo
+
+  const authToken: string = useSelector((state: any) => state.auth.token);
+  const infrastructure: Infrastructure = useSelector(
+    (state: any) => state.onboard.infrastructure
   );
-  const githubInstallationToken: InstallationToken = useSelector(
-    (state: any) => state.onboard.githubInstallationToken
-  );
+  const { docInitialRepo, gitInstallationToken } = infrastructure;
 
   const [createDocLoading, setCreateDocLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<{ [key: string]: any }>({
@@ -56,6 +54,16 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
     }));
   };
 
+  const saveDocRepo = async (repo: string) => {
+    const savedInfraRes = await saveInfrastructure(authToken, {
+      id: infrastructure.id,
+      docInitialRepo: repo,
+    });
+    if (savedInfraRes) {
+      dispatch(setInfrastructure(savedInfraRes.infrastructure));
+    }
+  };
+
   const handleCreateDoc = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -63,23 +71,25 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
     if (formData.existingRepoAcknowledged && repoCreationError) {
       onComplete();
-      dispatch(setDocInitialRepo(formData.repoName.toString()));
+      saveDocRepo(formData.repoName.toString());
     } else {
-      const res = await createRepoFromTemplate(
-        githubInstallationToken.token,
-        githubUser.login,
-        formData.repoName.toString()
-      );
+      if (gitInstallationToken) {
+        const res = await createRepoFromTemplate(
+          gitInstallationToken.token,
+          githubUser.login,
+          formData.repoName.toString()
+        );
 
-      if (res) {
-        if (res.status === "422" && res.message?.includes("already exists")) {
-          setRepoCreationError(res.message);
-        } else {
-          if (repoCreationError) {
-            setRepoCreationError(undefined);
+        if (res) {
+          if (res.status === "422" && res.message?.includes("already exists")) {
+            setRepoCreationError(res.message);
+          } else {
+            if (repoCreationError) {
+              setRepoCreationError(undefined);
+            }
+            onComplete();
+            saveDocRepo(formData.repoName.toString());
           }
-          onComplete();
-          dispatch(setDocInitialRepo(formData.repoName.toString()));
         }
       }
     }
