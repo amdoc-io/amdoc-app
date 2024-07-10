@@ -69,7 +69,7 @@ export const CreateOrgModal = (props: {
       if (!saveOrgRes.error) {
         const savedInfraRes = await saveInfrastructure(authToken, {
           email: account.email,
-          organizationId: organization.id,
+          organizationId: saveOrgRes?.organization?.id,
         });
         if (savedInfraRes) {
           const res = await getOrganizationsByEmail(
