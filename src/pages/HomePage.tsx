@@ -60,7 +60,7 @@ export const HomePage = () => {
 
       setTimeout(() => {
         setCreateClientWebLoading(false);
-      }, 90000);
+      }, 60000);
     }
   }, [
     docInitialRepo,

@@ -20,6 +20,7 @@ export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
       id: infrastructure.id,
       gitProvider: value,
     });
+    console.log("choose git:", res);
     if (res) {
       dispatch(setInfrastructure(res.infrastructure));
       onComplete();
