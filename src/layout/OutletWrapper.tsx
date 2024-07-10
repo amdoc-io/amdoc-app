@@ -1,9 +1,14 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setInfrastructure } from "../features/onboard/onboardSlice";
-import { GitInstallationToken, Infrastructure } from "../model/AccountModel";
+import {
+  GitInstallationToken,
+  Infrastructure,
+  Organization,
+} from "../model/AccountModel";
 import {
   getGithubAppJWT,
+  getInfrastructureByOrganizationId,
   saveInfrastructure,
 } from "../utils/AccountFetchUtils";
 import {
@@ -21,6 +26,9 @@ export const OutletWrapper = (
 ) => {
   const dispatch = useDispatch();
   const authToken: string = useSelector((state: any) => state.auth.token);
+  const organization: Organization = useSelector(
+    (state: any) => state.auth.organization
+  );
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
@@ -97,6 +105,22 @@ export const OutletWrapper = (
       dispatch(setGithubUser(githubUser));
     }
   }, [infrastructure, dispatch]);
+
+  const fetchInfrastructure = useCallback(async () => {
+    if (authToken && organization?.id) {
+      const res = await getInfrastructureByOrganizationId(
+        authToken,
+        organization.id
+      );
+      if (res) {
+        dispatch(setInfrastructure(res.infrastructure));
+      }
+    }
+  }, [organization, authToken, dispatch]);
+
+  useEffect(() => {
+    fetchInfrastructure();
+  }, [fetchInfrastructure]);
 
   useEffect(() => {
     fetchGithubUser();

@@ -16,11 +16,12 @@ export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
   const { gitProvider } = infrastructure;
 
   const saveGitProvider = async (value: string) => {
+    if (value === gitProvider) return;
+
     const res = await saveInfrastructure(authToken, {
       id: infrastructure.id,
       gitProvider: value,
     });
-    console.log("choose git:", res);
     if (res) {
       dispatch(setInfrastructure(res.infrastructure));
       onComplete();
@@ -31,7 +32,7 @@ export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
     <StepContainer>
       <p>Choose one of the following providers to deploy your application</p>
 
-      <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 w-full">
+      <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 w-full relative">
         <RadioCard
           active={gitProvider === "GitHub"}
           value="GitHub"
