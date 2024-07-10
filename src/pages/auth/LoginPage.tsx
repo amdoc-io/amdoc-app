@@ -11,7 +11,10 @@ import { AIM_SIGN_IN_ENDPOINT } from "../../endpoints/AIMEndpoint";
 import { login } from "../../features/auth/authSlice";
 import { AuthContainer } from "../../layout/AuthContainer";
 import { AuthType, SignInResponse } from "../../model/AccountModel";
-import { getOrganizationsByEmail } from "../../utils/AccountFetchUtils";
+import {
+  getLinkedInAccessToken,
+  getOrganizationsByEmail,
+} from "../../utils/AccountFetchUtils";
 import { getGithubAccessToken } from "../../utils/GithubFetchUtils";
 import { PrimaryButton } from "../../actions/PrimaryButton";
 
@@ -66,9 +69,19 @@ export const LoginPage = () => {
     if (location.pathname.endsWith("linkedin") && code) {
       setLinkedInLoading(true);
 
+      const linkedInAccessToken = await getLinkedInAccessToken(code);
+      if (linkedInAccessToken) {
+        const formData = {
+          authType: AuthType.LINKEDIN,
+          accessToken: linkedInAccessToken?.accessToken,
+        };
+
+        handleSystemSignIn(formData, () => setLinkedInLoading(false));
+      }
+
       setLinkedInLoading(false);
     }
-  }, [location, code]);
+  }, [location, code, handleSystemSignIn]);
 
   const handleGithubSuccessSignIn = useCallback(async () => {
     if (location.pathname.endsWith("github") && code) {
@@ -76,12 +89,14 @@ export const LoginPage = () => {
 
       const githubAccessToken = await getGithubAccessToken(code);
 
-      const formData = {
-        authType: AuthType.GITHUB,
-        accessToken: githubAccessToken?.accessToken,
-      };
+      if (githubAccessToken) {
+        const formData = {
+          authType: AuthType.GITHUB,
+          accessToken: githubAccessToken?.accessToken,
+        };
 
-      handleSystemSignIn(formData, () => setGithubLoading(false));
+        handleSystemSignIn(formData, () => setGithubLoading(false));
+      }
     }
   }, [code, handleSystemSignIn, location]);
 

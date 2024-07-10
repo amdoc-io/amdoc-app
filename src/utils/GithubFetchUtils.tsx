@@ -40,7 +40,10 @@ export const getGithubAccessToken = async (code: string) => {
         tokenType: data.token_type,
       } as GitOAuthToken;
     })
-    .catch((err) => undefined);
+    .catch((err) => {
+      console.error(err);
+      return undefined;
+    });
 };
 
 export const getGithubAuthenticatedApp = async (jwt: string) => {

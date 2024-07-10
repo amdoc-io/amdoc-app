@@ -18,3 +18,5 @@ export const AIM_SAVE_INFRASTRUCTURE_ENDPOINT =
   AIM_BASE_URL + "/save-infrastructure";
 export const AIM_GET_INFRASTRUCTURE_BY_ORGANIZATION_ID_ENDPOINT =
   AIM_BASE_URL + "/get-infrastructure-by-organization-id";
+export const AIM_GET_LINKEDIN_ACCESS_TOKEN_PROXY_ENDPOINT =
+  AIM_BASE_URL + "/get-linkedin-access-token-proxy";

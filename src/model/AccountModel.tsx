@@ -8,6 +8,7 @@ export enum AuthType {
   "GOOGLE" = "GOOGLE",
   "GITHUB" = "GITHUB",
   "EMAIL" = "EMAIL",
+  "LINKEDIN" = "LINKEDIN",
 }
 
 export interface DocAccount {
@@ -87,4 +88,12 @@ export interface GitInstallationToken {
   expiresAt: string;
   permissions: GitPermissions;
   repositorySelection: string;
+}
+
+export interface LinkedInAccessToken {
+  accessToken: string;
+  expiresIn: number;
+  refreshToken: string;
+  refreshTokenExpiresIn: number;
+  scope: string;
 }

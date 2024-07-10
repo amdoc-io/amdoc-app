@@ -3,6 +3,7 @@ import {
   AIM_CREATE_GIT_CLIENT_WEB_APP_ENDPOINT,
   AIM_GET_GITHUB_APP_JWT_PROXY_ENDPOINT,
   AIM_GET_INFRASTRUCTURE_BY_ORGANIZATION_ID_ENDPOINT,
+  AIM_GET_LINKEDIN_ACCESS_TOKEN_PROXY_ENDPOINT,
   AIM_GET_ORGANIZATIONS_BY_EMAIL_ENDPOINT,
   AIM_SAVE_INFRASTRUCTURE_ENDPOINT,
   AIM_SAVE_ORGANIZATION_ENDPOINT,
@@ -12,6 +13,7 @@ import {
 import {
   DocAccount,
   Infrastructure,
+  LinkedInAccessToken,
   Organization,
 } from "../model/AccountModel";
 import { createHeader } from "./FetchUtils";
@@ -154,6 +156,16 @@ export const getInfrastructureByOrganizationId = async (
       createHeader(authToken)
     )
     .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return undefined;
+    });
+};
+
+export const getLinkedInAccessToken = async (code: string) => {
+  return await axios
+    .get(`${AIM_GET_LINKEDIN_ACCESS_TOKEN_PROXY_ENDPOINT}?code=${code}`)
+    .then((res) => res.data as LinkedInAccessToken)
     .catch((err) => {
       console.error(err);
       return undefined;
