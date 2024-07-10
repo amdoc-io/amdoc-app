@@ -1,7 +1,7 @@
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
 import { RiGoogleLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -185,6 +185,14 @@ export const LoginPage = () => {
       >
         Sign in with Google
       </OutlinedButton>
+
+      <PrimaryButton
+        icon={<FaFacebook />}
+        className="!bg-facebook !border-none"
+        disabled
+      >
+        Sign in with Facebook
+      </PrimaryButton>
 
       <PrimaryButton
         loading={githubLoading}
