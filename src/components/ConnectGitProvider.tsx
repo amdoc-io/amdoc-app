@@ -15,7 +15,7 @@ import {
   getGithubAppInstallations,
   getGithubInstallationAccessTokens,
 } from "../utils/GithubFetchUtils";
-import { mapInstallationToken } from "../utils/TokenUtils";
+import { isTokenValid, mapInstallationToken } from "../utils/TokenUtils";
 
 export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   const { onComplete = () => {} } = props;
@@ -27,7 +27,7 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
-  const { id: infraId } = infrastructure;
+  const { gitInstallationToken, id: infraId } = infrastructure;
   const searchParams = new URLSearchParams(location.search);
   const installationId = searchParams.get("installation_id");
   const refreshToken = searchParams.get("refresh_token");
@@ -113,7 +113,12 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
           onClick={handleGithubConnect}
           icon={<RxDownload />}
           suffix={
-            setupCompleted && <FaCheckCircle className="text-green-500" />
+            gitInstallationToken &&
+            gitInstallationToken.token &&
+            gitInstallationToken.expiresAt &&
+            isTokenValid(gitInstallationToken.expiresAt) && (
+              <FaCheckCircle className="text-green-500" />
+            )
           }
         >
           Install application
