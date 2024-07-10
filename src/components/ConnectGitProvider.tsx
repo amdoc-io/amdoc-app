@@ -27,7 +27,7 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
-  const { gitInstallationToken, id: infraId } = infrastructure;
+  const { id: infraId } = infrastructure;
   const searchParams = new URLSearchParams(location.search);
   const installationId = searchParams.get("installation_id");
   const refreshToken = searchParams.get("refresh_token");
@@ -72,13 +72,6 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
     refreshToken,
     infraId,
   ]);
-
-  useEffect(() => {
-    if (gitInstallationToken && gitInstallationToken.token && !setupCompleted) {
-      onComplete();
-      setSetupCompleted(true);
-    }
-  }, [gitInstallationToken, onComplete, setupCompleted]);
 
   useEffect(() => {
     handleGithubSuccessInstallation();

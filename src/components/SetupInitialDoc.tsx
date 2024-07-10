@@ -27,13 +27,12 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
-  const { docInitialRepo, gitInstallationToken } = infrastructure;
+  const { gitInstallationToken } = infrastructure;
 
   const [createDocLoading, setCreateDocLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<{ [key: string]: any }>({
     repoName: "docs",
   });
-  const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
   const [repoCreationError, setRepoCreationError] = useState<string>();
 
   useEffect(() => {
@@ -100,13 +99,6 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
     setCreateDocLoading(false);
   };
-
-  useEffect(() => {
-    if (docInitialRepo && !setupCompleted) {
-      onComplete();
-      setSetupCompleted(true);
-    }
-  }, [docInitialRepo, setupCompleted, onComplete]);
 
   return (
     <StepContainer>

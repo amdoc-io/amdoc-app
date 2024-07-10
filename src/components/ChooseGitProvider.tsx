@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { RxGithubLogo } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioCard } from "../actions/RadioCard";
@@ -8,9 +7,6 @@ import { Infrastructure } from "../model/AccountModel";
 import { saveInfrastructure } from "../utils/AccountFetchUtils";
 
 export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
-  const { onComplete = () => {} } = props;
-  const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
-
   const dispatch = useDispatch();
   const authToken: string = useSelector((state: any) => state.auth.token);
   const infrastructure: Infrastructure = useSelector(
@@ -27,13 +23,6 @@ export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
       dispatch(setInfrastructure(res.infrastructure));
     }
   };
-
-  useEffect(() => {
-    if (gitProvider && !setupCompleted) {
-      onComplete();
-      setSetupCompleted(true);
-    }
-  }, [gitProvider, onComplete, setupCompleted]);
 
   return (
     <StepContainer>

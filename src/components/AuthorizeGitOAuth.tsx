@@ -15,7 +15,6 @@ import {
 } from "../utils/GithubFetchUtils";
 
 export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
-  const { onComplete = () => {} } = props;
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -28,7 +27,6 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
     (state: any) => state.onboard.infrastructure
   );
   const { gitProvider, gitOauthToken, id: infraId } = infrastructure;
-  const [setupCompleted, setSetupCompleted] = useState<boolean>(false);
   const [githubLoading, setGithubLoading] = useState<boolean>(false);
 
   const handleAuthorizeGithub = () => {
@@ -74,13 +72,6 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
   useEffect(() => {
     handleGithubErrorAuthorize();
   }, [handleGithubErrorAuthorize]);
-
-  useEffect(() => {
-    if (gitOauthToken && gitOauthToken.accessToken && !setupCompleted) {
-      onComplete();
-      setSetupCompleted(true);
-    }
-  }, [onComplete, gitOauthToken, setupCompleted]);
 
   return (
     <StepContainer>
