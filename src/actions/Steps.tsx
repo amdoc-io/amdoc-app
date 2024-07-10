@@ -78,14 +78,15 @@ export const Steps = (props: {
               }`}
             >
               {step.title}
-              <div
-                className={`text-description mt-4 transition-all duration-300 ${
-                  value === i ? "opacity-100" : "h-0 opacity-0"
-                }`}
-              >
-                {step.description}
-              </div>
             </div>
+          </div>
+
+          <div
+            className={`text-description mt-4 transition-all duration-300 pl-7 text-sm font-medium z-10 ${
+              value === i ? "opacity-100" : "h-0 opacity-0"
+            }`}
+          >
+            {step.description}
           </div>
 
           {step.postCompletion && (
