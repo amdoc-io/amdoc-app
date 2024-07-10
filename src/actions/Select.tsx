@@ -54,10 +54,6 @@ export default function Select(props: {
     return option.value === value;
   };
 
-  const optionSort = (o1: SelectOption, o2: SelectOption) => {
-    return (o1.label || "").localeCompare(o2.label || "");
-  };
-
   return (
     <Menu
       ref={ref}
@@ -90,7 +86,7 @@ export default function Select(props: {
         }`}
       >
         <div className="py-1">
-          {options.sort(optionSort).map((option, i) => (
+          {options.map((option, i) => (
             <MenuItem key={i}>
               {({ focus }) => (
                 <div

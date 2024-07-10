@@ -36,7 +36,7 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
   };
 
   const handleGithubSuccessAuthorize = useCallback(async () => {
-    if (code && (!gitOauthToken || !gitOauthToken.accessToken)) {
+    if (code) {
       setGithubLoading(true);
 
       const githubAccessToken = await getGithubAccessToken(code);
@@ -58,7 +58,7 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
       setGithubLoading(false);
       navigate("/");
     }
-  }, [code, dispatch, gitOauthToken, navigate, infraId, authToken, onComplete]);
+  }, [code, dispatch, navigate, infraId, authToken, onComplete]);
 
   const handleGithubErrorAuthorize = useCallback(async () => {
     if (error) {
