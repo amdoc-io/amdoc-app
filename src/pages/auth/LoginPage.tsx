@@ -1,3 +1,4 @@
+import { FacebookLoginClient } from "@greatsumini/react-facebook-login";
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
@@ -7,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "../../actions/Link";
 import { OutlinedButton } from "../../actions/OutlinedButton";
+import { PrimaryButton } from "../../actions/PrimaryButton";
 import { AIM_SIGN_IN_ENDPOINT } from "../../endpoints/AIMEndpoint";
 import { login } from "../../features/auth/authSlice";
 import { AuthContainer } from "../../layout/AuthContainer";
@@ -16,7 +18,6 @@ import {
   getOrganizationsByEmail,
 } from "../../utils/AccountFetchUtils";
 import { getGithubAccessToken } from "../../utils/GithubFetchUtils";
-import { PrimaryButton } from "../../actions/PrimaryButton";
 
 export const LoginPage = () => {
   const location = useLocation();
@@ -101,6 +102,12 @@ export const LoginPage = () => {
   }, [code, handleSystemSignIn, location]);
 
   useEffect(() => {
+    FacebookLoginClient.init({
+      appId: process.env.REACT_APP_FACEBOOK_OAUTH_CLIENT_ID as string,
+    });
+  }, []);
+
+  useEffect(() => {
     handleLinkedInSuccessSignIn();
   }, [handleLinkedInSuccessSignIn]);
 
@@ -146,6 +153,17 @@ export const LoginPage = () => {
     },
   });
 
+  const handleFacebookLogin = async () => {
+    FacebookLoginClient.login(
+      (res) => {
+        console.log(res);
+      },
+      {
+        scope: "email,public_profile",
+      }
+    );
+  };
+
   const handleGithubLogin = () => {
     window.location.href = `https://github.com/login/oauth/authorize?scope=user&client_id=${process.env.REACT_APP_GITHUB_OAUTH_CLIENT_ID}`;
   };
@@ -188,8 +206,8 @@ export const LoginPage = () => {
 
       <PrimaryButton
         icon={<FaFacebook />}
-        className="!bg-facebook !border-none"
-        disabled
+        className="!bg-facebook !border-none hover:!bg-facebook/80"
+        onClick={handleFacebookLogin}
       >
         Sign in with Facebook
       </PrimaryButton>
