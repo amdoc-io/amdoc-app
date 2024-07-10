@@ -8,7 +8,7 @@ import { setInfrastructure } from "../features/onboard/onboardSlice";
 import { Input } from "../forms/Input";
 import { Card } from "../layout/Card";
 import { StepContainer } from "../layout/StepContainer";
-import { DocAccount, Infrastructure } from "../model/AccountModel";
+import { Infrastructure, Organization } from "../model/AccountModel";
 import { saveInfrastructure } from "../utils/AccountFetchUtils";
 import { createRepoFromTemplate } from "../utils/GithubFetchUtils";
 import { titleCaseToSnakeCase } from "../utils/StringUtils";
@@ -19,7 +19,9 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   const { onComplete = () => {} } = props;
 
   const githubUser: any = useSelector((state: any) => state.auth.githubUser);
-  const account: DocAccount = useSelector((state: any) => state.auth.account);
+  const organization: Organization = useSelector(
+    (state: any) => state.auth.organization
+  );
 
   const authToken: string = useSelector((state: any) => state.auth.token);
   const infrastructure: Infrastructure = useSelector(
@@ -35,14 +37,16 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   const [repoCreationError, setRepoCreationError] = useState<string>();
 
   useEffect(() => {
-    if (account?.organization) {
-      const repoName = titleCaseToSnakeCase(account.organization.toLowerCase());
+    if (organization) {
+      const repoName = titleCaseToSnakeCase(
+        organization.name?.toLowerCase() || ""
+      );
       setFormData((prev) => ({
         ...prev,
         repoName: repoName,
       }));
     }
-  }, [account]);
+  }, [organization]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
