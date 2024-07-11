@@ -103,7 +103,9 @@ export const OutletWrapper = (
       const githubUser = await getGithubAuthenticatedUser(
         infrastructure.gitOauthToken.accessToken
       );
-      dispatch(setGithubUser(githubUser));
+      if (githubUser) {
+        dispatch(setGithubUser(githubUser));
+      }
     }
   }, [infrastructure, dispatch, githubUser]);
 
