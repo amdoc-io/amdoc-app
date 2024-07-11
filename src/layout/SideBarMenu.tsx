@@ -7,6 +7,11 @@ import {
 } from "react-icons/rx";
 import { useLocation } from "react-router-dom";
 
+const firstPageAllowList = {
+  "/": true,
+  "/github": true,
+};
+
 const menu = [
   { label: "Home", href: "/", icon: <RxHome /> },
   {
@@ -37,7 +42,7 @@ export const SideBarMenu = () => {
   const isCurrentPage = (item: any) => {
     return (
       location.pathname === item.href ||
-      (location.pathname === "/" && item.label === menu[0].label)
+      (location.pathname in firstPageAllowList && item.label === menu[0].label)
     );
   };
 
