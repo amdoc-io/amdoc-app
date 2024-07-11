@@ -60,16 +60,6 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
     }));
   };
 
-  const saveDocRepo = async (repo: string) => {
-    const savedInfraRes = await saveInfrastructure(authToken, {
-      id: infrastructure.id,
-      docInitialRepo: repo,
-    });
-    if (savedInfraRes) {
-      dispatch(setInfrastructure(savedInfraRes.infrastructure));
-    }
-  };
-
   const handleCreateDoc = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -104,7 +94,6 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
   const finalizeDocInitialCreation = async (repoName: string) => {
     onComplete();
-    saveDocRepo(repoName);
 
     const site = await createGitClientWebRepo(
       authToken,
@@ -115,6 +104,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
     if (site) {
       const savedInfraRes = await saveInfrastructure(authToken, {
         id: infrastructure.id,
+        docInitialRepo: repoName,
         docInitialWebsite: `https://${repoName}.igendoc.com`,
         docInitialWebsiteCreatedAt: new Date().toISOString(),
       });
