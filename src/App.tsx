@@ -107,6 +107,10 @@ function App() {
               element: <HomePage />,
             },
             {
+              path: "/github",
+              element: <HomePage />,
+            },
+            {
               path: "/documentation",
               element: <DocumentationPage />,
             },
