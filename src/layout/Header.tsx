@@ -11,6 +11,7 @@ import { SwitchOrganizationModal } from "../components/SwitchOrganizationModal";
 import { DocAccount, Organization } from "../model/AccountModel";
 import { ReduxActionType } from "../model/ReduxModel";
 import { v4 } from "uuid";
+import { AccountAvatar } from "../display/AccountAvatar";
 
 export const Header = () => {
   const account: DocAccount = useSelector((state: any) => state.auth.account);
@@ -104,12 +105,7 @@ export const Header = () => {
               },
             ]}
           >
-            <img
-              alt="account"
-              src={account.profileImageUrl}
-              className="h-6 w-6 rounded-full"
-            />
-            <p>{`${account.firstName} ${account.lastName}`}</p>
+            <AccountAvatar />
           </DropdownButton>
         </div>
       </header>
