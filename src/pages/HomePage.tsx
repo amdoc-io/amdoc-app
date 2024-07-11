@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "../actions/Link";
 import { Steps } from "../actions/Steps";
@@ -34,23 +34,38 @@ export const HomePage = () => {
 
   const githubUser: any = useSelector((state: any) => state.auth.githubUser);
 
-  const docInitialWebsiteCreationPeriod = useMemo(() => {
+  const [docInitialWebsiteCreationPeriod, setDocInitialWebsiteCreationPeriod] =
+    useState<number>(-1);
+  const [
+    docInitialWebsiteCreationLoading,
+    setDocInitialWebsiteCreationLoading,
+  ] = useState<boolean>(false);
+
+  useEffect(() => {
     if (docInitialWebsiteCreatedAt) {
       const createdAt = new Date(docInitialWebsiteCreatedAt);
-      const now = new Date();
-      const differenceInMilliseconds = now.getTime() - createdAt.getTime();
-      const differenceInSeconds = differenceInMilliseconds / 1000;
-      return Math.min(90, differenceInSeconds);
-    }
-    return -1;
-  }, [docInitialWebsiteCreatedAt]);
 
-  const docInitialWebsiteCreationLoading = useMemo(
-    () =>
-      docInitialWebsiteCreationPeriod >= 0 &&
-      docInitialWebsiteCreationPeriod < 90,
-    [docInitialWebsiteCreationPeriod]
-  );
+      const updatePeriod = () => {
+        const now = new Date();
+        const differenceInMilliseconds = now.getTime() - createdAt.getTime();
+        const differenceInSeconds = differenceInMilliseconds / 1000;
+        const period = Math.min(90, differenceInSeconds);
+
+        setDocInitialWebsiteCreationLoading(period >= 0 && period < 90);
+        setDocInitialWebsiteCreationPeriod(period);
+
+        if (period >= 90) {
+          clearInterval(intervalId);
+        }
+      };
+
+      const intervalId = setInterval(updatePeriod, 1000);
+
+      updatePeriod();
+
+      return () => clearInterval(intervalId);
+    }
+  }, [docInitialWebsiteCreatedAt]);
 
   const updateStep = async (value: number) => {
     const res = await saveInfrastructure(authToken, {
@@ -147,18 +162,14 @@ export const HomePage = () => {
 
           {docInitialRepo && (
             <>
-              <Paragraph
-                className={`${
-                  docInitialWebsiteCreationLoading
-                    ? "flex items-center gap-2"
-                    : ""
-                }`}
-              >
+              <Paragraph>
                 {docInitialWebsiteCreationLoading ? (
                   <>
                     Your {docInitialRepo} documentation website is being
                     prepared. Ready in less than 2 minutes.
-                    <ProgressBar value={docInitialWebsiteCreationPeriod / 90} />
+                    <ProgressBar
+                      value={(docInitialWebsiteCreationPeriod / 90) * 100}
+                    />
                   </>
                 ) : (
                   <>
