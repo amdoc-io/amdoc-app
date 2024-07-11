@@ -77,8 +77,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
     const repoName = formData.repoName.toString();
     if (formData.existingRepoAcknowledged && repoCreationError) {
-      onComplete();
-      saveDocRepo(repoName);
+      await finalizeDocInitialCreation(repoName);
     } else {
       if (gitInstallationToken) {
         const res = await createRepoFromTemplate(
@@ -94,31 +93,35 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
             if (repoCreationError) {
               setRepoCreationError(undefined);
             }
-            onComplete();
-            saveDocRepo(repoName);
-
-            const site = await createGitClientWebRepo(
-              authToken,
-              repoName,
-              githubUser.login
-            );
-
-            if (site) {
-              const savedInfraRes = await saveInfrastructure(authToken, {
-                id: infrastructure.id,
-                docInitialWebsite: `https://${repoName}.igendoc.com`,
-                docInitialWebsiteCreatedAt: new Date().toISOString(),
-              });
-              if (savedInfraRes) {
-                dispatch(setInfrastructure(savedInfraRes.infrastructure));
-              }
-            }
+            await finalizeDocInitialCreation(repoName);
           }
         }
       }
     }
 
     setCreateDocLoading(false);
+  };
+
+  const finalizeDocInitialCreation = async (repoName: string) => {
+    onComplete();
+    saveDocRepo(repoName);
+
+    const site = await createGitClientWebRepo(
+      authToken,
+      repoName,
+      githubUser.login
+    );
+
+    if (site) {
+      const savedInfraRes = await saveInfrastructure(authToken, {
+        id: infrastructure.id,
+        docInitialWebsite: `https://${repoName}.igendoc.com`,
+        docInitialWebsiteCreatedAt: new Date().toISOString(),
+      });
+      if (savedInfraRes) {
+        dispatch(setInfrastructure(savedInfraRes.infrastructure));
+      }
+    }
   };
 
   return (
