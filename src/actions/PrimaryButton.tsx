@@ -24,7 +24,7 @@ export const PrimaryButton = (
         disabled ? "!cursor-not-allowed opacity-65" : "hover:bg-primary/80"
       } ${className}`}
     >
-      {loading && <AiOutlineLoading3Quarters className="loading" />}
+      {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
       {icon && !loading && <div className="text-inherit">{icon}</div>}
       {children}
       {suffix && <div className="text-inherit">{suffix}</div>}

@@ -149,15 +149,17 @@ export const LoginPage = () => {
   });
 
   const handleFacebookLogin = async (res: any) => {
-    setFacebookLoading(true);
+    if (res) {
+      setFacebookLoading(true);
 
-    const formData = {
-      authType: AuthType.FACEBOOK,
-      accessToken: res?.accessToken,
-      externalId: res?.id || res?.userID,
-    };
+      const formData = {
+        authType: AuthType.FACEBOOK,
+        accessToken: res?.accessToken,
+        externalId: res?.id || res?.userID,
+      };
 
-    handleSystemSignIn(formData, () => setFacebookLoading(false));
+      handleSystemSignIn(formData, () => setFacebookLoading(false));
+    }
   };
 
   const handleGithubLogin = () => {
