@@ -154,6 +154,7 @@ export const LoginPage = () => {
     const formData = {
       authType: AuthType.FACEBOOK,
       accessToken: res?.accessToken,
+      externalId: res?.id || res?.userID,
     };
 
     handleSystemSignIn(formData, () => setFacebookLoading(false));
