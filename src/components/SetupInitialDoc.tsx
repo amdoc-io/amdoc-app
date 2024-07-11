@@ -9,7 +9,10 @@ import { Input } from "../forms/Input";
 import { Card } from "../layout/Card";
 import { StepContainer } from "../layout/StepContainer";
 import { Infrastructure, Organization } from "../model/AccountModel";
-import { saveInfrastructure } from "../utils/AccountFetchUtils";
+import {
+  createGitClientWebRepo,
+  saveInfrastructure,
+} from "../utils/AccountFetchUtils";
 import { createRepoFromTemplate } from "../utils/GithubFetchUtils";
 import { titleCaseToSnakeCase } from "../utils/StringUtils";
 
@@ -72,15 +75,16 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
     setCreateDocLoading(true);
 
+    const repoName = formData.repoName.toString();
     if (formData.existingRepoAcknowledged && repoCreationError) {
       onComplete();
-      saveDocRepo(formData.repoName.toString());
+      saveDocRepo(repoName);
     } else {
       if (gitInstallationToken) {
         const res = await createRepoFromTemplate(
           gitInstallationToken.token,
           githubUser.login,
-          formData.repoName.toString()
+          repoName
         );
 
         if (res) {
@@ -91,9 +95,26 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
               setRepoCreationError(undefined);
             }
             onComplete();
-            saveDocRepo(formData.repoName.toString());
+            saveDocRepo(repoName);
           }
         }
+      }
+    }
+
+    const site = await createGitClientWebRepo(
+      authToken,
+      repoName,
+      githubUser.login
+    );
+
+    if (site) {
+      const savedInfraRes = await saveInfrastructure(authToken, {
+        id: infrastructure.id,
+        docInitialWebsite: `https://${repoName}.igendoc.com`,
+        docInitialWebsiteCreatedAt: new Date().toISOString(),
+      });
+      if (savedInfraRes) {
+        dispatch(setInfrastructure(savedInfraRes.infrastructure));
       }
     }
 

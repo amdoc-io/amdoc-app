@@ -65,6 +65,7 @@ export interface Infrastructure {
   docInitialRepo?: string;
   currentStep?: number;
   docInitialWebsite?: string;
+  docInitialWebsiteCreatedAt?: string;
   createdAt?: string;
   updatedAt?: string;
 }

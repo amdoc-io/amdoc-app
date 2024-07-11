@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "../actions/Link";
 import { Steps } from "../actions/Steps";
@@ -9,14 +8,12 @@ import { ConnectGitProvider } from "../components/ConnectGitProvider";
 import { SetupInitialDoc } from "../components/SetupInitialDoc";
 import { Heading } from "../display/Heading";
 import { Paragraph } from "../display/Paragraph";
+import { ProgressBar } from "../display/ProgressBar";
 import { WebDisplay } from "../display/WebDisplay";
 import { setInfrastructure } from "../features/onboard/onboardSlice";
 import { ContentContainer } from "../layout/ContentContainer";
 import { Infrastructure } from "../model/AccountModel";
-import {
-  createGitClientWebRepo,
-  saveInfrastructure,
-} from "../utils/AccountFetchUtils";
+import { saveInfrastructure } from "../utils/AccountFetchUtils";
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -32,44 +29,28 @@ export const HomePage = () => {
     docInitialWebsite,
     currentStep,
     id: infraId,
+    docInitialWebsiteCreatedAt,
   } = infrastructure || {};
 
   const githubUser: any = useSelector((state: any) => state.auth.githubUser);
 
-  const [createClientWebLoading, setCreateClientWebLoading] =
-    useState<boolean>(false);
-
-  const createClientWeb = useCallback(async () => {
-    if (docInitialRepo && githubUser && !docInitialWebsite) {
-      setCreateClientWebLoading(true);
-      const site = await createGitClientWebRepo(
-        authToken,
-        docInitialRepo,
-        githubUser.login
-      );
-
-      if (site) {
-        const savedInfraRes = await saveInfrastructure(authToken, {
-          id: infraId,
-          docInitialWebsite: `https://${docInitialRepo}.igendoc.com`,
-        });
-        if (savedInfraRes) {
-          dispatch(setInfrastructure(savedInfraRes.infrastructure));
-        }
-      }
-
-      setTimeout(() => {
-        setCreateClientWebLoading(false);
-      }, 60000);
+  const docInitialWebsiteCreationPeriod = useMemo(() => {
+    if (docInitialWebsiteCreatedAt) {
+      const createdAt = new Date(docInitialWebsiteCreatedAt);
+      const now = new Date();
+      const differenceInMilliseconds = now.getTime() - createdAt.getTime();
+      const differenceInSeconds = differenceInMilliseconds / 1000;
+      return Math.min(90, differenceInSeconds);
     }
-  }, [
-    docInitialRepo,
-    authToken,
-    githubUser,
-    dispatch,
-    docInitialWebsite,
-    infraId,
-  ]);
+    return -1;
+  }, [docInitialWebsiteCreatedAt]);
+
+  const docInitialWebsiteCreationLoading = useMemo(
+    () =>
+      docInitialWebsiteCreationPeriod >= 0 &&
+      docInitialWebsiteCreationPeriod < 90,
+    [docInitialWebsiteCreationPeriod]
+  );
 
   const updateStep = async (value: number) => {
     const res = await saveInfrastructure(authToken, {
@@ -80,10 +61,6 @@ export const HomePage = () => {
       dispatch(setInfrastructure(res.infrastructure));
     }
   };
-
-  useEffect(() => {
-    createClientWeb();
-  }, [createClientWeb]);
 
   return (
     <div>
@@ -172,14 +149,16 @@ export const HomePage = () => {
             <>
               <Paragraph
                 className={`${
-                  createClientWebLoading ? "flex items-center gap-2" : ""
+                  docInitialWebsiteCreationLoading
+                    ? "flex items-center gap-2"
+                    : ""
                 }`}
               >
-                {createClientWebLoading ? (
+                {docInitialWebsiteCreationLoading ? (
                   <>
-                    <AiOutlineLoading3Quarters className="animate-spin text-inherit" />
                     Your {docInitialRepo} documentation website is being
                     prepared. Ready in less than 2 minutes.
+                    <ProgressBar value={docInitialWebsiteCreationPeriod / 90} />
                   </>
                 ) : (
                   <>
@@ -192,7 +171,7 @@ export const HomePage = () => {
                   </>
                 )}
               </Paragraph>
-              {!createClientWebLoading && (
+              {!docInitialWebsiteCreationLoading && (
                 <Paragraph className="italic">
                   If the website is not ready, wait a few minutes and refresh.
                 </Paragraph>
