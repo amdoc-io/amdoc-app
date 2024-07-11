@@ -100,7 +100,7 @@ export const LoginPage = () => {
         handleSystemSignIn(formData, () => setGithubLoading(false));
       }
     }
-  }, [code, handleSystemSignIn, location]);
+  }, [code, location, handleSystemSignIn]);
 
   useEffect(() => {
     handleLinkedInSuccessSignIn();
@@ -149,6 +149,12 @@ export const LoginPage = () => {
   });
 
   const handleFacebookLogin = async (res: any) => {
+    if (
+      location.pathname.endsWith("github") ||
+      location.pathname.endsWith("linkedin")
+    ) {
+      return;
+    }
     if (res) {
       setFacebookLoading(true);
 
