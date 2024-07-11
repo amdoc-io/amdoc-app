@@ -92,7 +92,7 @@ export const Header = () => {
             startDecorator={
               <p>
                 Signed in as{" "}
-                <span className="font-medium">{account.email}</span>
+                <span className="font-medium break-words">{account.email}</span>
               </p>
             }
             options={[
