@@ -9,6 +9,7 @@ export enum AuthType {
   "GITHUB" = "GITHUB",
   "EMAIL" = "EMAIL",
   "LINKEDIN" = "LINKEDIN",
+  "FACEBOOK" = "FACEBOOK",
 }
 
 export interface DocAccount {

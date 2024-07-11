@@ -1,8 +1,7 @@
 import { TokenResponse, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
-import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-import { FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { RiGoogleLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -147,9 +146,16 @@ export const LoginPage = () => {
     },
   });
 
-  const handleFacebookLogin = async (res: any) => {
-    console.log(res);
-  };
+  // const handleFacebookLogin = async (res: any) => {
+  //   setFacebookLoading(true);
+
+  //   const formData = {
+  //     authType: AuthType.FACEBOOK,
+  //     accessToken: res?.accessToken,
+  //   };
+
+  //   handleSystemSignIn(formData, () => setFacebookLoading(false));
+  // };
 
   const handleGithubLogin = () => {
     window.location.href = `https://github.com/login/oauth/authorize?scope=user&client_id=${process.env.REACT_APP_GITHUB_OAUTH_CLIENT_ID}`;
@@ -191,7 +197,7 @@ export const LoginPage = () => {
         Sign in with Google
       </OutlinedButton>
 
-      <FacebookLogin
+      {/* <FacebookLogin
         fields="email,name,picture"
         appId={process.env.REACT_APP_FACEBOOK_OAUTH_CLIENT_ID as string}
         callback={handleFacebookLogin}
@@ -199,13 +205,14 @@ export const LoginPage = () => {
         render={(renderProps) => (
           <PrimaryButton
             icon={<FaFacebook />}
+            loading={facebookLoading}
             className="!bg-facebook !border-none hover:!bg-facebook/80"
             onClick={renderProps.onClick}
           >
             Sign in with Facebook
           </PrimaryButton>
         )}
-      />
+      /> */}
 
       <PrimaryButton
         loading={githubLoading}
