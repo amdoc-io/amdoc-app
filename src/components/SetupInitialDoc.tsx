@@ -93,8 +93,6 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   };
 
   const finalizeDocInitialCreation = async (repoName: string) => {
-    onComplete();
-
     const site = await createGitClientWebRepo(
       authToken,
       repoName,
@@ -110,6 +108,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
       });
       if (savedInfraRes) {
         dispatch(setInfrastructure(savedInfraRes.infrastructure));
+        onComplete();
       }
     }
   };
