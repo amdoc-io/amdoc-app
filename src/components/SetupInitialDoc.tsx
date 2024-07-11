@@ -96,25 +96,25 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
             }
             onComplete();
             saveDocRepo(repoName);
+
+            const site = await createGitClientWebRepo(
+              authToken,
+              repoName,
+              githubUser.login
+            );
+
+            if (site) {
+              const savedInfraRes = await saveInfrastructure(authToken, {
+                id: infrastructure.id,
+                docInitialWebsite: `https://${repoName}.igendoc.com`,
+                docInitialWebsiteCreatedAt: new Date().toISOString(),
+              });
+              if (savedInfraRes) {
+                dispatch(setInfrastructure(savedInfraRes.infrastructure));
+              }
+            }
           }
         }
-      }
-    }
-
-    const site = await createGitClientWebRepo(
-      authToken,
-      repoName,
-      githubUser.login
-    );
-
-    if (site) {
-      const savedInfraRes = await saveInfrastructure(authToken, {
-        id: infrastructure.id,
-        docInitialWebsite: `https://${repoName}.igendoc.com`,
-        docInitialWebsiteCreatedAt: new Date().toISOString(),
-      });
-      if (savedInfraRes) {
-        dispatch(setInfrastructure(savedInfraRes.infrastructure));
       }
     }
 
