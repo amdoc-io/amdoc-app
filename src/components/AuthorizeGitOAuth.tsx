@@ -52,7 +52,9 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
         dispatch(setInfrastructure(savedInfraRes.infrastructure));
       }
 
-      dispatch(setGithubUser(githubUser));
+      if (githubUser) {
+        dispatch(setGithubUser(githubUser));
+      }
       onComplete();
 
       setGithubLoading(false);
