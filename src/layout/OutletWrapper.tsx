@@ -20,19 +20,10 @@ export const OutletWrapper = (
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
-
-  const currentStep: number = useSelector(
-    (state: any) => state.onboard.currentStep
-  );
-  const gitProvider: string = useSelector(
-    (state: any) => state.onboard.gitProvider
-  );
-  const githubInstallationId: string = useSelector(
-    (state: any) => state.onboard.githubInstallationId
-  );
+  const { currentStep = -1, gitProvider, gitInstallationId } = infrastructure;
 
   const shouldRotate = useCallback((): boolean => {
-    if (!authToken || !githubInstallationId) {
+    if (!authToken || !gitInstallationId) {
       return false;
     }
 
@@ -40,7 +31,11 @@ export const OutletWrapper = (
       return false;
     }
 
-    if (currentStep > 2 && !infrastructure.gitInstallationToken) {
+    if (
+      !isNaN(currentStep) &&
+      currentStep > 2 &&
+      !infrastructure.gitInstallationToken
+    ) {
       return true;
     }
 
@@ -53,22 +48,15 @@ export const OutletWrapper = (
     if (!token || !expiresAt) {
       return true;
     }
-
     return !isTokenValid(expiresAt);
-  }, [
-    infrastructure,
-    authToken,
-    githubInstallationId,
-    gitProvider,
-    currentStep,
-  ]);
+  }, [infrastructure, authToken, gitInstallationId, gitProvider, currentStep]);
 
   const rotateGithubInstallationToken = useCallback(async () => {
     if (shouldRotate()) {
       const jwt = await getGithubAppJWT(authToken);
       const githubToken = await getGithubInstallationAccessTokens(
         jwt,
-        githubInstallationId
+        gitInstallationId || ""
       );
       if (githubToken) {
         const gitInstallationToken: GitInstallationToken =
@@ -83,7 +71,7 @@ export const OutletWrapper = (
         }
       }
     }
-  }, [authToken, githubInstallationId, dispatch, shouldRotate, infrastructure]);
+  }, [authToken, gitInstallationId, dispatch, shouldRotate, infrastructure]);
 
   // const fetchInfrastructure = useCallback(async () => {
   //   setTimeout(async () => {
