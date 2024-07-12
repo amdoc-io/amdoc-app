@@ -82,11 +82,14 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
 
     const jwt = await getGithubAppJWT(authToken);
     const installations = await getGithubAppInstallations(jwt);
-    const installation = installations.find(
-      (installation) =>
-        installation.app_id.toString() === process.env.REACT_APP_GITHUB_APP_ID
-    );
-    console.log(installations);
+    const installation = installations
+      .filter(
+        (item) => item.account?.login === infrastructure.githubUser?.login
+      )
+      .find(
+        (installation) =>
+          installation.app_id.toString() === process.env.REACT_APP_GITHUB_APP_ID
+      );
     if (installation) {
       const searchParams = new URLSearchParams(location.search);
       const installationId = installation.id.toString();
