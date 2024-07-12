@@ -94,15 +94,17 @@ export const OutletWrapper = (
   }, [authToken, githubInstallationId, dispatch, shouldRotate, infrastructure]);
 
   const fetchInfrastructure = useCallback(async () => {
-    if (authToken && organization?.id) {
-      const res = await getInfrastructureByOrganizationId(
-        authToken,
-        organization.id
-      );
-      if (res) {
-        dispatch(setInfrastructure(res.infrastructure));
+    setTimeout(async () => {
+      if (authToken && organization?.id) {
+        const res = await getInfrastructureByOrganizationId(
+          authToken,
+          organization.id
+        );
+        if (res) {
+          dispatch(setInfrastructure(res.infrastructure));
+        }
       }
-    }
+    }, 5000);
   }, [organization, authToken, dispatch]);
 
   useEffect(() => {
