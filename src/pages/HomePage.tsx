@@ -178,7 +178,9 @@ export const HomePage = () => {
                       href={docInitialWebsite}
                       target="_blank"
                       rel="noreferrer"
-                    >{`${docInitialRepo}.igendoc.com`}</Link>
+                    >
+                      {docInitialWebsite}
+                    </Link>
                   </>
                 )}
               </Paragraph>
