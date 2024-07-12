@@ -4,7 +4,6 @@ import { RxLockClosed, RxLockOpen1 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { OutlinedButton } from "../actions/OutlinedButton";
-import { setGithubUser } from "../features/auth/authSlice";
 import { setInfrastructure } from "../features/onboard/onboardSlice";
 import { StepContainer } from "../layout/StepContainer";
 import { Infrastructure } from "../model/AccountModel";
@@ -47,14 +46,12 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
       const savedInfraRes = await saveInfrastructure(authToken, {
         id: infraId,
         gitOauthToken: githubAccessToken,
+        githubUser: githubUser,
       });
       if (savedInfraRes) {
         dispatch(setInfrastructure(savedInfraRes.infrastructure));
       }
 
-      if (githubUser) {
-        dispatch(setGithubUser(githubUser));
-      }
       onComplete();
 
       setGithubLoading(false);

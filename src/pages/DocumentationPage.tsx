@@ -12,6 +12,7 @@ import { Heading } from "../display/Heading";
 import { Paragraph } from "../display/Paragraph";
 import { WebDisplay } from "../display/WebDisplay";
 import { ContentContainer } from "../layout/ContentContainer";
+import { Infrastructure } from "../model/AccountModel";
 
 export const DocumentationPage = () => {
   const docInitialRepo: string = useSelector(
@@ -20,14 +21,16 @@ export const DocumentationPage = () => {
   const clientWeb: string = useSelector(
     (state: any) => state.onboard.clientWeb
   );
-  const githubUser: any = useSelector((state: any) => state.auth.githubUser);
+  const infrastructure: Infrastructure = useSelector(
+    (state: any) => state.onboard.infrastructure
+  );
 
   return (
     <div>
       <Heading level={1}>Documentation</Heading>
 
       <ContentContainer>
-        {clientWeb && githubUser && docInitialRepo && (
+        {clientWeb && infrastructure.githubUser && docInitialRepo && (
           <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row-dense gap-8 mt-4">
             <WebDisplay url={clientWeb} className="" />
             <div className="flex flex-col gap-2 *:text-sm">
@@ -35,11 +38,11 @@ export const DocumentationPage = () => {
                 <IoPersonOutline />
                 Owner:{" "}
                 <Link
-                  href={githubUser?.html_url}
+                  href={infrastructure.githubUser?.html_url}
                   target="_blank"
                   className="text-black break-all"
                 >
-                  {githubUser?.login}
+                  {infrastructure.githubUser?.login}
                 </Link>
               </Paragraph>
 
@@ -47,7 +50,7 @@ export const DocumentationPage = () => {
                 <IoFolderOpenOutline /> Repository:{" "}
                 <Link
                   className="break-all"
-                  href={`${githubUser?.html_url}/${docInitialRepo}`}
+                  href={`${infrastructure.githubUser?.html_url}/${docInitialRepo}`}
                   target="_blank"
                 >
                   {docInitialRepo}
@@ -59,7 +62,7 @@ export const DocumentationPage = () => {
                 Branch:{" "}
                 <Link
                   className="break-all"
-                  href={`${githubUser?.html_url}/${docInitialRepo}/tree/main`}
+                  href={`${infrastructure.githubUser?.html_url}/${docInitialRepo}/tree/main`}
                   target="_blank"
                 >
                   main

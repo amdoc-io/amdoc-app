@@ -11,12 +11,8 @@ import {
   getInfrastructureByOrganizationId,
   saveInfrastructure,
 } from "../utils/AccountFetchUtils";
-import {
-  getGithubAuthenticatedUser,
-  getGithubInstallationAccessTokens,
-} from "../utils/GithubFetchUtils";
+import { getGithubInstallationAccessTokens } from "../utils/GithubFetchUtils";
 import { isTokenValid, mapInstallationToken } from "../utils/TokenUtils";
-import { setGithubUser } from "../features/auth/authSlice";
 
 export const OutletWrapper = (
   props: React.DetailedHTMLProps<
@@ -29,7 +25,6 @@ export const OutletWrapper = (
   const organization: Organization = useSelector(
     (state: any) => state.auth.organization
   );
-  const githubUser = useSelector((state: any) => state.auth.githubUser);
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
@@ -98,17 +93,6 @@ export const OutletWrapper = (
     }
   }, [authToken, githubInstallationId, dispatch, shouldRotate, infrastructure]);
 
-  const fetchGithubUser = useCallback(async () => {
-    if (infrastructure && infrastructure.gitOauthToken && !githubUser) {
-      const githubUser = await getGithubAuthenticatedUser(
-        infrastructure.gitOauthToken.accessToken
-      );
-      if (githubUser) {
-        dispatch(setGithubUser(githubUser));
-      }
-    }
-  }, [infrastructure, dispatch, githubUser]);
-
   const fetchInfrastructure = useCallback(async () => {
     if (authToken && organization?.id) {
       const res = await getInfrastructureByOrganizationId(
@@ -124,10 +108,6 @@ export const OutletWrapper = (
   useEffect(() => {
     fetchInfrastructure();
   }, [fetchInfrastructure]);
-
-  useEffect(() => {
-    fetchGithubUser();
-  }, [fetchGithubUser]);
 
   useEffect(() => {
     rotateGithubInstallationToken();

@@ -25,14 +25,13 @@ export const HomePage = () => {
     gitProvider,
     gitInstallationToken,
     gitOauthToken,
+    githubUser,
     docInitialRepo,
     docInitialWebsite,
     currentStep,
     id: infraId,
     docInitialWebsiteCreatedAt,
   } = infrastructure || {};
-
-  const githubUser: any = useSelector((state: any) => state.auth.githubUser);
 
   const [docInitialWebsiteCreationPeriod, setDocInitialWebsiteCreationPeriod] =
     useState<number>(-1);

@@ -21,7 +21,6 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
   const { onComplete = () => {} } = props;
 
-  const githubUser: any = useSelector((state: any) => state.auth.githubUser);
   const organization: Organization = useSelector(
     (state: any) => state.auth.organization
   );
@@ -72,7 +71,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
       if (gitInstallationToken) {
         const res = await createRepoFromTemplate(
           gitInstallationToken.token,
-          githubUser.login,
+          infrastructure.githubUser?.login || "",
           repoName
         );
 
@@ -96,7 +95,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
     const site = await createGitClientWebRepo(
       authToken,
       repoName,
-      githubUser.login
+      infrastructure.githubUser?.login || ""
     );
 
     if (site) {
@@ -152,7 +151,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
               >
                 Acknowledge that the existing repository,{" "}
                 <Link
-                  href={`${githubUser?.html_url}/${formData["repoName"]}`}
+                  href={`${infrastructure.githubUser?.html_url}/${formData["repoName"]}`}
                   target="_blank"
                 >
                   {formData["repoName"]}

@@ -7,7 +7,6 @@ export interface AuthState {
   prepareCompleted?: boolean;
   account?: DocAccount;
   signedInAt?: string;
-  githubUser?: any;
   organizations?: Organization[];
   organization?: Organization;
 }
@@ -16,7 +15,6 @@ const initialState: AuthState = {
   token: undefined,
   account: undefined,
   signedInAt: undefined,
-  githubUser: undefined,
   setupCompleted: undefined,
   prepareCompleted: undefined,
   organizations: [],
@@ -38,9 +36,6 @@ export const authSlice = createSlice({
     },
     setToken: (state, action: PayloadAction<string>) => {
       state.token = action.payload;
-    },
-    setGithubUser: (state, action: PayloadAction<any | undefined>) => {
-      state.githubUser = action.payload;
     },
     setSetupCompleted: (state, action: PayloadAction<boolean | undefined>) => {
       state.setupCompleted = action.payload;
@@ -70,7 +65,6 @@ export const {
   login,
   setAccount,
   setToken,
-  setGithubUser,
   setSetupCompleted,
   setOrganizations,
   setOrganization,
