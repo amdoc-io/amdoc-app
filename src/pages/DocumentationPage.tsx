@@ -15,12 +15,6 @@ import { ContentContainer } from "../layout/ContentContainer";
 import { Infrastructure } from "../model/AccountModel";
 
 export const DocumentationPage = () => {
-  const docInitialRepo: string = useSelector(
-    (state: any) => state.onboard.docInitialRepo
-  );
-  const clientWeb: string = useSelector(
-    (state: any) => state.onboard.clientWeb
-  );
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
@@ -30,77 +24,85 @@ export const DocumentationPage = () => {
       <Heading level={1}>Documentation</Heading>
 
       <ContentContainer>
-        {clientWeb && infrastructure.githubUser && docInitialRepo && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row-dense gap-8 mt-4">
-            <WebDisplay url={clientWeb} className="" />
-            <div className="flex flex-col gap-2 *:text-sm">
-              <Paragraph className="inline-flex gap-1 items-center">
-                <IoPersonOutline />
-                Owner:{" "}
-                <Link
-                  href={infrastructure.githubUser?.html_url}
-                  target="_blank"
-                  className="text-black break-all"
-                >
-                  {infrastructure.githubUser?.login}
-                </Link>
-              </Paragraph>
-
-              <Paragraph className="inline-flex gap-1 items-center">
-                <IoFolderOpenOutline /> Repository:{" "}
-                <Link
-                  className="break-all"
-                  href={`${infrastructure.githubUser?.html_url}/${docInitialRepo}`}
-                  target="_blank"
-                >
-                  {docInitialRepo}
-                </Link>
-              </Paragraph>
-
-              <Paragraph className="inline-flex gap-1 items-center">
-                <IoGitBranchOutline />
-                Branch:{" "}
-                <Link
-                  className="break-all"
-                  href={`${infrastructure.githubUser?.html_url}/${docInitialRepo}/tree/main`}
-                  target="_blank"
-                >
-                  main
-                </Link>
-              </Paragraph>
-
-              <Paragraph className="inline-flex gap-1 items-center">
-                <IoEarthOutline />
-                Domain:{" "}
-                <Link href={clientWeb} target="_blank" className="break-all">
-                  {`${docInitialRepo}.igendoc.com`}
-                </Link>
-              </Paragraph>
-
-              <div className="flex flex-wrap gap-2 mt-2">
-                <div>
-                  <OutlinedButton
-                    icon={<RxExternalLink />}
-                    onClick={() => window.open(clientWeb, "_blank")}
+        {infrastructure.docInitialRepo &&
+          infrastructure.githubUser &&
+          infrastructure.docInitialWebsite && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row-dense gap-8 mt-4">
+              <WebDisplay url={infrastructure.docInitialWebsite} className="" />
+              <div className="flex flex-col gap-2 *:text-sm">
+                <Paragraph className="inline-flex gap-1 items-center">
+                  <IoPersonOutline />
+                  Owner:{" "}
+                  <Link
+                    href={infrastructure.githubUser?.html_url}
+                    target="_blank"
+                    className="text-black break-all"
                   >
-                    View
-                  </OutlinedButton>
-                </div>
-                <div>
-                  <OutlinedButton disabled icon={<RxPencil2 />}>
-                    Edit
-                  </OutlinedButton>
-                </div>
+                    {infrastructure.githubUser?.login}
+                  </Link>
+                </Paragraph>
 
-                <div>
-                  <OutlinedButton disabled icon={<RxGlobe />}>
-                    Set domain
-                  </OutlinedButton>
+                <Paragraph className="inline-flex gap-1 items-center">
+                  <IoFolderOpenOutline /> Repository:{" "}
+                  <Link
+                    className="break-all"
+                    href={`${infrastructure.githubUser?.html_url}/${infrastructure.docInitialRepo}`}
+                    target="_blank"
+                  >
+                    {infrastructure.docInitialRepo}
+                  </Link>
+                </Paragraph>
+
+                <Paragraph className="inline-flex gap-1 items-center">
+                  <IoGitBranchOutline />
+                  Branch:{" "}
+                  <Link
+                    className="break-all"
+                    href={`${infrastructure.githubUser?.html_url}/${infrastructure.docInitialRepo}/tree/main`}
+                    target="_blank"
+                  >
+                    main
+                  </Link>
+                </Paragraph>
+
+                <Paragraph className="inline-flex gap-1 items-center">
+                  <IoEarthOutline />
+                  Domain:{" "}
+                  <Link
+                    href={infrastructure.docInitialWebsite}
+                    target="_blank"
+                    className="break-all"
+                  >
+                    {`${infrastructure.docInitialRepo}.igendoc.com`}
+                  </Link>
+                </Paragraph>
+
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <div>
+                    <OutlinedButton
+                      icon={<RxExternalLink />}
+                      onClick={() =>
+                        window.open(infrastructure.docInitialWebsite, "_blank")
+                      }
+                    >
+                      View
+                    </OutlinedButton>
+                  </div>
+                  <div>
+                    <OutlinedButton disabled icon={<RxPencil2 />}>
+                      Edit
+                    </OutlinedButton>
+                  </div>
+
+                  <div>
+                    <OutlinedButton disabled icon={<RxGlobe />}>
+                      Set domain
+                    </OutlinedButton>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
       </ContentContainer>
     </div>
   );
