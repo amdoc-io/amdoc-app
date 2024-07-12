@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { FaCheckCircle } from "react-icons/fa";
 import { RxPencil2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { Checkbox } from "../actions/Checkbox";
@@ -166,6 +167,11 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
             type="submit"
             loading={createDocLoading}
             icon={<RxPencil2 />}
+            suffix={
+              infrastructure.docInitialRepo && (
+                <FaCheckCircle className="text-green-500" />
+              )
+            }
           >
             Create an initial doc
           </OutlinedButton>

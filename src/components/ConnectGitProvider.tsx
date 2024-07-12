@@ -55,9 +55,9 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
         });
         if (savedInfraRes) {
           dispatch(setInfrastructure(savedInfraRes.infrastructure));
-          onComplete();
           setSetupCompleted(true);
           setGithubLoading(false);
+          onComplete();
           navigate("/");
         }
       }
