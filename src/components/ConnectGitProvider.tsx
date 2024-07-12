@@ -86,6 +86,7 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
       (installation) =>
         installation.app_id.toString() === process.env.REACT_APP_GITHUB_APP_ID
     );
+    console.log(installations);
     if (installation) {
       const searchParams = new URLSearchParams(location.search);
       const installationId = installation.id.toString();
