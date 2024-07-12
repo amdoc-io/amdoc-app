@@ -84,7 +84,7 @@ export const PrepareApplicationPage = () => {
           ...prev,
           organization: true,
         }));
-      }, 500);
+      }, 50);
     }
   }, [organization, completion]);
 
@@ -95,7 +95,7 @@ export const PrepareApplicationPage = () => {
           ...prev,
           organizations: true,
         }));
-      }, 1000);
+      }, 150);
     }
   }, [organizations, completion]);
 
@@ -106,7 +106,7 @@ export const PrepareApplicationPage = () => {
           ...prev,
           infrastructure: true,
         }));
-      }, 1500);
+      }, 250);
     }
   }, [infrastructure, completion]);
 
@@ -115,7 +115,7 @@ export const PrepareApplicationPage = () => {
       setTimeout(() => {
         dispatch(setPrepareCompleted(true));
         navigate("/");
-      }, 500);
+      }, 300);
     }
   }, [completion, navigate, dispatch]);
 

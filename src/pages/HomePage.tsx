@@ -166,9 +166,10 @@ export const HomePage = () => {
                 {docInitialWebsiteCreationLoading ? (
                   <>
                     Your {docInitialRepo} documentation website is being
-                    prepared. Ready in less than 2 minutes.
+                    prepared.
                     <ProgressBar
                       value={(docInitialWebsiteCreationPeriod / 90) * 100}
+                      className="mt-2"
                     />
                   </>
                 ) : (
