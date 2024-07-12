@@ -35,7 +35,7 @@ export const SwitchOrganizationModal = (props: {
             ...prev,
             infrastructure: true,
           }));
-        }, 500);
+        }, 200);
       }
     }
   }, [selectedOrg, authToken, dispatch]);
