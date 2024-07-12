@@ -35,26 +35,30 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
   };
 
   const handleGithubSuccessAuthorize = useCallback(async () => {
-    if (code && (!gitOauthToken || !gitOauthToken.accessToken)) {
-      setGithubLoading(true);
+    if (code) {
+      if (!gitOauthToken || !gitOauthToken.accessToken) {
+        setGithubLoading(true);
 
-      const githubAccessToken = await getGithubAccessToken(code);
-      const githubUser = await getGithubAuthenticatedUser(
-        githubAccessToken?.accessToken || ""
-      );
+        const githubAccessToken = await getGithubAccessToken(code);
+        const githubUser = await getGithubAuthenticatedUser(
+          githubAccessToken?.accessToken || ""
+        );
 
-      const savedInfraRes = await saveInfrastructure(authToken, {
-        id: infraId,
-        gitOauthToken: githubAccessToken,
-        githubUser: githubUser,
-      });
-      if (savedInfraRes) {
-        dispatch(setInfrastructure(savedInfraRes.infrastructure));
+        const savedInfraRes = await saveInfrastructure(authToken, {
+          id: infraId,
+          gitOauthToken: githubAccessToken,
+          githubUser: githubUser,
+        });
+        if (savedInfraRes) {
+          dispatch(setInfrastructure(savedInfraRes.infrastructure));
+        }
+
+        setGithubLoading(false);
+        onComplete();
+        navigate("/");
+      } else {
+        onComplete();
       }
-
-      setGithubLoading(false);
-      onComplete();
-      navigate("/");
     }
   }, [code, dispatch, gitOauthToken, navigate, infraId, authToken, onComplete]);
 
