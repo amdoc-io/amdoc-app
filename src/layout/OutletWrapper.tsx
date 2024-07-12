@@ -1,14 +1,9 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setInfrastructure } from "../features/onboard/onboardSlice";
-import {
-  GitInstallationToken,
-  Infrastructure,
-  Organization,
-} from "../model/AccountModel";
+import { GitInstallationToken, Infrastructure } from "../model/AccountModel";
 import {
   getGithubAppJWT,
-  getInfrastructureByOrganizationId,
   saveInfrastructure,
 } from "../utils/AccountFetchUtils";
 import { getGithubInstallationAccessTokens } from "../utils/GithubFetchUtils";
@@ -22,9 +17,6 @@ export const OutletWrapper = (
 ) => {
   const dispatch = useDispatch();
   const authToken: string = useSelector((state: any) => state.auth.token);
-  const organization: Organization = useSelector(
-    (state: any) => state.auth.organization
-  );
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
@@ -93,23 +85,19 @@ export const OutletWrapper = (
     }
   }, [authToken, githubInstallationId, dispatch, shouldRotate, infrastructure]);
 
-  const fetchInfrastructure = useCallback(async () => {
-    setTimeout(async () => {
-      if (authToken && organization?.id) {
-        const res = await getInfrastructureByOrganizationId(
-          authToken,
-          organization.id
-        );
-        if (res) {
-          dispatch(setInfrastructure(res.infrastructure));
-        }
-      }
-    }, 5000);
-  }, [organization, authToken, dispatch]);
-
-  useEffect(() => {
-    fetchInfrastructure();
-  }, [fetchInfrastructure]);
+  // const fetchInfrastructure = useCallback(async () => {
+  //   setTimeout(async () => {
+  //     if (authToken && organization?.id) {
+  //       const res = await getInfrastructureByOrganizationId(
+  //         authToken,
+  //         organization.id
+  //       );
+  //       if (res) {
+  //         dispatch(setInfrastructure(res.infrastructure));
+  //       }
+  //     }
+  //   }, 5000);
+  // }, [organization, authToken, dispatch]);
 
   useEffect(() => {
     rotateGithubInstallationToken();
