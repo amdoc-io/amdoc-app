@@ -52,9 +52,8 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
         dispatch(setInfrastructure(savedInfraRes.infrastructure));
       }
 
-      onComplete();
-
       setGithubLoading(false);
+      onComplete();
       navigate("/");
     }
   }, [code, dispatch, gitOauthToken, navigate, infraId, authToken, onComplete]);
