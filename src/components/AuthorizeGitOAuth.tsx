@@ -58,6 +58,7 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
         navigate("/");
       } else {
         onComplete();
+        navigate("/");
       }
     }
   }, [code, dispatch, gitOauthToken, navigate, infraId, authToken, onComplete]);
