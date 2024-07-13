@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
-import { RxLockClosed, RxLockOpen1 } from "react-icons/rx";
+import { RxArrowRight, RxLockClosed, RxLockOpen1 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { OutlinedButton } from "../actions/OutlinedButton";
@@ -12,6 +12,7 @@ import {
   getGithubAccessToken,
   getGithubAuthenticatedUser,
 } from "../utils/GithubFetchUtils";
+import { TextButton } from "../actions/TextButton";
 
 export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
   const { onComplete = () => {} } = props;
@@ -102,6 +103,16 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
         >
           Authorize with {gitProvider}
         </OutlinedButton>
+      </div>
+
+      <div className="flex mt-2">
+        <TextButton
+          type="button"
+          onClick={onComplete}
+          suffix={<RxArrowRight />}
+        >
+          Mark as complete
+        </TextButton>
       </div>
     </StepContainer>
   );

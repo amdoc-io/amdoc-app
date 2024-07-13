@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
-import { RxDownload } from "react-icons/rx";
+import { RxArrowRight, RxDownload } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { OutlinedButton } from "../actions/OutlinedButton";
@@ -16,6 +16,7 @@ import {
   getGithubInstallationAccessTokens,
 } from "../utils/GithubFetchUtils";
 import { isTokenValid, mapInstallationToken } from "../utils/TokenUtils";
+import { TextButton } from "../actions/TextButton";
 
 export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
   const { onComplete = () => {} } = props;
@@ -127,6 +128,16 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
         >
           Install application
         </OutlinedButton>
+      </div>
+
+      <div className="flex mt-2">
+        <TextButton
+          type="button"
+          onClick={onComplete}
+          suffix={<RxArrowRight />}
+        >
+          Mark as complete
+        </TextButton>
       </div>
     </StepContainer>
   );

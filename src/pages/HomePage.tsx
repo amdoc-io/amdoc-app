@@ -14,6 +14,7 @@ import { setInfrastructure } from "../features/onboard/onboardSlice";
 import { ContentContainer } from "../layout/ContentContainer";
 import { Infrastructure } from "../model/AccountModel";
 import { saveInfrastructure } from "../utils/AccountFetchUtils";
+import { RiGuideLine } from "react-icons/ri";
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -84,15 +85,29 @@ export const HomePage = () => {
         <Paragraph>Welcome to iGendoc!</Paragraph>
 
         <div className="flex flex-col gap-4">
-          <Heading level={2}>Getting Started</Heading>
-          <Paragraph>
-            To begin automating your documentation with iGendoc, follow the
-            steps below.
-          </Paragraph>
           <Steps
             value={currentStep === null ? -1 : currentStep}
             onChange={(value) => updateStep(value)}
-            className="my-2"
+            className="mb-2"
+            heading={
+              <div className="flex gap-4 items-center">
+                <div className="flex">
+                  <div className="h-10 w-10 flex justify-center items-center bg-gray-100 rounded-full text-inherit">
+                    <RiGuideLine />
+                  </div>
+                </div>
+
+                <div className="text-sm">
+                  <Heading className="font-semibold text-base">
+                    Getting Started
+                  </Heading>
+                  <Paragraph className="text-sm">
+                    To begin automating your documentation with iGendoc, follow
+                    the steps below.
+                  </Paragraph>
+                </div>
+              </div>
+            }
             steps={[
               {
                 title: "Choose a Git provider",

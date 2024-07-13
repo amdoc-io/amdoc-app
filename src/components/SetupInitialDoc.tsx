@@ -1,10 +1,11 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { FaCheckCircle } from "react-icons/fa";
-import { RxPencil2 } from "react-icons/rx";
+import { RxArrowRight, RxPencil2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { Checkbox } from "../actions/Checkbox";
 import { Link } from "../actions/Link";
 import { OutlinedButton } from "../actions/OutlinedButton";
+import { TextButton } from "../actions/TextButton";
 import { setInfrastructure } from "../features/onboard/onboardSlice";
 import { Input } from "../forms/Input";
 import { Card } from "../layout/Card";
@@ -121,9 +122,9 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
 
       <form
         onSubmit={handleCreateDoc}
-        className="flex flex-col items-start gap-4 w-full"
+        className="flex flex-col items-start gap-4 w-full mt-1"
       >
-        <Card className="lg:max-w-[600px]">
+        <Card className="lg:max-w-[600px] bg-white">
           <Input
             placeholder="Enter a repo name"
             name="repoName"
@@ -175,6 +176,16 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
           >
             Create an initial doc
           </OutlinedButton>
+        </div>
+
+        <div className="flex">
+          <TextButton
+            type="button"
+            onClick={onComplete}
+            suffix={<RxArrowRight />}
+          >
+            Mark as complete
+          </TextButton>
         </div>
       </form>
     </StepContainer>

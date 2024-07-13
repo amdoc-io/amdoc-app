@@ -1,10 +1,11 @@
-import { RxGithubLogo } from "react-icons/rx";
+import { RxArrowRight, RxGithubLogo } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioCard } from "../actions/RadioCard";
 import { setInfrastructure } from "../features/onboard/onboardSlice";
 import { StepContainer } from "../layout/StepContainer";
 import { Infrastructure } from "../model/AccountModel";
 import { saveInfrastructure } from "../utils/AccountFetchUtils";
+import { TextButton } from "../actions/TextButton";
 
 export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
   const { onComplete = () => {} } = props;
@@ -46,6 +47,16 @@ export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
             <RxGithubLogo />
           </div>
         </RadioCard>
+      </div>
+
+      <div className="flex mt-2">
+        <TextButton
+          type="button"
+          onClick={onComplete}
+          suffix={<RxArrowRight />}
+        >
+          Mark as complete
+        </TextButton>
       </div>
     </StepContainer>
   );
