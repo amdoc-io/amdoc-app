@@ -15,6 +15,7 @@ import { ContentContainer } from "../layout/ContentContainer";
 import { Infrastructure } from "../model/AccountModel";
 import { saveInfrastructure } from "../utils/AccountFetchUtils";
 import { RiGuideLine } from "react-icons/ri";
+import { Divider } from "../layout/Divider";
 
 export const HomePage = () => {
   const dispatch = useDispatch();
@@ -176,6 +177,7 @@ export const HomePage = () => {
 
           {docInitialRepo && (
             <>
+              <Divider />
               <Paragraph>
                 {docInitialWebsiteCreationLoading ? (
                   <>

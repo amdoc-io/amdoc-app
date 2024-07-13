@@ -13,7 +13,7 @@ export const WebDisplay = (
   return (
     <div
       {...restProps}
-      className={`p-2 lg:p-3 bg-gray-200/30 rounded-lg cursor-pointer flex justify-center items-center ${className}`}
+      className={`p-2 lg:p-3 border border-gray-200 bg-gray-200/30 rounded-lg cursor-pointer flex justify-center items-center ${className}`}
       onClick={() => window.open(url, "_blank")}
     >
       <img
