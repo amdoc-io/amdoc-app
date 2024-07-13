@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { RiGuideLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "../actions/Link";
 import { Steps } from "../actions/Steps";
@@ -12,10 +13,9 @@ import { ProgressBar } from "../display/ProgressBar";
 import { WebDisplay } from "../display/WebDisplay";
 import { setInfrastructure } from "../features/onboard/onboardSlice";
 import { ContentContainer } from "../layout/ContentContainer";
+import { Divider } from "../layout/Divider";
 import { Infrastructure } from "../model/AccountModel";
 import { saveInfrastructure } from "../utils/AccountFetchUtils";
-import { RiGuideLine } from "react-icons/ri";
-import { Divider } from "../layout/Divider";
 
 export const HomePage = () => {
   const dispatch = useDispatch();

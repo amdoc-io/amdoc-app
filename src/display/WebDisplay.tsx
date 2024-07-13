@@ -18,7 +18,7 @@ export const WebDisplay = (
     >
       <img
         alt="webpage"
-        src={`https://api.apiflash.com/v1/urltoimage?access_key=${process.env.REACT_APP_SCREENSHOT_API_KEY}&wait_until=page_loaded&url=${url}`}
+        src={`https://api.apiflash.com/v1/urltoimage?access_key=${process.env.REACT_APP_SCREENSHOT_API_KEY}&wait_until=page_loaded&ttl=3600&url=${url}`}
         className="rounded-lg h-full w-full"
       />
     </div>
