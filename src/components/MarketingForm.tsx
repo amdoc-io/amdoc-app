@@ -56,7 +56,7 @@ export const MarketingForm = (props: {
         leading={<RxLink2 />}
         label="CTA URL"
         value={formData["callToActionUrl"]}
-        note="The full call-to-action URL to where users can sign up for your product"
+        note="The full call-to-action URL to where your customers can sign up for your product"
       />
     </DocFormContainer>
   );
