@@ -44,7 +44,7 @@ export const SwitchOrganizationModal = (props: {
     if (Object.values(completion).every((value) => value) && open) {
       setTimeout(() => {
         setOpen(false);
-      }, 500);
+      }, 300);
     }
   }, [completion, open, setOpen]);
 

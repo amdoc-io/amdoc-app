@@ -6,7 +6,7 @@ export const Input = (
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > & {
-    prefix?: string;
+    leading?: ReactNode;
     label?: string;
     required?: boolean;
     note?: ReactNode;
@@ -14,7 +14,7 @@ export const Input = (
   }
 ) => {
   const {
-    prefix,
+    leading,
     id,
     label,
     className = "",
@@ -36,9 +36,9 @@ export const Input = (
       )}
       <div>
         <div className="flex transition-all duration-300 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-1 focus-within:ring-inset focus-within:ring-gray-600">
-          {prefix && (
+          {leading && (
             <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">
-              {prefix}
+              {leading}
             </span>
           )}
           <input
@@ -46,7 +46,7 @@ export const Input = (
             type="text"
             id={id}
             className={`block focus:outline-none flex-1 border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 ${
-              !prefix ? "pl-2" : "pl-1"
+              !leading ? "pl-2" : "pl-1"
             }`}
           />
         </div>
