@@ -51,7 +51,6 @@ export const DocumentationPage = () => {
   });
 
   const handleSaveChanges = async () => {
-    console.log(formData);
     const reqFormData = new FormData();
     for (const name in formData) {
       reqFormData.append(name, formData[name]);
