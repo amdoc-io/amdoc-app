@@ -100,7 +100,7 @@ export const ContactInformationForm = (props: {
             leading={item.icon}
             label={i === 0 ? "Social link" : undefined}
             value={item.href}
-            note={`Link to your ${item.name} profile`}
+            note={`The full URL to your ${item.name} profile`}
           />
         ))}
       </div>
