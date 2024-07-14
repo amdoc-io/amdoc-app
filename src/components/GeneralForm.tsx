@@ -49,6 +49,14 @@ export const GeneralForm = (props: {
         note="The brand associated with this documentation"
       />
 
+      <ColorPicker
+        label="Color"
+        name="themeColor"
+        value={formData["themeColor"]}
+        onChange={handleInputChange}
+        note="Your website branding color"
+      />
+
       <Input
         label="Homepage URL"
         name="homepageUrl"
@@ -60,12 +68,15 @@ export const GeneralForm = (props: {
         note="The full URL to your application homepage"
       />
 
-      <ColorPicker
-        label="Color"
-        name="themeColor"
-        value={formData["themeColor"]}
+      <Input
+        label="Privacy Policy URL"
+        name="privacyPolicyUrl"
+        value={formData["privacyPolicyUrl"]}
+        leading={<RxLink2 />}
         onChange={handleInputChange}
-        note="Your website branding color"
+        onBlur={handleInputBlur}
+        placeholder="Link to your privacy policy"
+        note="The full URL to your privacy policy"
       />
     </DocFormContainer>
   );
