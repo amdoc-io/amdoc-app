@@ -3,11 +3,26 @@ import { RiTwitterXLine } from "react-icons/ri";
 import { RxLinkedinLogo } from "react-icons/rx";
 
 export const socialMediaDomains = {
-  linkedin: "linkedin.com",
-  facebook: "facebook.com",
-  instagram: "instagram.com",
-  twitter: "x.com",
-  tiktok: "tiktok.com",
+  linkedin: {
+    domain: "linkedin.com",
+    name: "LinkedIn",
+  },
+  facebook: {
+    domain: "facebook.com",
+    name: "Facebook",
+  },
+  instagram: {
+    domain: "instagram.com",
+    name: "Instagram",
+  },
+  twitter: {
+    domain: "x.com",
+    name: "X",
+  },
+  tiktok: {
+    domain: "tiktok.com",
+    name: "TikTok",
+  },
 };
 
 export const socialMediaIcons = {
@@ -49,7 +64,7 @@ export const getSocialMediaIcon = (url: string) => {
     const domain = new URL(url).hostname;
 
     for (const [key, value] of Object.entries(socialMediaDomains)) {
-      if (domain.includes(value)) {
+      if (domain.includes(value.domain)) {
         return socialMediaIcons[key as keyof typeof socialMediaIcons];
       }
     }

@@ -4,8 +4,9 @@ import { DocFormContainer } from "../layout/DocFormContainer";
 import { Input } from "../forms/Input";
 import { RxLink2 } from "react-icons/rx";
 import { transformDomain } from "../utils/TransformUtils";
+import { HiOutlineBuildingOffice } from "react-icons/hi2";
 
-export const ThemeForm = (props: {
+export const GeneralForm = (props: {
   formData?: { [key: string]: any };
   setFormData?: React.Dispatch<
     React.SetStateAction<{
@@ -39,6 +40,16 @@ export const ThemeForm = (props: {
   return (
     <DocFormContainer title="General">
       <Input
+        label="Brand name"
+        name="brandName"
+        value={formData["brandName"]}
+        leading={<HiOutlineBuildingOffice />}
+        onChange={handleInputChange}
+        placeholder="Enter your brand name"
+        note="The brand associated with this documentation"
+      />
+
+      <Input
         label="Homepage URL"
         name="homepageUrl"
         value={formData["homepageUrl"]}
@@ -54,6 +65,7 @@ export const ThemeForm = (props: {
         name="themeColor"
         value={formData["themeColor"]}
         onChange={handleInputChange}
+        note="Your website branding color"
       />
     </DocFormContainer>
   );

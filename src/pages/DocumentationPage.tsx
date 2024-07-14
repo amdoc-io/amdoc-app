@@ -20,7 +20,8 @@ import {
   socialMediaIcons,
   transformDomain,
 } from "../utils/TransformUtils";
-import { ThemeForm } from "../components/ThemeForm";
+import { GeneralForm } from "../components/GeneralForm";
+import { PrimaryButton } from "../actions/PrimaryButton";
 
 export const DocumentationPage = () => {
   const infrastructure: Infrastructure = useSelector(
@@ -29,14 +30,19 @@ export const DocumentationPage = () => {
   const [formData, setFormData] = useState<{ [key: string]: any }>({
     socialLinks: Object.entries(socialMediaDomains).map(([k, v]) => ({
       href: "",
-      placeholder: transformDomain(v),
+      placeholder: transformDomain(v.domain),
       icon: socialMediaIcons[k as keyof typeof socialMediaIcons],
+      name: v.name,
     })),
     infoEmail: "",
     supportEmail: "",
     careerEmail: "",
     themeColor: "#0000FF",
   });
+
+  const handleSaveChanges = () => {
+    console.log(formData);
+  };
 
   return (
     <div>
@@ -123,9 +129,17 @@ export const DocumentationPage = () => {
             </div>
           )}
 
-        <ThemeForm formData={formData} setFormData={setFormData} />
+        <GeneralForm formData={formData} setFormData={setFormData} />
 
         <ContactInformationForm formData={formData} setFormData={setFormData} />
+
+        <div className="flex">
+          <div className="flex">
+            <PrimaryButton onClick={handleSaveChanges}>
+              Save changes
+            </PrimaryButton>
+          </div>
+        </div>
       </ContentContainer>
     </div>
   );

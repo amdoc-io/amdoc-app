@@ -66,6 +66,7 @@ export const ContactInformationForm = (props: {
         leading={<RxEnvelopeClosed />}
         label="Get in touch"
         value={formData["infoEmail"]}
+        note="The email address for general inquiries"
       />
 
       <Input
@@ -75,6 +76,7 @@ export const ContactInformationForm = (props: {
         leading={<RxEnvelopeClosed />}
         label="Contact support"
         value={formData["supportEmail"]}
+        note="The email address for customer support"
       />
 
       <Input
@@ -84,6 +86,7 @@ export const ContactInformationForm = (props: {
         leading={<RxEnvelopeClosed />}
         label="Career"
         value={formData["careerEmail"]}
+        note="The email address for career opportunities"
       />
 
       <div className="flex flex-col gap-4">
@@ -97,6 +100,7 @@ export const ContactInformationForm = (props: {
             leading={item.icon}
             label={i === 0 ? "Social link" : undefined}
             value={item.href}
+            note={`Link to your ${item.name} profile`}
           />
         ))}
       </div>

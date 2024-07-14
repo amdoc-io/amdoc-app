@@ -35,7 +35,7 @@ export const ColorPicker = (
           {`${label}${required ? " *" : ""}`}
         </label>
       )}
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap w-full">
         <Circle
           colors={[
             "#FF3B30",
