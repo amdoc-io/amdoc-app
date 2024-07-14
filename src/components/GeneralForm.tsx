@@ -1,10 +1,14 @@
-import { ChangeEvent } from "react";
-import { ColorPicker } from "../forms/ColorPicker";
-import { DocFormContainer } from "../layout/DocFormContainer";
-import { Input } from "../forms/Input";
-import { RxLink2 } from "react-icons/rx";
-import { transformDomain } from "../utils/TransformUtils";
 import { HiOutlineBuildingOffice } from "react-icons/hi2";
+import { RxLink2 } from "react-icons/rx";
+import { ColorPicker } from "../forms/ColorPicker";
+import { Input } from "../forms/Input";
+import { UploadAvatar } from "../forms/UploadAvatar";
+import { DocFormContainer } from "../layout/DocFormContainer";
+import {
+  handleInputBlur,
+  handleInputChange,
+  handleInputDrop,
+} from "../utils/FormUtils";
 
 export const GeneralForm = (props: {
   formData?: { [key: string]: any };
@@ -16,27 +20,6 @@ export const GeneralForm = (props: {
 }) => {
   const { formData = {}, setFormData = () => {} } = props;
 
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { name, value, type, checked },
-    } = event;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
-  const handleInputBlur = (event: ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { name, value },
-    } = event;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: transformDomain(value),
-    }));
-  };
-
   return (
     <DocFormContainer title="General">
       <Input
@@ -44,16 +27,31 @@ export const GeneralForm = (props: {
         name="brandName"
         value={formData["brandName"]}
         leading={<HiOutlineBuildingOffice />}
-        onChange={handleInputChange}
+        onChange={(e) => handleInputChange(e, setFormData)}
         placeholder="Enter your brand name"
         note="The brand associated with this documentation"
+      />
+
+      <UploadAvatar
+        label="Logo"
+        name="logoImg"
+        value={formData["logoImg"]}
+        onChange={(e) => handleInputChange(e, setFormData)}
+        onDrop={(e) => handleInputDrop(e, setFormData)}
+        note={
+          <ul className="list-disc ml-3">
+            <li>Suggested image resolution: 1024 x 1024</li>
+            <li>File must be less than 10 MB</li>
+            <li>Supports JPG and PNG</li>
+          </ul>
+        }
       />
 
       <ColorPicker
         label="Color"
         name="brandColor"
         value={formData["brandColor"]}
-        onChange={handleInputChange}
+        onChange={(e) => handleInputChange(e, setFormData)}
         note="Your website branding color"
       />
 
@@ -62,8 +60,8 @@ export const GeneralForm = (props: {
         name="homepageUrl"
         value={formData["homepageUrl"]}
         leading={<RxLink2 />}
-        onChange={handleInputChange}
-        onBlur={handleInputBlur}
+        onChange={(e) => handleInputChange(e, setFormData)}
+        onBlur={(e) => handleInputBlur(e, setFormData)}
         placeholder="Link to your homepage"
         note="The full URL to your application homepage"
       />
@@ -73,8 +71,8 @@ export const GeneralForm = (props: {
         name="privacyPolicyUrl"
         value={formData["privacyPolicyUrl"]}
         leading={<RxLink2 />}
-        onChange={handleInputChange}
-        onBlur={handleInputBlur}
+        onChange={(e) => handleInputChange(e, setFormData)}
+        onBlur={(e) => handleInputBlur(e, setFormData)}
         placeholder="Link to your privacy policy"
         note="The full URL to your privacy policy"
       />

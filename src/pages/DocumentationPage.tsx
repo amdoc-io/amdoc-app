@@ -38,6 +38,7 @@ export const DocumentationPage = () => {
     infoEmail: "",
     supportEmail: "",
     careerEmail: "",
+    logoImg: undefined,
     socialLinks: Object.entries(socialMediaDomains).map(([k, v]) => ({
       href: "",
       placeholder: transformDomain(v.domain),

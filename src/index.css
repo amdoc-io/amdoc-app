@@ -21,6 +21,14 @@ body {
   background-image: url("https://utfs.io/f/25adb960-1c12-4cfc-8f24-ca007b908f05-szexw1.webp");
 }
 
+input[type="file"]::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+input[type='file'] {
+  color: transparent;
+}
+
 input[type="color"] {
   -webkit-appearance: none;
   -moz-appearance   : none;
