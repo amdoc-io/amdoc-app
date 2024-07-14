@@ -70,7 +70,7 @@ export const ColorPicker = (
               return;
             }
             const event = {
-              target: { value: color.hex, name: props.name },
+              target: { value: color.hex.toUpperCase(), name: props.name },
             } as ChangeEvent<HTMLInputElement>;
 
             props.onChange(event);
