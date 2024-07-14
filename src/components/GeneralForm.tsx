@@ -40,7 +40,7 @@ export const GeneralForm = (props: {
   return (
     <DocFormContainer title="General">
       <Input
-        label="Brand name"
+        label="Brand Name"
         name="brandName"
         value={formData["brandName"]}
         leading={<HiOutlineBuildingOffice />}

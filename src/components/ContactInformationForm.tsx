@@ -64,7 +64,7 @@ export const ContactInformationForm = (props: {
         onChange={handleInputChange}
         name="infoEmail"
         leading={<RxEnvelopeClosed />}
-        label="Get in touch"
+        label="Get in Touch Email"
         value={formData["infoEmail"]}
         note="The email address for general inquiries"
       />
@@ -74,7 +74,7 @@ export const ContactInformationForm = (props: {
         onChange={handleInputChange}
         name="supportEmail"
         leading={<RxEnvelopeClosed />}
-        label="Contact support"
+        label="Support Email"
         value={formData["supportEmail"]}
         note="The email address for support inquiries"
       />
@@ -84,7 +84,7 @@ export const ContactInformationForm = (props: {
         onChange={handleInputChange}
         name="careerEmail"
         leading={<RxEnvelopeClosed />}
-        label="Career"
+        label="Career Email"
         value={formData["careerEmail"]}
         note="The email address for career inquiries"
       />
@@ -98,7 +98,7 @@ export const ContactInformationForm = (props: {
             name="socialLinks"
             onBlur={(e) => handleSocialLinksBlur(e, i)}
             leading={item.icon}
-            label={i === 0 ? "Social link" : undefined}
+            label={i === 0 ? "Social Profile URL" : undefined}
             value={item.href}
             note={`The full URL to your ${item.name} profile`}
           />
