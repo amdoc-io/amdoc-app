@@ -17,7 +17,7 @@ export const handleInputChange = (
   } else if (type === "file") {
     callback((prev) => ({
       ...prev,
-      [name]: files,
+      [name]: files?.[0],
     }));
   } else {
     callback((prev) => ({
@@ -58,6 +58,6 @@ export const handleInputDrop = (
   const { name } = event.currentTarget;
   callback((prev) => ({
     ...prev,
-    [name]: event.dataTransfer.files,
+    [name]: event.dataTransfer.files?.[0],
   }));
 };

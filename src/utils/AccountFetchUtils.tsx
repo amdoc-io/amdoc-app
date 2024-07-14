@@ -5,6 +5,7 @@ import {
   AIM_GET_INFRASTRUCTURE_BY_ORGANIZATION_ID_ENDPOINT,
   AIM_GET_LINKEDIN_ACCESS_TOKEN_PROXY_ENDPOINT,
   AIM_GET_ORGANIZATIONS_BY_EMAIL_ENDPOINT,
+  AIM_SAVE_DOCUMENTATION_SETTINGS_ENDPOINT,
   AIM_SAVE_INFRASTRUCTURE_ENDPOINT,
   AIM_SAVE_ORGANIZATION_ENDPOINT,
   AIM_UPDATE_ACCOUNT_ENDPOINT,
@@ -175,6 +176,24 @@ export const getLinkedInAccessToken = async (code: string) => {
         scope: token.scope,
       } as LinkedInAccessToken;
     })
+    .catch((err) => {
+      console.error(err);
+      return undefined;
+    });
+};
+
+export const saveDocumentationSettings = async (
+  authToken: string,
+  formData: FormData
+) => {
+  return await axios
+    .post(AIM_SAVE_DOCUMENTATION_SETTINGS_ENDPOINT, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
+    .then((res) => res.data)
     .catch((err) => {
       console.error(err);
       return undefined;

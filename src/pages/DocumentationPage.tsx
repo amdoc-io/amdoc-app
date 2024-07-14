@@ -23,13 +23,17 @@ import {
 import { GeneralForm } from "../components/GeneralForm";
 import { PrimaryButton } from "../actions/PrimaryButton";
 import { MarketingForm } from "../components/MarketingForm";
+import { saveDocumentationSettings } from "../utils/AccountFetchUtils";
 
 export const DocumentationPage = () => {
+  const authToken: string = useSelector((state: any) => state.auth.token);
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
+
   const [formData, setFormData] = useState<{ [key: string]: any }>({
     brandName: "",
+    logoImg: undefined,
     brandColor: "#0000FF",
     homepageUrl: "",
     privacyPolicyUrl: "",
@@ -38,7 +42,6 @@ export const DocumentationPage = () => {
     infoEmail: "",
     supportEmail: "",
     careerEmail: "",
-    logoImg: undefined,
     socialLinks: Object.entries(socialMediaDomains).map(([k, v]) => ({
       href: "",
       placeholder: transformDomain(v.domain),
@@ -47,8 +50,13 @@ export const DocumentationPage = () => {
     })),
   });
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async () => {
     console.log(formData);
+    const reqFormData = new FormData();
+    for (const name in formData) {
+      reqFormData.append(name, formData[name]);
+    }
+    await saveDocumentationSettings(authToken, reqFormData);
   };
 
   return (

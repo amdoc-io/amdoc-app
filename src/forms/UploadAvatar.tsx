@@ -38,8 +38,8 @@ export const UploadAvatar = (
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       validateFile(selectedFile);
+      onChange(event);
     }
-    onChange(event);
   };
 
   const validateFile = (selectedFile: File) => {
@@ -81,7 +81,7 @@ export const UploadAvatar = (
         reader.onloadend = () => {
           setImageUrl(reader.result as string);
         };
-        reader.readAsDataURL((value as any)[0] as File);
+        reader.readAsDataURL(value as any as File);
       } catch (e) {}
     }
     if (!value && imageUrl) {
@@ -129,7 +129,7 @@ export const UploadAvatar = (
                 <img
                   src={imageUrl}
                   alt="Preview"
-                  className="h-[200px] w-[200px] rounded-md object-fill"
+                  className="h-[200px] w-[200px] rounded-md object-cover"
                 />
               ) : (
                 <div className="p-8 flex flex-col items-center gap-4">
