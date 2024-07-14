@@ -51,8 +51,8 @@ export const GeneralForm = (props: {
 
       <ColorPicker
         label="Color"
-        name="themeColor"
-        value={formData["themeColor"]}
+        name="brandColor"
+        value={formData["brandColor"]}
         onChange={handleInputChange}
         note="Your website branding color"
       />

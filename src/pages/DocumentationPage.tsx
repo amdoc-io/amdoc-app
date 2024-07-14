@@ -22,22 +22,28 @@ import {
 } from "../utils/TransformUtils";
 import { GeneralForm } from "../components/GeneralForm";
 import { PrimaryButton } from "../actions/PrimaryButton";
+import { MarketingForm } from "../components/MarketingForm";
 
 export const DocumentationPage = () => {
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
   const [formData, setFormData] = useState<{ [key: string]: any }>({
+    brandName: "",
+    brandColor: "#0000FF",
+    homepageUrl: "",
+    privacyPolicyUrl: "",
+    callToActionName: "",
+    callToActionUrl: "",
+    infoEmail: "",
+    supportEmail: "",
+    careerEmail: "",
     socialLinks: Object.entries(socialMediaDomains).map(([k, v]) => ({
       href: "",
       placeholder: transformDomain(v.domain),
       icon: socialMediaIcons[k as keyof typeof socialMediaIcons],
       name: v.name,
     })),
-    infoEmail: "",
-    supportEmail: "",
-    careerEmail: "",
-    themeColor: "#0000FF",
   });
 
   const handleSaveChanges = () => {
@@ -130,6 +136,8 @@ export const DocumentationPage = () => {
           )}
 
         <GeneralForm formData={formData} setFormData={setFormData} />
+
+        <MarketingForm formData={formData} setFormData={setFormData} />
 
         <ContactInformationForm formData={formData} setFormData={setFormData} />
 
