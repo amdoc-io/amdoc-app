@@ -42,7 +42,7 @@ export const GeneralForm = (props: {
           <ul className="list-disc ml-3">
             <li>Suggested image dimensions: 1024 x 1024</li>
             <li>File must be less than 10 MB</li>
-            <li>Supports JPG and PNG</li>
+            <li>Supports JPG, JPEG, and PNG</li>
           </ul>
         }
       />
