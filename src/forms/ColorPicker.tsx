@@ -51,6 +51,9 @@ export const ColorPicker = (
             "#AF52DE",
             "#FF2D55",
             "#A2845E",
+            "#CCCCCC",
+            "#999999",
+            "#000000",
           ]}
           color={props.value as string}
           pointProps={{
