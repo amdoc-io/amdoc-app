@@ -57,7 +57,7 @@ function App() {
             <SideBar />
             <div className="py-[68px] px-4 lg:px-12 relative w-full">
               <MobileSideBar />
-              <OutletWrapper>
+              <OutletWrapper className="pb-[68px]">
                 <Outlet />
               </OutletWrapper>
             </div>

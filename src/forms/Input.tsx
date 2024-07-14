@@ -45,9 +45,7 @@ export const Input = (
             {...restProps}
             type="text"
             id={id}
-            className={`block focus:outline-none flex-1 border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 ${
-              !leading ? "pl-2" : "pl-1"
-            }`}
+            className={`block focus:outline-none flex-1 border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 px-2`}
           />
         </div>
       </div>

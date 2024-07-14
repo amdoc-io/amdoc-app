@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   IoEarthOutline,
   IoFolderOpenOutline,
@@ -8,16 +9,34 @@ import { RxExternalLink, RxGlobe, RxPencil2 } from "react-icons/rx";
 import { useSelector } from "react-redux";
 import { Link } from "../actions/Link";
 import { OutlinedButton } from "../actions/OutlinedButton";
+import { ContactInformationForm } from "../components/ContactInformationForm";
 import { Heading } from "../display/Heading";
 import { Paragraph } from "../display/Paragraph";
 import { WebDisplay } from "../display/WebDisplay";
 import { ContentContainer } from "../layout/ContentContainer";
 import { Infrastructure } from "../model/AccountModel";
+import {
+  socialMediaDomains,
+  socialMediaIcons,
+  transformDomain,
+} from "../utils/TransformUtils";
+import { ThemeForm } from "../components/ThemeForm";
 
 export const DocumentationPage = () => {
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
+  const [formData, setFormData] = useState<{ [key: string]: any }>({
+    socialLinks: Object.entries(socialMediaDomains).map(([k, v]) => ({
+      href: "",
+      placeholder: transformDomain(v),
+      icon: socialMediaIcons[k as keyof typeof socialMediaIcons],
+    })),
+    infoEmail: "",
+    supportEmail: "",
+    careerEmail: "",
+    themeColor: "#0000FF",
+  });
 
   return (
     <div>
@@ -103,6 +122,10 @@ export const DocumentationPage = () => {
               </div>
             </div>
           )}
+
+        <ThemeForm formData={formData} setFormData={setFormData} />
+
+        <ContactInformationForm formData={formData} setFormData={setFormData} />
       </ContentContainer>
     </div>
   );
