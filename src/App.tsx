@@ -20,6 +20,7 @@ import { AddOrganizationPage } from "./pages/auth/AddOrganizationPage";
 import { Organization } from "./model/AccountModel";
 import { useMemo } from "react";
 import { PrepareApplicationPage } from "./pages/auth/PrepareApplicationPage";
+import { ProfilePage } from "./pages/settings/ProfilePage";
 
 function App() {
   const token: string = useSelector((state: any) => state.auth.token);
@@ -125,6 +126,10 @@ function App() {
             {
               path: "/settings",
               element: <SettingsPage />,
+            },
+            {
+              path: "/settings/profile",
+              element: <ProfilePage />,
             },
             {
               path: "*",

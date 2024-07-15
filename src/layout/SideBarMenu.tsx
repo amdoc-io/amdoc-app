@@ -40,8 +40,9 @@ export const SideBarMenu = () => {
   const location = useLocation();
 
   const isCurrentPage = (item: any) => {
+    const parts = location.pathname.split("/");
     return (
-      location.pathname === item.href ||
+      `/${parts[1]}` === item.href ||
       (location.pathname in firstPageAllowList && item.label === menu[0].label)
     );
   };

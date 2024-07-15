@@ -81,140 +81,131 @@ export const HomePage = () => {
   };
 
   return (
-    <div>
-      <Heading level={1}>Home</Heading>
-
-      <ContentContainer>
+    <ContentContainer>
+      <DocFormContainer title="Home">
         <Paragraph>Welcome, {account.firstName}!</Paragraph>
+      </DocFormContainer>
 
-        <DocFormContainer title="Getting Started">
-          <Steps
-            value={currentStep === null ? -1 : currentStep}
-            onChange={(value) => updateStep(value)}
-            className="mb-2"
-            heading={
-              <div className="flex gap-4 items-center">
-                <div className="flex">
-                  <div className="h-10 w-10 flex justify-center items-center bg-gray-100 rounded-full text-inherit">
-                    <RiGuideLine />
-                  </div>
-                </div>
-
-                <div className="text-sm">
-                  <Heading className="font-semibold text-base">
-                    Onboarding Steps
-                  </Heading>
-                  <Paragraph className="text-sm">
-                    To begin automating your documentation with iGendoc, follow
-                    the steps below.
-                  </Paragraph>
+      <DocFormContainer title="Getting Started">
+        <Steps
+          value={currentStep === null ? -1 : currentStep}
+          onChange={(value) => updateStep(value)}
+          className="mb-2"
+          heading={
+            <div className="flex gap-4 items-center">
+              <div className="flex">
+                <div className="h-10 w-10 flex justify-center items-center bg-gray-100 rounded-full text-inherit">
+                  <RiGuideLine />
                 </div>
               </div>
-            }
-            steps={[
-              {
-                title: "Choose a Git provider",
-                description: (
-                  <ChooseGitProvider onComplete={() => updateStep(1)} />
-                ),
-                isCompleted: gitProvider !== undefined && gitProvider !== null,
-                postCompletion: (
-                  <p>
-                    You have successfully selected{" "}
-                    <span className="text-gray-900">{gitProvider}</span> as your
-                    Git provider!
-                  </p>
-                ),
-              },
-              {
-                title: "Authorize with OAuth",
-                description: (
-                  <AuthorizeGitOAuth onComplete={() => updateStep(2)} />
-                ),
-                isCompleted:
-                  gitOauthToken !== undefined && gitOauthToken !== null,
-                postCompletion: (
-                  <p>
-                    You have successfully authorized using {gitProvider} OAuth
-                    as{" "}
-                    <Link href={githubUser?.html_url} target="_blank">
-                      {githubUser?.login}
-                    </Link>
-                    !
-                  </p>
-                ),
-              },
-              {
-                title: "Connect to Git provider",
-                description: (
-                  <ConnectGitProvider onComplete={() => updateStep(3)} />
-                ),
-                isCompleted: !!(
-                  gitInstallationToken && gitInstallationToken.token
-                ),
-                postCompletion: `You have successfully installed the ${gitProvider} application!`,
-              },
-              {
-                title: "Set up your initial doc",
-                description: (
-                  <SetupInitialDoc onComplete={() => updateStep(4)} />
-                ),
-                isCompleted:
-                  docInitialRepo !== undefined && docInitialRepo !== null,
-                postCompletion: (
-                  <p>
-                    You have successfully set up your initial documentation!
-                    Access your repo:{" "}
-                    <Link
-                      href={`${githubUser?.html_url}/${docInitialRepo}`}
-                      target="_blank"
-                    >
-                      {`${githubUser?.login}/${docInitialRepo}`}
-                    </Link>
-                    .
-                  </p>
-                ),
-              },
-            ]}
-          />
-        </DocFormContainer>
 
-        {docInitialRepo && (
-          <DocFormContainer title="Your website">
-            {!docInitialWebsiteCreationLoading && (
-              <Alert variant="info">
-                If the website is not ready, wait a few minutes and refresh.
-              </Alert>
-            )}
-
-            <Paragraph>
-              {docInitialWebsiteCreationLoading ? (
-                <>
-                  Your {docInitialRepo} documentation website is being prepared.
-                  <ProgressBar
-                    value={(docInitialWebsiteCreationPeriod / 90) * 100}
-                    className="mt-2"
-                  />
-                </>
-              ) : (
-                <>
-                  Your documentation website URL:{" "}
+              <div className="text-sm">
+                <Heading className="font-semibold text-base">
+                  Onboarding Steps
+                </Heading>
+                <Paragraph className="text-sm">
+                  To begin automating your documentation with iGendoc, follow
+                  the steps below.
+                </Paragraph>
+              </div>
+            </div>
+          }
+          steps={[
+            {
+              title: "Choose a Git provider",
+              description: (
+                <ChooseGitProvider onComplete={() => updateStep(1)} />
+              ),
+              isCompleted: gitProvider !== undefined && gitProvider !== null,
+              postCompletion: (
+                <p>
+                  You have successfully selected{" "}
+                  <span className="text-gray-900">{gitProvider}</span> as your
+                  Git provider!
+                </p>
+              ),
+            },
+            {
+              title: "Authorize with OAuth",
+              description: (
+                <AuthorizeGitOAuth onComplete={() => updateStep(2)} />
+              ),
+              isCompleted:
+                gitOauthToken !== undefined && gitOauthToken !== null,
+              postCompletion: (
+                <p>
+                  You have successfully authorized using {gitProvider} OAuth as{" "}
+                  <Link href={githubUser?.html_url} target="_blank">
+                    {githubUser?.login}
+                  </Link>
+                  !
+                </p>
+              ),
+            },
+            {
+              title: "Connect to Git provider",
+              description: (
+                <ConnectGitProvider onComplete={() => updateStep(3)} />
+              ),
+              isCompleted: !!(
+                gitInstallationToken && gitInstallationToken.token
+              ),
+              postCompletion: `You have successfully installed the ${gitProvider} application!`,
+            },
+            {
+              title: "Set up your initial doc",
+              description: <SetupInitialDoc onComplete={() => updateStep(4)} />,
+              isCompleted:
+                docInitialRepo !== undefined && docInitialRepo !== null,
+              postCompletion: (
+                <p>
+                  You have successfully set up your initial documentation!
+                  Access your repo:{" "}
                   <Link
-                    href={docInitialWebsite}
+                    href={`${githubUser?.html_url}/${docInitialRepo}`}
                     target="_blank"
-                    rel="noreferrer"
                   >
-                    {docInitialWebsite}
+                    {`${githubUser?.login}/${docInitialRepo}`}
                   </Link>
                   .
-                </>
-              )}
-            </Paragraph>
+                </p>
+              ),
+            },
+          ]}
+        />
+      </DocFormContainer>
 
-            {docInitialWebsite && <WebDisplay url={docInitialWebsite} />}
-          </DocFormContainer>
-        )}
-      </ContentContainer>
-    </div>
+      {docInitialRepo && (
+        <DocFormContainer title="Your website">
+          {!docInitialWebsiteCreationLoading && (
+            <Alert variant="info">
+              If the website is not ready, wait a few minutes and refresh.
+            </Alert>
+          )}
+
+          <Paragraph>
+            {docInitialWebsiteCreationLoading ? (
+              <>
+                Your {docInitialRepo} documentation website is being prepared.
+                <ProgressBar
+                  value={(docInitialWebsiteCreationPeriod / 90) * 100}
+                  className="mt-2"
+                />
+              </>
+            ) : (
+              <>
+                Your documentation website URL:{" "}
+                <Link href={docInitialWebsite} target="_blank" rel="noreferrer">
+                  {docInitialWebsite}
+                </Link>
+                .
+              </>
+            )}
+          </Paragraph>
+
+          {docInitialWebsite && <WebDisplay url={docInitialWebsite} />}
+        </DocFormContainer>
+      )}
+    </ContentContainer>
   );
 };

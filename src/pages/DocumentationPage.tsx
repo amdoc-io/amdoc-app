@@ -13,14 +13,14 @@ import { PrimaryButton } from "../actions/PrimaryButton";
 import { ContactInformationForm } from "../components/ContactInformationForm";
 import { GeneralForm } from "../components/GeneralForm";
 import { MarketingForm } from "../components/MarketingForm";
-import { Heading } from "../display/Heading";
 import { Paragraph } from "../display/Paragraph";
 import { WebDisplay } from "../display/WebDisplay";
+import { setDocSettings } from "../features/settings/docSettingsSlice";
 import { ContentContainer } from "../layout/ContentContainer";
+import { DocFormContainer } from "../layout/DocFormContainer";
 import { DocAccount, DocSettings, Infrastructure } from "../model/AccountModel";
 import { saveDocumentationSettings } from "../utils/AccountFetchUtils";
 import { socialMediaDomains } from "../utils/TransformUtils";
-import { setDocSettings } from "../features/settings/docSettingsSlice";
 
 export const DocumentationPage = () => {
   const dispatch = useDispatch();
@@ -101,10 +101,8 @@ export const DocumentationPage = () => {
   };
 
   return (
-    <div>
-      <Heading level={1}>Documentation</Heading>
-
-      <ContentContainer>
+    <ContentContainer>
+      <DocFormContainer title="Documentation">
         {infrastructure.docInitialRepo &&
           infrastructure.githubUser &&
           infrastructure.docInitialWebsite && (
@@ -184,21 +182,21 @@ export const DocumentationPage = () => {
               </div>
             </div>
           )}
+      </DocFormContainer>
 
-        <GeneralForm formData={formData} setFormData={setFormData} />
+      <GeneralForm formData={formData} setFormData={setFormData} />
 
-        <MarketingForm formData={formData} setFormData={setFormData} />
+      <MarketingForm formData={formData} setFormData={setFormData} />
 
-        <ContactInformationForm formData={formData} setFormData={setFormData} />
+      <ContactInformationForm formData={formData} setFormData={setFormData} />
 
+      <div className="flex">
         <div className="flex">
-          <div className="flex">
-            <PrimaryButton onClick={handleSaveChanges} loading={saveLoading}>
-              Save changes
-            </PrimaryButton>
-          </div>
+          <PrimaryButton onClick={handleSaveChanges} loading={saveLoading}>
+            Save changes
+          </PrimaryButton>
         </div>
-      </ContentContainer>
-    </div>
+      </div>
+    </ContentContainer>
   );
 };
