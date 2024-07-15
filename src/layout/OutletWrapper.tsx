@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { setInfrastructure } from "../features/onboard/onboardSlice";
 import { GitInstallationToken, Infrastructure } from "../model/AccountModel";
 import {
+  getDocSettingsByOrgId,
   getGithubAppJWT,
   saveInfrastructure,
 } from "../utils/AccountFetchUtils";
 import { getGithubInstallationAccessTokens } from "../utils/GithubFetchUtils";
 import { isTokenValid, mapInstallationToken } from "../utils/TokenUtils";
+import { setDocSettings } from "../features/settings/docSettingsSlice";
 
 export const OutletWrapper = (
   props: React.DetailedHTMLProps<
@@ -87,9 +89,24 @@ export const OutletWrapper = (
   //   }, 5000);
   // }, [organization, authToken, dispatch]);
 
+  const fetchDocSettings = useCallback(async () => {
+    if (infrastructure?.organizationId) {
+      const docSettings = await getDocSettingsByOrgId(
+        infrastructure.organizationId
+      );
+      if (docSettings) {
+        dispatch(setDocSettings(docSettings));
+      }
+    }
+  }, [infrastructure, dispatch]);
+
   useEffect(() => {
     rotateGithubInstallationToken();
   }, [rotateGithubInstallationToken]);
+
+  useEffect(() => {
+    fetchDocSettings();
+  }, [fetchDocSettings]);
 
   return <div {...props} />;
 };

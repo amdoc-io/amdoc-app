@@ -22,3 +22,5 @@ export const AIM_GET_LINKEDIN_ACCESS_TOKEN_PROXY_ENDPOINT =
   AIM_BASE_URL + "/get-linkedin-access-token-proxy";
 export const AIM_SAVE_DOCUMENTATION_SETTINGS_ENDPOINT =
   AIM_BASE_URL + "/save-documentation-settings";
+export const AIM_GET_DOC_SETTINGS_BY_ORG_ID_ENDPOINT =
+  AIM_BASE_URL + "/get-doc-settings-by-org-id";

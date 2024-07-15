@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   AIM_CREATE_GIT_CLIENT_WEB_APP_ENDPOINT,
+  AIM_GET_DOC_SETTINGS_BY_ORG_ID_ENDPOINT,
   AIM_GET_GITHUB_APP_JWT_PROXY_ENDPOINT,
   AIM_GET_INFRASTRUCTURE_BY_ORGANIZATION_ID_ENDPOINT,
   AIM_GET_LINKEDIN_ACCESS_TOKEN_PROXY_ENDPOINT,
@@ -13,6 +14,7 @@ import {
 } from "../endpoints/AIMEndpoint";
 import {
   DocAccount,
+  DocSettings,
   Infrastructure,
   LinkedInAccessToken,
   Organization,
@@ -194,6 +196,18 @@ export const saveDocumentationSettings = async (
       },
     })
     .then((res) => res.data)
+    .catch((err) => {
+      console.error(err);
+      return undefined;
+    });
+};
+
+export const getDocSettingsByOrgId = async (organizationId: string) => {
+  return axios
+    .get(
+      `${AIM_GET_DOC_SETTINGS_BY_ORG_ID_ENDPOINT}?organizationId=${organizationId}`
+    )
+    .then((res) => res.data as DocSettings)
     .catch((err) => {
       console.error(err);
       return undefined;
