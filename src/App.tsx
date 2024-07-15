@@ -22,6 +22,7 @@ import { useMemo } from "react";
 import { PrepareApplicationPage } from "./pages/auth/PrepareApplicationPage";
 import { ProfilePage } from "./pages/settings/ProfilePage";
 import { RightSideBar } from "./layout/RightSideBar";
+import { DeploymentPage } from "./pages/DeploymentPage";
 
 function App() {
   const token: string = useSelector((state: any) => state.auth.token);
@@ -116,6 +117,10 @@ function App() {
             {
               path: "/documentation",
               element: <DocumentationPage />,
+            },
+            {
+              path: "/deployment",
+              element: <DeploymentPage />,
             },
             {
               path: "/analytics",

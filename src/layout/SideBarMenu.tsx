@@ -4,6 +4,7 @@ import {
   RxGear,
   RxGlobe,
   RxHome,
+  RxRocket,
 } from "react-icons/rx";
 import { useLocation } from "react-router-dom";
 
@@ -18,6 +19,11 @@ const menu = [
     label: "Documentation",
     href: "/documentation",
     icon: <RxFileText />,
+  },
+  {
+    label: "Deployment",
+    href: "/deployment",
+    icon: <RxRocket />,
   },
   {
     label: "Analytics",
