@@ -7,19 +7,21 @@ import { AuthorizeGitOAuth } from "../components/AuthorizeGitOAuth";
 import { ChooseGitProvider } from "../components/ChooseGitProvider";
 import { ConnectGitProvider } from "../components/ConnectGitProvider";
 import { SetupInitialDoc } from "../components/SetupInitialDoc";
+import { Alert } from "../display/Alert";
 import { Heading } from "../display/Heading";
 import { Paragraph } from "../display/Paragraph";
 import { ProgressBar } from "../display/ProgressBar";
 import { WebDisplay } from "../display/WebDisplay";
 import { setInfrastructure } from "../features/onboard/onboardSlice";
 import { ContentContainer } from "../layout/ContentContainer";
-import { Divider } from "../layout/Divider";
-import { Infrastructure } from "../model/AccountModel";
+import { DocFormContainer } from "../layout/DocFormContainer";
+import { DocAccount, Infrastructure } from "../model/AccountModel";
 import { saveInfrastructure } from "../utils/AccountFetchUtils";
 
 export const HomePage = () => {
   const dispatch = useDispatch();
   const authToken: string = useSelector((state: any) => state.auth.token);
+  const account: DocAccount = useSelector((state: any) => state.auth.account);
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
@@ -83,9 +85,9 @@ export const HomePage = () => {
       <Heading level={1}>Home</Heading>
 
       <ContentContainer>
-        <Paragraph>Welcome to iGendoc!</Paragraph>
+        <Paragraph>Welcome, {account.firstName}!</Paragraph>
 
-        <div className="flex flex-col gap-4">
+        <DocFormContainer title="Getting Started">
           <Steps
             value={currentStep === null ? -1 : currentStep}
             onChange={(value) => updateStep(value)}
@@ -100,7 +102,7 @@ export const HomePage = () => {
 
                 <div className="text-sm">
                   <Heading className="font-semibold text-base">
-                    Getting Started
+                    Onboarding Steps
                   </Heading>
                   <Paragraph className="text-sm">
                     To begin automating your documentation with iGendoc, follow
@@ -174,45 +176,44 @@ export const HomePage = () => {
               },
             ]}
           />
+        </DocFormContainer>
 
-          {docInitialRepo && (
-            <>
-              <Divider />
-              <Paragraph>
-                {docInitialWebsiteCreationLoading ? (
-                  <>
-                    Your {docInitialRepo} documentation website is being
-                    prepared.
-                    <ProgressBar
-                      value={(docInitialWebsiteCreationPeriod / 90) * 100}
-                      className="mt-2"
-                    />
-                  </>
-                ) : (
-                  <>
-                    Your documentation website:{" "}
-                    <Link
-                      href={docInitialWebsite}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {docInitialWebsite}
-                    </Link>
-                  </>
-                )}
-              </Paragraph>
-              {!docInitialWebsiteCreationLoading && (
-                <Paragraph className="italic">
-                  If the website is not ready, wait a few minutes and refresh.
-                </Paragraph>
-              )}
+        {docInitialRepo && (
+          <DocFormContainer title="Your website">
+            {!docInitialWebsiteCreationLoading && (
+              <Alert variant="info">
+                If the website is not ready, wait a few minutes and refresh.
+              </Alert>
+            )}
 
-              {docInitialWebsite && (
-                <WebDisplay url={docInitialWebsite} className="mt-4" />
+            <Paragraph>
+              {docInitialWebsiteCreationLoading ? (
+                <>
+                  Your {docInitialRepo} documentation website is being prepared.
+                  <ProgressBar
+                    value={(docInitialWebsiteCreationPeriod / 90) * 100}
+                    className="mt-2"
+                  />
+                </>
+              ) : (
+                <>
+                  Your documentation website URL:{" "}
+                  <Link
+                    href={docInitialWebsite}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {docInitialWebsite}
+                  </Link>
+                </>
               )}
-            </>
-          )}
-        </div>
+            </Paragraph>
+
+            {docInitialWebsite && (
+              <WebDisplay url={docInitialWebsite} className="mt-4" />
+            )}
+          </DocFormContainer>
+        )}
       </ContentContainer>
     </div>
   );
