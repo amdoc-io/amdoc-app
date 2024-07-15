@@ -57,7 +57,7 @@ function App() {
         <div className="flex flex-col h-[100vh]">
           <div className="flex max-w-screen-2xl ml-auto mr-auto w-full mt-16">
             <SideBar />
-            <div className="py-[68px] px-8 lg:px-12 relative w-full ml-0 lg:ml-[250px]">
+            <div className="py-[68px] px-8 relative w-full ml-0 lg:ml-[250px]">
               <MobileSideBar />
               <OutletWrapper className="flex gap-12">
                 <Outlet />

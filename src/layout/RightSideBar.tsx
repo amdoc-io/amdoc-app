@@ -42,7 +42,7 @@ export const RightSideBar = () => {
   }, [location]);
 
   return (
-    <div className="w-[500px] mt-16 hidden xl:block pr-4 text-sm">
+    <div className="w-[500px] mt-16 hidden xl:block pr-8 text-sm">
       <div
         className="border rounded-md p-6 top-[100px] flex flex-col gap-4 transition-all transform duration-300 ease-in-out"
         style={{ position: isSticky ? "sticky" : "static" }}
