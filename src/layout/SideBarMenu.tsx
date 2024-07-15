@@ -53,7 +53,7 @@ export const SideBarMenu = () => {
           <li key={i}>
             <a
               href={item.href}
-              className={`flex items-center gap-3 rounded-md px-4 min-w-[250px] py-2 transition-all duration-300 ${
+              className={`flex items-center gap-3 px-4 min-w-[250px] py-2 transition-all duration-300 ${
                 isCurrentPage(item)
                   ? "bg-primary text-white"
                   : "hover:bg-gray-300/30"
