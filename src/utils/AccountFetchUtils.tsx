@@ -202,10 +202,14 @@ export const saveDocumentationSettings = async (
     });
 };
 
-export const getDocSettingsByOrgId = async (organizationId: string) => {
+export const getDocSettingsByOrgId = async (
+  authToken: string,
+  organizationId: string
+) => {
   return axios
     .get(
-      `${AIM_GET_DOC_SETTINGS_BY_ORG_ID_ENDPOINT}?organizationId=${organizationId}`
+      `${AIM_GET_DOC_SETTINGS_BY_ORG_ID_ENDPOINT}?organizationId=${organizationId}`,
+      createHeader(authToken)
     )
     .then((res) => res.data as DocSettings)
     .catch((err) => {

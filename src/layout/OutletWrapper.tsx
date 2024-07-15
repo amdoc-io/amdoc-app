@@ -1,7 +1,11 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setInfrastructure } from "../features/onboard/onboardSlice";
-import { GitInstallationToken, Infrastructure } from "../model/AccountModel";
+import {
+  DocSettings,
+  GitInstallationToken,
+  Infrastructure,
+} from "../model/AccountModel";
 import {
   getDocSettingsByOrgId,
   getGithubAppJWT,
@@ -22,6 +26,10 @@ export const OutletWrapper = (
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
+  const docSettings: DocSettings = useSelector(
+    (state: any) => state.settings.docSettings
+  );
+
   const { currentStep = -1, gitProvider, gitInstallationId } = infrastructure;
 
   const shouldRotate = useCallback((): boolean => {
@@ -90,15 +98,16 @@ export const OutletWrapper = (
   // }, [organization, authToken, dispatch]);
 
   const fetchDocSettings = useCallback(async () => {
-    if (infrastructure?.organizationId) {
-      const docSettings = await getDocSettingsByOrgId(
-        infrastructure.organizationId
+    if (infrastructure?.organizationId && authToken && !docSettings) {
+      const settings = await getDocSettingsByOrgId(
+        infrastructure.organizationId,
+        authToken
       );
-      if (docSettings) {
-        dispatch(setDocSettings(docSettings));
+      if (settings) {
+        dispatch(setDocSettings(settings));
       }
     }
-  }, [infrastructure, dispatch]);
+  }, [infrastructure, dispatch, authToken, docSettings]);
 
   useEffect(() => {
     rotateGithubInstallationToken();
