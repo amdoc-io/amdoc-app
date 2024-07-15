@@ -163,6 +163,7 @@ export interface DocSettings {
   privacyPolicyUrl: string;
   callToActionName: string;
   callToActionUrl: string;
+  contactUrl: string;
   infoEmail: string;
   supportEmail: string;
   careerEmail: string;

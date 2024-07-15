@@ -3,6 +3,7 @@ import { RxEnvelopeClosed } from "react-icons/rx";
 import { Input } from "../forms/Input";
 import { DocFormContainer } from "../layout/DocFormContainer";
 import { socialMediaDomains, transformDomain } from "../utils/TransformUtils";
+import { handleInputBlur, handleInputChange } from "../utils/FormUtils";
 
 export const ContactInformationForm = (props: {
   formData?: { [key: string]: any };
@@ -16,16 +17,6 @@ export const ContactInformationForm = (props: {
   const [errorData, setErrorData] = useState<(string | undefined)[]>(
     new Array(Object.keys(socialMediaDomains).length).fill(undefined)
   );
-
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { name, value, type, checked },
-    } = event;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
 
   const handleSocialLinksChange = (
     event: ChangeEvent<HTMLInputElement>,
@@ -78,8 +69,19 @@ export const ContactInformationForm = (props: {
   return (
     <DocFormContainer title="Contact Information">
       <Input
+        placeholder="Link to your contact page"
+        onChange={(e) => handleInputChange(e, setFormData)}
+        onBlur={(e) => handleInputBlur(e, setFormData)}
+        name="contactUrl"
+        leading={<RxEnvelopeClosed />}
+        label="Contact Page URL"
+        value={formData["contactUrl"]}
+        note="The full URL to your contact page"
+      />
+
+      <Input
         placeholder="info@company.com"
-        onChange={handleInputChange}
+        onChange={(e) => handleInputChange(e, setFormData)}
         name="infoEmail"
         leading={<RxEnvelopeClosed />}
         label="Get in Touch Email"
@@ -89,7 +91,7 @@ export const ContactInformationForm = (props: {
 
       <Input
         placeholder="support@company.com"
-        onChange={handleInputChange}
+        onChange={(e) => handleInputChange(e, setFormData)}
         name="supportEmail"
         leading={<RxEnvelopeClosed />}
         label="Support Email"
@@ -99,7 +101,7 @@ export const ContactInformationForm = (props: {
 
       <Input
         placeholder="career@company.com"
-        onChange={handleInputChange}
+        onChange={(e) => handleInputChange(e, setFormData)}
         name="careerEmail"
         leading={<RxEnvelopeClosed />}
         label="Career Email"
