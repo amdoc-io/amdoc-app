@@ -1,11 +1,8 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setInfrastructure } from "../features/onboard/onboardSlice";
-import {
-  DocSettings,
-  GitInstallationToken,
-  Infrastructure,
-} from "../model/AccountModel";
+import { setDocSettings } from "../features/settings/docSettingsSlice";
+import { GitInstallationToken, Infrastructure } from "../model/AccountModel";
 import {
   getDocSettingsByOrgId,
   getGithubAppJWT,
@@ -13,7 +10,6 @@ import {
 } from "../utils/AccountFetchUtils";
 import { getGithubInstallationAccessTokens } from "../utils/GithubFetchUtils";
 import { isTokenValid, mapInstallationToken } from "../utils/TokenUtils";
-import { setDocSettings } from "../features/settings/docSettingsSlice";
 
 export const OutletWrapper = (
   props: React.DetailedHTMLProps<
@@ -25,9 +21,6 @@ export const OutletWrapper = (
   const authToken: string = useSelector((state: any) => state.auth.token);
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
-  );
-  const docSettings: DocSettings = useSelector(
-    (state: any) => state.docSettings.docSettings
   );
 
   const { currentStep = -1, gitProvider, gitInstallationId } = infrastructure;
@@ -98,7 +91,7 @@ export const OutletWrapper = (
   // }, [organization, authToken, dispatch]);
 
   const fetchDocSettings = useCallback(async () => {
-    if (infrastructure?.organizationId && authToken && !docSettings) {
+    if (infrastructure?.organizationId && authToken) {
       const settings = await getDocSettingsByOrgId(
         authToken,
         infrastructure.organizationId
@@ -107,7 +100,7 @@ export const OutletWrapper = (
         dispatch(setDocSettings(settings));
       }
     }
-  }, [infrastructure, dispatch, authToken, docSettings]);
+  }, [infrastructure, dispatch, authToken]);
 
   useEffect(() => {
     rotateGithubInstallationToken();
