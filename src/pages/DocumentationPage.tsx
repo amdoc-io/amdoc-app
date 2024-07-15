@@ -106,7 +106,7 @@ export const DocumentationPage = () => {
         {infrastructure.docInitialRepo &&
           infrastructure.githubUser &&
           infrastructure.docInitialWebsite && (
-            <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row-dense gap-8 mt-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 grid-flow-row-dense gap-8">
               <WebDisplay url={infrastructure.docInitialWebsite} className="" />
               <div className="flex flex-col gap-2 *:text-sm">
                 <Paragraph className="inline-flex gap-1 items-center">
