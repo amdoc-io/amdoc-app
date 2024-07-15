@@ -80,7 +80,7 @@ export const DocumentationPage = () => {
       ...(docSettings || {}),
       ...formData,
       logoUrl: undefined,
-      email: account,
+      email: account.email,
       organizationId: infrastructure.organizationId,
       gitLogin: infrastructure.githubUser?.login,
       gitRepo: infrastructure.docInitialRepo,
