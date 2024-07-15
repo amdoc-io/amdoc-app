@@ -1,3 +1,16 @@
+import { Location } from "react-router-dom";
+
+export const scrollToHash = (location: Location) => {
+  const hash = location.hash.slice(1);
+
+  if (hash) {
+    const element = document.getElementById(hash);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  }
+};
+
 export const Heading = (
   props: React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLHeadingElement>,
@@ -39,6 +52,7 @@ export const Heading = (
     <div
       {...restProps}
       className={`${showDivider ? "border-b pb-4" : ""} ${className}`}
+      id={encodeURIComponent(children as string)}
     >
       {renderContent()}
     </div>

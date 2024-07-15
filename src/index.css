@@ -11,6 +11,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html {
+  scroll-behavior   : smooth;
+  scroll-padding-top: 6rem;
+}
+
 * {
   font-family        : "Inter", sans-serif;
   overscroll-behavior: none;
@@ -158,6 +163,10 @@ pre[class*=language-] {
 input {
   font-size  : 0.875rem;
   line-height: 1.5rem;
+}
+
+.card-shadow {
+  box-shadow: rgba(3, 3, 13, 0.03) 0px 1px 2px 0px, rgba(3, 3, 13, 0.05) 0px 1px 3px 0px, rgba(255, 255, 255, 0.2) 0px -1px 1px 1px inset;
 }
 
 .button {

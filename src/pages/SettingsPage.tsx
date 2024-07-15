@@ -38,14 +38,14 @@ export const SettingsPage = () => {
   return (
     <ContentContainer>
       <DocFormContainer title="Settings">
-        <div className="grid grid-cols-2 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 gap-8">
           {menu.map((item, i) => (
             <OutlinedButton
               key={i}
               icon={item.icon}
               disabled={item.disabled}
               onClick={() => navigate(item.href)}
-              className="h-[140px]"
+              className="h-[80px]"
             >
               {item.label}
             </OutlinedButton>

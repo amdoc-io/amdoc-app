@@ -21,6 +21,7 @@ import { Organization } from "./model/AccountModel";
 import { useMemo } from "react";
 import { PrepareApplicationPage } from "./pages/auth/PrepareApplicationPage";
 import { ProfilePage } from "./pages/settings/ProfilePage";
+import { RightSideBar } from "./layout/RightSideBar";
 
 function App() {
   const token: string = useSelector((state: any) => state.auth.token);
@@ -54,14 +55,15 @@ function App() {
         <Header />
 
         <div className="flex flex-col h-[100vh]">
-          <div className="flex h-full max-w-screen-2xl ml-auto mr-auto w-full mt-16">
+          <div className="flex max-w-screen-2xl ml-auto mr-auto w-full mt-16">
             <SideBar />
-            <div className="py-[68px] px-8 lg:px-28 relative w-full ml-0 lg:ml-[250px]">
+            <div className="py-[68px] px-8 lg:px-12 relative w-full ml-0 lg:ml-[250px]">
               <MobileSideBar />
-              <OutletWrapper className="pb-[68px]">
+              <OutletWrapper className="flex gap-12">
                 <Outlet />
               </OutletWrapper>
             </div>
+            <RightSideBar />
           </div>
         </div>
       </div>
