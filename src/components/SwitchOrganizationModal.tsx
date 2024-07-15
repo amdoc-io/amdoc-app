@@ -4,8 +4,12 @@ import { setOrganization } from "../features/auth/authSlice";
 import { setInfrastructure } from "../features/onboard/onboardSlice";
 import Modal from "../layout/Modal";
 import { Organization } from "../model/AccountModel";
-import { getInfrastructureByOrganizationId } from "../utils/AccountFetchUtils";
+import {
+  getDocSettingsByOrgId,
+  getInfrastructureByOrganizationId,
+} from "../utils/AccountFetchUtils";
 import { ProgressBar } from "../display/ProgressBar";
+import { setDocSettings } from "../features/settings/docSettingsSlice";
 
 export const SwitchOrganizationModal = (props: {
   open?: boolean;
@@ -19,10 +23,11 @@ export const SwitchOrganizationModal = (props: {
   const authToken: string = useSelector((state: any) => state.auth.token);
   const [completion, setCompletion] = useState<{ [key: string]: Boolean }>({
     infrastructure: false,
+    docSettings: false,
   });
 
   const fetchInfrastructure = useCallback(async () => {
-    if (selectedOrg?.id) {
+    if (selectedOrg?.id && authToken) {
       const res = await getInfrastructureByOrganizationId(
         authToken,
         selectedOrg.id
@@ -35,22 +40,41 @@ export const SwitchOrganizationModal = (props: {
             ...prev,
             infrastructure: true,
           }));
-        }, 200);
+        }, 100);
       }
     }
   }, [selectedOrg, authToken, dispatch]);
+
+  const fetchDocSettings = useCallback(async () => {
+    if (selectedOrg?.id && authToken) {
+      const settings = await getDocSettingsByOrgId(selectedOrg.id, authToken);
+      if (settings) {
+        dispatch(setDocSettings(settings));
+        setTimeout(() => {
+          setCompletion((prev) => ({
+            ...prev,
+            docSettings: true,
+          }));
+        }, 200);
+      }
+    }
+  }, [selectedOrg, dispatch, authToken]);
 
   useEffect(() => {
     if (Object.values(completion).every((value) => value) && open) {
       setTimeout(() => {
         setOpen(false);
-      }, 300);
+      }, 200);
     }
   }, [completion, open, setOpen]);
 
   useEffect(() => {
     fetchInfrastructure();
   }, [fetchInfrastructure]);
+
+  useEffect(() => {
+    fetchDocSettings();
+  }, [fetchDocSettings]);
 
   return (
     <Modal open={open} setOpen={setOpen} title="Switch organization">
