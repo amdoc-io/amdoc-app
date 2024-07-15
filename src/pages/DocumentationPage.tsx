@@ -85,9 +85,10 @@ export const DocumentationPage = () => {
     };
     const reqFormData = new FormData();
     for (const name in savingRequest) {
-      reqFormData.append(name, savingRequest[name]);
+      if (savingRequest[name]) {
+        reqFormData.append(name, savingRequest[name]);
+      }
     }
-    console.log(savingRequest);
     const res = await saveDocumentationSettings(authToken, reqFormData);
 
     if (res) {
