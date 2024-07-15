@@ -14,6 +14,7 @@ export const UploadAvatar = (
     label?: string;
     required?: boolean;
     note?: ReactNode;
+    existingUrl?: string;
   }
 ) => {
   const {
@@ -27,6 +28,7 @@ export const UploadAvatar = (
     onDrop = () => {},
     value,
     onChange = () => {},
+    existingUrl,
     ...restProps
   } = props;
 
@@ -111,7 +113,9 @@ export const UploadAvatar = (
           <div
             className={`cursor-pointer bg-gray-100/50 relative h-[200px] w-[200px] rounded-md border border-dashed transition-all duration-300 ${
               dragActive ? "border-gray-500" : ""
-            } ${imageUrl ? "border-transparent" : "border-gray-300"}`}
+            } ${
+              imageUrl || existingUrl ? "border-transparent" : "border-gray-300"
+            }`}
           >
             <input
               {...restProps}
@@ -125,9 +129,9 @@ export const UploadAvatar = (
               className={`h-[200px] w-[200px] cursor-pointer rounded-md z-10 opacity-0 absolute ${className}`}
             />
             <div className="text-[24px] z-0 cursor-pointer text-center rounded-md absolute inset-0 justify-center text-description flex flex-col gap-4 items-center">
-              {imageUrl ? (
+              {imageUrl || existingUrl ? (
                 <img
-                  src={imageUrl}
+                  src={imageUrl || existingUrl}
                   alt="Preview"
                   className="h-[200px] w-[200px] rounded-md object-cover"
                 />

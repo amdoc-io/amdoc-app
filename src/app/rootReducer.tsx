@@ -4,10 +4,12 @@ import authSlice from "../features/auth/authSlice";
 import persistedReducer from "./reduxPersistConfig";
 import { ReduxActionType } from "../model/ReduxModel";
 import onboardSlice from "../features/onboard/onboardSlice";
+import docSettingsSlice from "../features/settings/docSettingsSlice";
 
 const appReducer = combineReducers({
   auth: authSlice,
   onboard: onboardSlice,
+  docSettings: docSettingsSlice,
 });
 
 const rootReducer = (state: any, action: any) => {

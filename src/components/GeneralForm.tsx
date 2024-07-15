@@ -36,6 +36,7 @@ export const GeneralForm = (props: {
         label="Logo"
         name="logoImg"
         value={formData["logoImg"]}
+        existingUrl={formData["logoUrl"]}
         onChange={(e) => handleInputChange(e, setFormData)}
         onDrop={(e) => handleInputDrop(e, setFormData)}
         note={

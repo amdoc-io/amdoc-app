@@ -6,31 +6,38 @@ export const socialMediaDomains = {
   linkedin: {
     domain: "linkedin.com",
     name: "LinkedIn",
+    placeholder: "https://www.linkedin.com",
+    icon: <RxLinkedinLogo />,
+    order: 1,
   },
   facebook: {
     domain: "facebook.com",
     name: "Facebook",
+    placeholder: "https://www.facebook.com",
+    icon: <FaFacebook />,
+    order: 2,
   },
   instagram: {
     domain: "instagram.com",
     name: "Instagram",
+    placeholder: "https://www.instagram.com",
+    icon: <FaInstagram />,
+    order: 3,
   },
   twitter: {
     domain: "x.com",
     name: "X",
+    placeholder: "https://www.x.com",
+    icon: <RiTwitterXLine />,
+    order: 4,
   },
   tiktok: {
     domain: "tiktok.com",
     name: "TikTok",
+    placeholder: "https://www.tiktok.com",
+    icon: <FaTiktok />,
+    order: 5,
   },
-};
-
-export const socialMediaIcons = {
-  linkedin: <RxLinkedinLogo />,
-  facebook: <FaFacebook />,
-  instagram: <FaInstagram />,
-  twitter: <RiTwitterXLine />,
-  tiktok: <FaTiktok />,
 };
 
 export const transformDomain = (value: string) => {
@@ -38,7 +45,7 @@ export const transformDomain = (value: string) => {
     return value;
   }
 
-  let normalizedValue = value.trim();
+  let normalizedValue = value.toLowerCase().trim();
 
   try {
     const href = new URL(normalizedValue).href;
@@ -55,22 +62,6 @@ export const transformDomain = (value: string) => {
     const href = new URL(normalizedValue).href;
     return href.endsWith("/") ? href.slice(0, -1) : href;
   } catch (e) {
-    return value;
+    return value.toLowerCase();
   }
-};
-
-export const getSocialMediaIcon = (url: string) => {
-  try {
-    const domain = new URL(url).hostname;
-
-    for (const [key, value] of Object.entries(socialMediaDomains)) {
-      if (domain.includes(value.domain)) {
-        return socialMediaIcons[key as keyof typeof socialMediaIcons];
-      }
-    }
-  } catch (e) {
-    return undefined;
-  }
-
-  return undefined;
 };

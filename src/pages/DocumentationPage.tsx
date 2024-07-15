@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   IoEarthOutline,
   IoFolderOpenOutline,
@@ -6,34 +6,38 @@ import {
   IoPersonOutline,
 } from "react-icons/io5";
 import { RxExternalLink, RxGlobe, RxPencil2 } from "react-icons/rx";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "../actions/Link";
 import { OutlinedButton } from "../actions/OutlinedButton";
+import { PrimaryButton } from "../actions/PrimaryButton";
 import { ContactInformationForm } from "../components/ContactInformationForm";
+import { GeneralForm } from "../components/GeneralForm";
+import { MarketingForm } from "../components/MarketingForm";
 import { Heading } from "../display/Heading";
 import { Paragraph } from "../display/Paragraph";
 import { WebDisplay } from "../display/WebDisplay";
 import { ContentContainer } from "../layout/ContentContainer";
-import { Infrastructure } from "../model/AccountModel";
-import {
-  socialMediaDomains,
-  socialMediaIcons,
-  transformDomain,
-} from "../utils/TransformUtils";
-import { GeneralForm } from "../components/GeneralForm";
-import { PrimaryButton } from "../actions/PrimaryButton";
-import { MarketingForm } from "../components/MarketingForm";
+import { DocAccount, DocSettings, Infrastructure } from "../model/AccountModel";
 import { saveDocumentationSettings } from "../utils/AccountFetchUtils";
+import { socialMediaDomains } from "../utils/TransformUtils";
+import { setDocSettings } from "../features/settings/docSettingsSlice";
 
 export const DocumentationPage = () => {
+  const dispatch = useDispatch();
+
   const authToken: string = useSelector((state: any) => state.auth.token);
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
   );
+  const docSettings: DocSettings = useSelector(
+    (state: any) => state.docSettings.docSettings
+  );
+  const account: DocAccount = useSelector((state: any) => state.auth.account);
 
   const [formData, setFormData] = useState<{ [key: string]: any }>({
     brandName: "",
     logoImg: undefined,
+    logoUrl: undefined,
     brandColor: "#0000FF",
     homepageUrl: "",
     privacyPolicyUrl: "",
@@ -42,20 +46,55 @@ export const DocumentationPage = () => {
     infoEmail: "",
     supportEmail: "",
     careerEmail: "",
-    socialLinks: Object.entries(socialMediaDomains).map(([k, v]) => ({
-      href: "",
-      placeholder: transformDomain(v.domain),
-      icon: socialMediaIcons[k as keyof typeof socialMediaIcons],
-      name: v.name,
-    })),
+    socialLinks: new Array(Object.keys(socialMediaDomains).length).fill(""),
   });
+  const [saveLoading, setSaveLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (docSettings) {
+      setFormData({
+        brandName: docSettings.brandName,
+        logoImg: undefined,
+        logoUrl: docSettings.logoUrl,
+        brandColor: docSettings.brandColor || "#0000FF",
+        homepageUrl: docSettings.homepageUrl,
+        privacyPolicyUrl: docSettings.privacyPolicyUrl,
+        callToActionName: docSettings.callToActionName,
+        callToActionUrl: docSettings.callToActionUrl,
+        infoEmail: docSettings.infoEmail,
+        supportEmail: docSettings.supportEmail,
+        careerEmail: docSettings.careerEmail,
+        socialLinks:
+          docSettings.socialLinks ||
+          new Array(Object.keys(socialMediaDomains).length).fill(""),
+      });
+    }
+  }, [docSettings]);
 
   const handleSaveChanges = async () => {
+    setSaveLoading(true);
+
+    const savingRequest: { [key: string]: any } = {
+      ...(docSettings || {}),
+      ...formData,
+      logoUrl: undefined,
+      email: account,
+      organizationId: infrastructure.organizationId,
+      gitLogin: infrastructure.githubUser?.login,
+      gitRepo: infrastructure.docInitialRepo,
+    };
     const reqFormData = new FormData();
-    for (const name in formData) {
-      reqFormData.append(name, formData[name]);
+    for (const name in savingRequest) {
+      reqFormData.append(name, savingRequest[name]);
     }
-    await saveDocumentationSettings(authToken, reqFormData);
+    console.log(savingRequest);
+    const res = await saveDocumentationSettings(authToken, reqFormData);
+
+    if (res) {
+      dispatch(setDocSettings(res.docSettings));
+    }
+
+    setSaveLoading(false);
   };
 
   return (
@@ -151,7 +190,7 @@ export const DocumentationPage = () => {
 
         <div className="flex">
           <div className="flex">
-            <PrimaryButton onClick={handleSaveChanges}>
+            <PrimaryButton onClick={handleSaveChanges} loading={saveLoading}>
               Save changes
             </PrimaryButton>
           </div>

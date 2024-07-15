@@ -1,8 +1,8 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
 import { RxEnvelopeClosed } from "react-icons/rx";
 import { Input } from "../forms/Input";
 import { DocFormContainer } from "../layout/DocFormContainer";
-import { transformDomain } from "../utils/TransformUtils";
+import { socialMediaDomains, transformDomain } from "../utils/TransformUtils";
 
 export const ContactInformationForm = (props: {
   formData?: { [key: string]: any };
@@ -13,6 +13,9 @@ export const ContactInformationForm = (props: {
   >;
 }) => {
   const { formData = {}, setFormData = () => {} } = props;
+  const [errorData, setErrorData] = useState<(string | undefined)[]>(
+    new Array(Object.keys(socialMediaDomains).length).fill(undefined)
+  );
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {
@@ -32,7 +35,7 @@ export const ContactInformationForm = (props: {
       target: { name, value },
     } = event;
     const links = [...formData[name]];
-    links[i] = { ...links[i], href: value };
+    links[i] = value;
     setFormData((prev) => ({
       ...prev,
       [name]: links,
@@ -41,16 +44,31 @@ export const ContactInformationForm = (props: {
 
   const handleSocialLinksBlur = (
     event: ChangeEvent<HTMLInputElement>,
-    i: number
+    i: number,
+    item: any
   ) => {
     const {
       target: { name, value },
     } = event;
     const links = [...formData[name]];
-    links[i] = {
-      ...links[i],
-      href: transformDomain(value),
-    };
+    links[i] = transformDomain(value) || "";
+    const errors = [...errorData];
+    if (value) {
+      if (!links[i].includes(item.domain)) {
+        errors[i] = `Your ${item.name} profile URL is invalid`;
+        setErrorData(errors);
+      } else {
+        if (errors[i]) {
+          errors[i] = undefined;
+          setErrorData(errors);
+        }
+      }
+    } else {
+      if (errors[i]) {
+        errors[i] = undefined;
+        setErrorData(errors);
+      }
+    }
     setFormData((prev) => ({
       ...prev,
       [name]: links,
@@ -90,19 +108,22 @@ export const ContactInformationForm = (props: {
       />
 
       <div className="flex flex-col gap-4">
-        {formData["socialLinks"].map((item: any, i: number) => (
-          <Input
-            key={i}
-            placeholder={item.placeholder || "Link to social profile"}
-            onChange={(e) => handleSocialLinksChange(e, i)}
-            name="socialLinks"
-            onBlur={(e) => handleSocialLinksBlur(e, i)}
-            leading={item.icon}
-            label={i === 0 ? "Social Profile URL" : undefined}
-            value={item.href}
-            note={`The full URL to your ${item.name} profile`}
-          />
-        ))}
+        {Object.values(socialMediaDomains)
+          .sort((a, b) => a.order - b.order)
+          .map((item, i) => (
+            <Input
+              key={i}
+              placeholder={item.placeholder || "Link to social profile"}
+              onChange={(e) => handleSocialLinksChange(e, i)}
+              name="socialLinks"
+              onBlur={(e) => handleSocialLinksBlur(e, i, item)}
+              leading={item.icon}
+              label={i === 0 ? "Social Profile URL" : undefined}
+              value={formData["socialLinks"]?.[i]}
+              note={`The full URL to your ${item.name} profile`}
+              error={errorData?.[i]}
+            />
+          ))}
       </div>
     </DocFormContainer>
   );

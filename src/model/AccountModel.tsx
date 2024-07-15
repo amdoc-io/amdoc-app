@@ -149,3 +149,24 @@ export interface LinkedInAccessToken {
   refreshTokenExpiresIn: number;
   scope: string;
 }
+
+export interface DocSettings {
+  id: string;
+  email: string;
+  organizationId: string;
+  gitLogin: string;
+  gitRepo: string;
+  brandName: string;
+  logoUrl: string;
+  brandColor: string;
+  homepageUrl: string;
+  privacyPolicyUrl: string;
+  callToActionName: string;
+  callToActionUrl: string;
+  infoEmail: string;
+  supportEmail: string;
+  careerEmail: string;
+  socialLinks: string[];
+  createdAt: string;
+  updatedAt: string;
+}
