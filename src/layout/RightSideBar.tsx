@@ -39,7 +39,7 @@ export const RightSideBar = () => {
       .map((h2) => h2.textContent || "")
       .filter((text) => text);
     setH2Texts(h2TextsArray);
-  }, []);
+  }, [location]);
 
   return (
     <div className="w-[500px] mt-16 hidden xl:block pr-4 text-sm">

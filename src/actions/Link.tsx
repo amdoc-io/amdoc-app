@@ -9,7 +9,7 @@ export const Link = (
   return (
     <a
       {...restProps}
-      className={`cursor-pointer hover:text-secondary/60 text-secondary transition-all duration-300 ${className}`}
+      className={`cursor-pointer hover:text-secondary/60 text-secondary transition-all duration-300 group ${className}`}
     >
       {children}
     </a>

@@ -38,7 +38,7 @@ export const SettingsPage = () => {
   return (
     <ContentContainer>
       <DocFormContainer title="Settings">
-        <div className="grid grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-4 gap-8">
           {menu.map((item, i) => (
             <OutlinedButton
               key={i}

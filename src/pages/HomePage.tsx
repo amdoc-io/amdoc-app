@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { RiGuideLine } from "react-icons/ri";
+import { RiArrowRightLine } from "react-icons/ri";
+import { RxPlay } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "../actions/Link";
 import { Steps } from "../actions/Steps";
@@ -95,15 +96,13 @@ export const HomePage = () => {
             <div className="flex gap-4 items-center">
               <div className="flex">
                 <div className="h-10 w-10 flex justify-center items-center bg-gray-100 rounded-full text-inherit">
-                  <RiGuideLine />
+                  <RxPlay />
                 </div>
               </div>
 
-              <div className="text-sm">
-                <Heading className="font-semibold text-base">
-                  Onboarding Steps
-                </Heading>
-                <Paragraph className="text-sm">
+              <div className="text-sm flex flex-col gap-1">
+                <Heading className="font-semibold">Onboarding Steps</Heading>
+                <Paragraph>
                   To begin automating your documentation with iGendoc, follow
                   the steps below.
                 </Paragraph>
@@ -173,6 +172,26 @@ export const HomePage = () => {
             },
           ]}
         />
+      </DocFormContainer>
+
+      <DocFormContainer title="Next Steps">
+        <ul className="text-sm list-disc ml-3 space-y-4">
+          <li>
+            <Link href="/domain" className="inline-flex items-center gap-1">
+              Set up a custom domain
+              <RiArrowRightLine />
+            </Link>
+          </li>
+
+          <li>
+            <Link
+              href="/documentation"
+              className="inline-flex items-center gap-1"
+            >
+              Personalize your documentation <RiArrowRightLine />
+            </Link>
+          </li>
+        </ul>
       </DocFormContainer>
 
       {docInitialRepo && (
