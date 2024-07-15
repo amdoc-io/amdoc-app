@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from "react";
-import { RxEnvelopeClosed } from "react-icons/rx";
+import { RxEnvelopeClosed, RxLink2 } from "react-icons/rx";
 import { Input } from "../forms/Input";
 import { DocFormContainer } from "../layout/DocFormContainer";
-import { socialMediaDomains, transformDomain } from "../utils/TransformUtils";
 import { handleInputBlur, handleInputChange } from "../utils/FormUtils";
+import { socialMediaDomains, transformDomain } from "../utils/TransformUtils";
 
 export const ContactInformationForm = (props: {
   formData?: { [key: string]: any };
@@ -73,7 +73,7 @@ export const ContactInformationForm = (props: {
         onChange={(e) => handleInputChange(e, setFormData)}
         onBlur={(e) => handleInputBlur(e, setFormData)}
         name="contactUrl"
-        leading={<RxEnvelopeClosed />}
+        leading={<RxLink2 />}
         label="Contact Page URL"
         value={formData["contactUrl"]}
         note="The full URL to your contact page"
