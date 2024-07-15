@@ -27,7 +27,7 @@ export const OutletWrapper = (
     (state: any) => state.onboard.infrastructure
   );
   const docSettings: DocSettings = useSelector(
-    (state: any) => state.settings.docSettings
+    (state: any) => state.docSettings.docSettings
   );
 
   const { currentStep = -1, gitProvider, gitInstallationId } = infrastructure;
