@@ -76,6 +76,8 @@ export const ColorPicker = (
             props.onChange(event);
           }}
         />
+      </div>
+      <div className="flex">
         <div className="flex h-10 transition-all duration-300 rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-1 focus-within:ring-inset focus-within:ring-gray-600">
           <span className="flex select-none items-center pl-3 text-gray-500 sm:text-sm">
             Hex
