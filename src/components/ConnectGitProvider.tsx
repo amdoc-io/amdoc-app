@@ -110,7 +110,7 @@ export const ConnectGitProvider = (props: { onComplete?: () => void }) => {
 
   return (
     <StepContainer>
-      <p>Your resources will be managed within an application</p>
+      <p>Your resources will be managed within an application.</p>
 
       <div className="flex">
         <OutlinedButton

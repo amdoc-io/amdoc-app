@@ -81,7 +81,7 @@ export const AuthorizeGitOAuth = (props: { onComplete?: () => void }) => {
 
   return (
     <StepContainer>
-      <p>Authorize with OAuth to gain access to your profile information</p>
+      <p>Authorize with OAuth to gain access to your profile information.</p>
 
       <div className="flex">
         <OutlinedButton

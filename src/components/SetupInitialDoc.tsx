@@ -117,7 +117,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
   return (
     <StepContainer>
       <p>
-        Create a documentation project from a default template on your behalf
+        Create a documentation project from a default template on your behalf.
       </p>
 
       <form

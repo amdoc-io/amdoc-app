@@ -34,7 +34,7 @@ export const ChooseGitProvider = (props: { onComplete?: () => void }) => {
 
   return (
     <StepContainer>
-      <p>Choose one of the following providers to deploy your application</p>
+      <p>Choose one of the following providers to deploy your application.</p>
 
       <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 w-full relative">
         <RadioCard

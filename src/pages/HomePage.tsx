@@ -171,6 +171,7 @@ export const HomePage = () => {
                     >
                       {`${githubUser?.login}/${docInitialRepo}`}
                     </Link>
+                    .
                   </p>
                 ),
               },
@@ -205,6 +206,7 @@ export const HomePage = () => {
                   >
                     {docInitialWebsite}
                   </Link>
+                  .
                 </>
               )}
             </Paragraph>
