@@ -44,7 +44,7 @@ export const MarketingForm = (props: {
         name="callToActionName"
         leading={<TbHandClick />}
         label="CTA Name"
-        value={formData["callToActionUrl"]}
+        value={formData["callToActionName"]}
         note="Instruction to lead your customers to sign up for your product"
       />
 
