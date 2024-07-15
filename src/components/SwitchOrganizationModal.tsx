@@ -47,7 +47,7 @@ export const SwitchOrganizationModal = (props: {
 
   const fetchDocSettings = useCallback(async () => {
     if (selectedOrg?.id && authToken) {
-      const settings = await getDocSettingsByOrgId(selectedOrg.id, authToken);
+      const settings = await getDocSettingsByOrgId(authToken, selectedOrg.id);
       if (settings) {
         dispatch(setDocSettings(settings));
         setTimeout(() => {

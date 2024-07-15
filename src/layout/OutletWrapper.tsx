@@ -100,8 +100,8 @@ export const OutletWrapper = (
   const fetchDocSettings = useCallback(async () => {
     if (infrastructure?.organizationId && authToken && !docSettings) {
       const settings = await getDocSettingsByOrgId(
-        infrastructure.organizationId,
-        authToken
+        authToken,
+        infrastructure.organizationId
       );
       if (settings) {
         dispatch(setDocSettings(settings));
