@@ -6,7 +6,7 @@ export const Paragraph = (
 ) => {
   const { children, className = "", ...restProps } = props;
   return (
-    <p {...restProps} className={`text-base text-[#737373] ${className}`}>
+    <p {...restProps} className={`text-sm text-[#737373] ${className}`}>
       {children}
     </p>
   );

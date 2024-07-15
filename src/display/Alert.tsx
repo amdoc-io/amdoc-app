@@ -40,7 +40,7 @@ export const Alert = (
   return (
     <div
       {...restProps}
-      className={`px-4 py-3 leading-normal flex gap-4 rounded-lg ${variantMapping[variant].className} ${className}`}
+      className={`px-4 py-3 leading-normal flex gap-4 text-sm rounded-lg ${variantMapping[variant].className} ${className}`}
       role="alert"
     >
       <div className="mt-[4px]">{variantMapping[variant].icon}</div>

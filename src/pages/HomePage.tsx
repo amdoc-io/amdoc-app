@@ -211,9 +211,7 @@ export const HomePage = () => {
               )}
             </Paragraph>
 
-            {docInitialWebsite && (
-              <WebDisplay url={docInitialWebsite} className="mt-4" />
-            )}
+            {docInitialWebsite && <WebDisplay url={docInitialWebsite} />}
           </DocFormContainer>
         )}
       </ContentContainer>
