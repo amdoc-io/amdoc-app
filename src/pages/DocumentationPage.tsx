@@ -56,7 +56,7 @@ export const DocumentationPage = () => {
         brandName: docSettings.brandName,
         logoImg: undefined,
         logoUrl: docSettings.logoUrl,
-        brandColor: docSettings.brandColor || "#0000FF",
+        brandColor: docSettings.brandColor,
         homepageUrl: docSettings.homepageUrl,
         privacyPolicyUrl: docSettings.privacyPolicyUrl,
         callToActionName: docSettings.callToActionName,
