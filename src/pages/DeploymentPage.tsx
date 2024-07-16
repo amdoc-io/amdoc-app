@@ -58,6 +58,11 @@ export const DeploymentPage = () => {
               <div className="col-span-3">Process</div>
               <div className="col-span-2">Updated</div>
             </div>
+            {deployments.length === 0 && (
+              <div className="p-4 text-center text-description border-t border-gray-300">
+                There are no deployments at the moment.
+              </div>
+            )}
             <ul>
               {deployments
                 .sort(
