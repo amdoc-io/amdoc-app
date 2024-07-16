@@ -4,6 +4,7 @@ import {
   Outlet,
   RouterProvider,
   createBrowserRouter,
+  useLocation,
 } from "react-router-dom";
 import { Header } from "./layout/Header";
 import { SideBar } from "./layout/SideBar";
@@ -24,6 +25,10 @@ import { ProfilePage } from "./pages/settings/ProfilePage";
 import { RightSideBar } from "./layout/RightSideBar";
 import { DeploymentPage } from "./pages/DeploymentPage";
 
+const blockList = {
+  "/deployment": true,
+  "/settings": true,
+};
 function App() {
   const token: string = useSelector((state: any) => state.auth.token);
   const setupCompleted: boolean = useSelector(
@@ -43,6 +48,8 @@ function App() {
   );
 
   const Wrapper = () => {
+    const location = useLocation();
+
     if (!isAuthorized) {
       return (
         <div className="h-[100vh]">
@@ -64,7 +71,7 @@ function App() {
                 <Outlet />
               </OutletWrapper>
             </div>
-            <RightSideBar />
+            {!(location.pathname in blockList) && <RightSideBar />}
           </div>
         </div>
       </div>

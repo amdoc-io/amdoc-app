@@ -21,7 +21,7 @@ export const TextButton = (
     <button
       {...restProps}
       className={`default-button flex items-center gap-2 ${
-        disabled ? "!cursor-not-allowed opacity-65" : "hover:bg-gray-200/50"
+        disabled ? "!cursor-not-allowed opacity-65" : "hover:bg-gray-200/30"
       } ${className}`}
     >
       {loading && <AiOutlineLoading3Quarters className="animate-spin" />}
