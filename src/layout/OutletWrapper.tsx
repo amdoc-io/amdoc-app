@@ -10,6 +10,9 @@ import {
 } from "../utils/AccountFetchUtils";
 import { getGithubInstallationAccessTokens } from "../utils/GithubFetchUtils";
 import { isTokenValid, mapInstallationToken } from "../utils/TokenUtils";
+import { jwtDecode } from "jwt-decode";
+import { ReduxActionType } from "../model/ReduxModel";
+import { useNavigate } from "react-router-dom";
 
 export const OutletWrapper = (
   props: React.DetailedHTMLProps<
@@ -18,6 +21,7 @@ export const OutletWrapper = (
   >
 ) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const authToken: string = useSelector((state: any) => state.auth.token);
   const infrastructure: Infrastructure = useSelector(
     (state: any) => state.onboard.infrastructure
@@ -109,6 +113,22 @@ export const OutletWrapper = (
   useEffect(() => {
     fetchDocSettings();
   }, [fetchDocSettings]);
+
+  useEffect(() => {
+    if (authToken) {
+      const decodedJwt = jwtDecode(authToken);
+      if (decodedJwt?.exp) {
+        const now = new Date();
+        const expiredDate = new Date(decodedJwt.exp * 1000);
+        const beforeExpiry = new Date(expiredDate.getTime() - 15 * 60000);
+
+        if (now > beforeExpiry) {
+          dispatch({ type: ReduxActionType.logout });
+          navigate("/");
+        }
+      }
+    }
+  }, [authToken, dispatch, navigate]);
 
   return <div {...props} />;
 };
