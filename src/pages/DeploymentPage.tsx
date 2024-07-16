@@ -23,7 +23,7 @@ const StatusIcon = {
   [DeploymentStatus.SUCCESSFUL]: <FaCheckCircle className="text-green-500" />,
 };
 
-const pagination = 10;
+const pagination = 5;
 
 export const DeploymentPage = () => {
   const authToken: string = useSelector((state: any) => state.auth.token);
