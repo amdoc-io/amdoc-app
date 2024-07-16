@@ -23,21 +23,37 @@ const StatusIcon = {
   [DeploymentStatus.SUCCESSFUL]: <FaCheckCircle className="text-green-500" />,
 };
 
+const pagination = 10;
+
 export const DeploymentPage = () => {
   const authToken: string = useSelector((state: any) => state.auth.token);
   const organization: Organization = useSelector(
     (state: any) => state.auth.organization
   );
   const [deployments, setDeployments] = useState<DocDeployment[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchDeployments = useCallback(async () => {
     if (authToken && organization) {
-      const res = await getDeploymentsByOrgId(authToken, organization.id || "");
+      setLoading(true);
+
+      const res = await getDeploymentsByOrgId(
+        authToken,
+        organization.id || "",
+        currentPage - 1,
+        pagination
+      );
       if (res) {
-        setDeployments(res.docDeployments || []);
+        const deploymentPage = res.deploymentPage;
+        setDeployments(deploymentPage?.content || []);
+        setTotalPages(deploymentPage.totalPages);
       }
+
+      setLoading(false);
     }
-  }, [authToken, organization]);
+  }, [authToken, organization, currentPage]);
 
   useEffect(() => {
     fetchDeployments();
@@ -47,6 +63,9 @@ export const DeploymentPage = () => {
     <ContentContainer className="text-sm">
       <DocFormContainer title="Deployment">
         <List<DocDeployment>
+          totalPages={totalPages}
+          loading={loading}
+          onPageChange={setCurrentPage}
           grid="grid-cols-1 xl:grid-cols-8"
           emptyText="There are no deployments at the moment"
           header={

@@ -21,6 +21,7 @@ import {
   LinkedInAccessToken,
   Organization,
 } from "../model/AccountModel";
+import { Page } from "../model/PageModel";
 import { createHeader } from "./FetchUtils";
 
 export interface UpdateAccountRequest {
@@ -44,7 +45,7 @@ export interface SaveInfrastructureResponse {
 }
 
 export interface GetDeploymentsByOrganizationIdResponse {
-  docDeployments: DocDeployment[];
+  deploymentPage: Page<DocDeployment>;
 }
 
 export const getGithubAppJWT = async (authToken: string) => {
@@ -226,11 +227,18 @@ export const getDocSettingsByOrgId = async (
 
 export const getDeploymentsByOrgId = async (
   authToken: string,
-  orgId: string
+  orgId: string,
+  page: number,
+  size: number
 ) => {
+  const params = new URLSearchParams();
+  params.set("organizationId", orgId);
+  params.set("page", page.toString());
+  params.set("size", size.toString());
+
   return await axios
     .get(
-      `${AIM_GET_DEPLOYMENTS_BY_ORG_ID_ENDPOINT}?organizationId=${orgId}`,
+      `${AIM_GET_DEPLOYMENTS_BY_ORG_ID_ENDPOINT}?${params}`,
       createHeader(authToken)
     )
     .then((res) => res.data as GetDeploymentsByOrganizationIdResponse)

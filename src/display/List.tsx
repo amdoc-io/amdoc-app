@@ -1,5 +1,6 @@
 import { ReactNode, useState } from "react";
 import { RxChevronLeft, RxChevronRight } from "react-icons/rx";
+import { TfiReload } from "react-icons/tfi";
 
 interface ListProps<T> {
   className?: string;
@@ -8,7 +9,9 @@ interface ListProps<T> {
   emptyText?: ReactNode;
   data?: T[];
   grid?: string;
-  pagination?: number;
+  loading?: boolean;
+  onPageChange?: (value: number) => void;
+  totalPages?: number;
 }
 
 export const List = <T,>(props: ListProps<T>) => {
@@ -19,24 +22,23 @@ export const List = <T,>(props: ListProps<T>) => {
     emptyText = "No data",
     grid = "grid-cols-1",
     data = [],
-    pagination = 10,
+    onPageChange = () => {},
+    totalPages = 1,
+    loading = false,
   } = props;
   const [currentPage, setCurrentPage] = useState<number>(1);
-
-  const totalPages = Math.ceil(data.length / pagination);
-  const startIndex = (currentPage - 1) * pagination;
-  const endIndex = startIndex + pagination;
-  const currentItems = data.slice(startIndex, endIndex);
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
+      onPageChange(currentPage - 1);
     }
   };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
+      onPageChange(currentPage + 1);
     }
   };
 
@@ -85,21 +87,30 @@ export const List = <T,>(props: ListProps<T>) => {
         >
           {header}
         </div>
-        {data.length === 0 && (
-          <div className="p-4 text-center text-description border-t border-gray-300">
+        {!loading && data.length === 0 && (
+          <div className="p-8 text-center text-description border-t border-gray-300 flex justify-center items-center">
             {emptyText}
           </div>
         )}
-        <ul>
-          {currentItems.map((item, i) => (
-            <li
-              key={i}
-              className={`p-4 gap-4 xl:gap-12 border-t border-gray-300 grid ${grid}`}
-            >
-              {render(item)}
-            </li>
-          ))}
-        </ul>
+        {loading && (
+          <div className="p-8 text-center text-description border-t border-gray-300 flex justify-center items-center">
+            <div className="text-[20px] animate-spin">
+              <TfiReload />
+            </div>
+          </div>
+        )}
+        {!loading && (
+          <ul>
+            {data.map((item, i) => (
+              <li
+                key={i}
+                className={`p-4 gap-4 xl:gap-12 border-t border-gray-300 grid ${grid}`}
+              >
+                {render(item)}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div className="flex font-medium justify-center">
@@ -125,6 +136,7 @@ export const List = <T,>(props: ListProps<T>) => {
               onClick={() => {
                 if (typeof pageNumber === "number") {
                   setCurrentPage(pageNumber);
+                  onPageChange(pageNumber);
                 }
               }}
             >
