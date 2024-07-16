@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   AIM_CREATE_GIT_CLIENT_WEB_APP_ENDPOINT,
+  AIM_GET_DEPLOYMENTS_BY_ORG_ID_ENDPOINT,
   AIM_GET_DOC_SETTINGS_BY_ORG_ID_ENDPOINT,
   AIM_GET_GITHUB_APP_JWT_PROXY_ENDPOINT,
   AIM_GET_INFRASTRUCTURE_BY_ORGANIZATION_ID_ENDPOINT,
@@ -14,6 +15,7 @@ import {
 } from "../endpoints/AIMEndpoint";
 import {
   DocAccount,
+  DocDeployment,
   DocSettings,
   Infrastructure,
   LinkedInAccessToken,
@@ -39,6 +41,10 @@ export interface GetOrganizationsByEmailResponse {
 
 export interface SaveInfrastructureResponse {
   infrastructure: Infrastructure;
+}
+
+export interface GetDeploymentsByOrganizationIdResponse {
+  docDeployments: DocDeployment[];
 }
 
 export const getGithubAppJWT = async (authToken: string) => {
@@ -206,12 +212,28 @@ export const getDocSettingsByOrgId = async (
   authToken: string,
   organizationId: string
 ) => {
-  return axios
+  return await axios
     .get(
       `${AIM_GET_DOC_SETTINGS_BY_ORG_ID_ENDPOINT}?organizationId=${organizationId}`,
       createHeader(authToken)
     )
     .then((res) => res.data as DocSettings)
+    .catch((err) => {
+      console.error(err);
+      return undefined;
+    });
+};
+
+export const getDeploymentsByOrgId = async (
+  authToken: string,
+  orgId: string
+) => {
+  return await axios
+    .get(
+      `${AIM_GET_DEPLOYMENTS_BY_ORG_ID_ENDPOINT}?organizationId=${orgId}`,
+      createHeader(authToken)
+    )
+    .then((res) => res.data as GetDeploymentsByOrganizationIdResponse)
     .catch((err) => {
       console.error(err);
       return undefined;

@@ -171,3 +171,26 @@ export interface DocSettings {
   createdAt: string;
   updatedAt: string;
 }
+
+export enum DeploymentStatus {
+  SUCCESSFUL = "SUCCESSFUL",
+  FAILED = "FAILED",
+  IN_PROGRESS = "IN_PROGRESS",
+  INITIATED = "INITIATED",
+  TERMINATED = "TERMINATED",
+}
+
+export interface DeploymentProcess {
+  status: DeploymentStatus;
+  process: string;
+}
+
+export interface DocDeployment {
+  id: string;
+  organizationId: string;
+  notificationEmails: string[];
+  status: DeploymentStatus;
+  processes: DeploymentProcess[];
+  createdAt: string;
+  updatedAt: string;
+}

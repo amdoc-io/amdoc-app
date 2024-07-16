@@ -24,3 +24,5 @@ export const AIM_SAVE_DOCUMENTATION_SETTINGS_ENDPOINT =
   AIM_BASE_URL + "/save-documentation-settings";
 export const AIM_GET_DOC_SETTINGS_BY_ORG_ID_ENDPOINT =
   AIM_BASE_URL + "/get-doc-settings-by-org-id";
+export const AIM_GET_DEPLOYMENTS_BY_ORG_ID_ENDPOINT =
+  AIM_BASE_URL + "/get-deployments-by-organization-id";
