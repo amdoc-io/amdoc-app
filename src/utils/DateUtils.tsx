@@ -23,3 +23,24 @@ export const getTimeAgo = (timestamp: string): string => {
     return `${seconds} second${seconds === 1 ? "" : "s"} ago`;
   }
 };
+
+export const getTimeDiff = (date1: Date, date2: Date) => {
+  const diffInSeconds = Math.abs((date2.getTime() - date1.getTime()) / 1000);
+
+  if (diffInSeconds < 60) {
+    return `${Math.floor(diffInSeconds)} seconds`;
+  }
+
+  const diffInMinutes = diffInSeconds / 60;
+  if (diffInMinutes < 60) {
+    return `${Math.floor(diffInMinutes)} minutes`;
+  }
+
+  const diffInHours = diffInMinutes / 60;
+  if (diffInHours < 24) {
+    return `${Math.floor(diffInHours)} hours`;
+  }
+
+  const diffInDays = diffInHours / 24;
+  return `${Math.floor(diffInDays)} days`;
+};

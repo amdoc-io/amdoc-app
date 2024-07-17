@@ -11,7 +11,8 @@ import {
   Organization,
 } from "../model/AccountModel";
 import { getDeploymentsByOrgId } from "../utils/AccountFetchUtils";
-import { getTimeAgo } from "../utils/DateUtils";
+import { getTimeAgo, getTimeDiff } from "../utils/DateUtils";
+import { IoHourglassOutline } from "react-icons/io5";
 
 const ProcessStatusIcon = {
   [DeploymentStatus.FAILED]: <RxCross1 className="text-red-500" />,
@@ -108,11 +109,25 @@ export const DeploymentPage = () => {
                 ))}
               </ul>
 
-              <div className="flex items-start gap-2 col-span-2">
-                <div className="mt-[2px]">
-                  <RxCalendar />
+              <div className="flex flex-col gap-2 col-span-2">
+                <div className="flex items-start gap-2">
+                  <div className="mt-[2px]">
+                    <RxCalendar />
+                  </div>
+                  {getTimeAgo(item.updatedAt || item.createdAt)}
                 </div>
-                {getTimeAgo(item.updatedAt || item.createdAt)}
+
+                {item.createdAt && item.updatedAt && (
+                  <div className="flex items-start gap-2">
+                    <div className="mt-[2px]">
+                      <IoHourglassOutline />
+                    </div>
+                    {getTimeDiff(
+                      new Date(item.createdAt),
+                      new Date(item.updatedAt)
+                    )}
+                  </div>
+                )}
               </div>
             </>
           )}
