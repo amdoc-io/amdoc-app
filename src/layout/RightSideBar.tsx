@@ -22,7 +22,6 @@ export const RightSideBar = () => {
   useEffect(() => {
     const handleScroll = () => {
       const shouldStick = window.scrollY > 0;
-      console.log(window.scrollY, isSticky);
       setIsSticky(shouldStick);
     };
 

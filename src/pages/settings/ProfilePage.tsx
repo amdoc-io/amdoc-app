@@ -1,25 +1,31 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { RxLink2 } from "react-icons/rx";
+import { useDispatch, useSelector } from "react-redux";
+import { Checkbox } from "../../actions/Checkbox";
+import { Link } from "../../actions/Link";
+import { PrimaryButton } from "../../actions/PrimaryButton";
+import Select from "../../actions/Select";
+import { setAccount } from "../../features/auth/authSlice";
 import { Input } from "../../forms/Input";
 import { UploadAvatar } from "../../forms/UploadAvatar";
 import { ContentContainer } from "../../layout/ContentContainer";
 import { DocFormContainer } from "../../layout/DocFormContainer";
 import { DocAccount } from "../../model/AccountModel";
+import { updateAccount } from "../../utils/AccountFetchUtils";
 import {
   handleInputBlur,
   handleInputChange,
   handleInputDrop,
 } from "../../utils/FormUtils";
-import { RxLink2 } from "react-icons/rx";
-import Select from "../../actions/Select";
 import { CompanySizeOptions } from "../config/BusinessConfig";
-import { Link } from "../../actions/Link";
-import { Checkbox } from "../../actions/Checkbox";
 
 export const ProfilePage = () => {
+  const dispatch = useDispatch();
   const account: DocAccount = useSelector((state: any) => state.auth.account);
+  const authToken: string = useSelector((state: any) => state.auth.token);
 
   const [formData, setFormData] = useState<{ [key: string]: any }>({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setFormData((prev) => ({
@@ -27,6 +33,21 @@ export const ProfilePage = () => {
       ...account,
     }));
   }, [account]);
+
+  const handleSaveChanges = async () => {
+    setLoading(true);
+
+    const res = await updateAccount(authToken, {
+      account: {
+        ...formData,
+      },
+    });
+    if (res) {
+      dispatch(setAccount(res.account));
+    }
+
+    setLoading(false);
+  };
 
   return (
     <ContentContainer>
@@ -110,6 +131,14 @@ export const ProfilePage = () => {
           </Link>
         </Checkbox>
       </DocFormContainer>
+
+      <div className="flex">
+        <div className="flex">
+          <PrimaryButton onClick={handleSaveChanges} loading={loading}>
+            Save Changes
+          </PrimaryButton>
+        </div>
+      </div>
     </ContentContainer>
   );
 };
