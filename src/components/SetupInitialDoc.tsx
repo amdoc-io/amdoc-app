@@ -124,7 +124,7 @@ export const SetupInitialDoc = (props: { onComplete?: () => void }) => {
         onSubmit={handleCreateDoc}
         className="flex flex-col items-start gap-4 w-full mt-1"
       >
-        <Card className="lg:max-w-[600px] bg-white">
+        <Card className="bg-white">
           <Input
             placeholder="Enter a repo name"
             name="repoName"
