@@ -13,6 +13,8 @@ import {
 import { RxLink2 } from "react-icons/rx";
 import Select from "../../actions/Select";
 import { CompanySizeOptions } from "../config/BusinessConfig";
+import { Link } from "../../actions/Link";
+import { Checkbox } from "../../actions/Checkbox";
 
 export const ProfilePage = () => {
   const account: DocAccount = useSelector((state: any) => state.auth.account);
@@ -63,6 +65,14 @@ export const ProfilePage = () => {
 
       <DocFormContainer title="Demographic Settings">
         <Input
+          label="Job Title"
+          placeholder="Enter your job title"
+          name="jobTitle"
+          value={formData["jobTitle"]}
+          onChange={(e) => handleInputChange(e, setFormData)}
+        />
+
+        <Input
           name="organization"
           label="Company Name"
           value={formData["organization"]}
@@ -85,6 +95,20 @@ export const ProfilePage = () => {
           onChange={(e) => handleInputChange(e, setFormData)}
           onBlur={(e) => handleInputBlur(e, setFormData)}
         />
+      </DocFormContainer>
+
+      <DocFormContainer title="Subscription Settings">
+        <Checkbox
+          name="isNewsSubscribed"
+          checked={formData["isNewsSubscribed"]}
+          onChange={(e) => handleInputChange(e, setFormData)}
+        >
+          Send me information about iGendoc products, events, and promotions.
+          See{" "}
+          <Link href="/" target="_blank">
+            Privacy Policy
+          </Link>
+        </Checkbox>
       </DocFormContainer>
     </ContentContainer>
   );
