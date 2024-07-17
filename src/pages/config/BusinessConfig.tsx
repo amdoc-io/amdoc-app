@@ -197,3 +197,30 @@ export const Countries: SelectOption[] = [
   { label: "Zambia", value: "ZM" },
   { label: "Zimbabwe", value: "ZW" },
 ];
+
+export const CompanySizeOptions = [
+  {
+    label: "1 - 10",
+    value: "FROM_1_TO_10",
+  },
+  {
+    label: "11 - 50",
+    value: "FROM_11_TO_50",
+  },
+  {
+    label: "51 - 200",
+    value: "FROM_51_TO_200",
+  },
+  {
+    label: "201 - 500",
+    value: "FROM_201_TO_500",
+  },
+  {
+    label: "501 - 1000",
+    value: "FROM_501_TO_1000",
+  },
+  {
+    label: "1001+",
+    value: "FROM_1001_TO_INFINITY",
+  },
+];

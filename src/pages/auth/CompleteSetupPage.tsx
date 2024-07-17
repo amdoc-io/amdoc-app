@@ -14,6 +14,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { setAccount, setSetupCompleted } from "../../features/auth/authSlice";
 import { isValidated } from "../../utils/ValidationUtils";
+import { CompanySizeOptions } from "../config/BusinessConfig";
 
 export const CompleteSetupPage = () => {
   const dispatch = useDispatch();
@@ -101,35 +102,8 @@ export const CompleteSetupPage = () => {
           required
           value={formData["companySize"]}
           error={errorData["companySize"]}
-          onChange={(value) =>
-            setFormData((prev) => ({ ...prev, companySize: value }))
-          }
-          options={[
-            {
-              label: "1 - 10",
-              value: "FROM_1_TO_10",
-            },
-            {
-              label: "11 - 50",
-              value: "FROM_11_TO_50",
-            },
-            {
-              label: "51 - 200",
-              value: "FROM_51_TO_200",
-            },
-            {
-              label: "201 - 500",
-              value: "FROM_201_TO_500",
-            },
-            {
-              label: "501 - 1000",
-              value: "FROM_501_TO_1000",
-            },
-            {
-              label: "1001+",
-              value: "FROM_1001_TO_INFINITY",
-            },
-          ]}
+          onChange={handleInputChange}
+          options={CompanySizeOptions}
           placeholder="Select your company size"
         />
 

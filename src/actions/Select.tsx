@@ -1,5 +1,5 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { ReactNode, useMemo } from "react";
+import { ChangeEvent, ReactNode, useMemo } from "react";
 import { RxCaretSort, RxCrossCircled } from "react-icons/rx";
 import { classNames } from "./DropdownButton";
 import useBottomRectReached from "./ScrollObserver";
@@ -15,13 +15,14 @@ export default function Select(props: {
   children?: ReactNode;
   options?: SelectOption[];
   showIcon?: boolean;
-  onChange?: (value: string | undefined) => void;
+  onChange?: (value: ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   label?: string;
   id?: string;
   value?: string;
   required?: boolean;
   error?: ReactNode;
+  name?: string;
 }) {
   const {
     options = [],
@@ -33,6 +34,7 @@ export default function Select(props: {
     id,
     required,
     error,
+    name,
   } = props;
 
   const [ref, isBottomRectReached] = useBottomRectReached();
@@ -94,7 +96,10 @@ export default function Select(props: {
                     if (option.onClick) {
                       option.onClick();
                     } else {
-                      onChange(option.value);
+                      const event = {
+                        target: { value: option.value, name: name },
+                      } as ChangeEvent<HTMLInputElement>;
+                      onChange(event);
                     }
                   }}
                   className={classNames(
