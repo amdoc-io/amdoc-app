@@ -25,22 +25,31 @@ export const getTimeAgo = (timestamp: string): string => {
 };
 
 export const getTimeDiff = (date1: Date, date2: Date) => {
-  const diffInSeconds = Math.abs((date2.getTime() - date1.getTime()) / 1000);
+  const diffInMilliseconds = date2.getTime() - date1.getTime();
+  const diffInSeconds = diffInMilliseconds / 1000;
+
+  if (diffInMilliseconds === 0) {
+    return `Instant`;
+  }
+
+  if (diffInMilliseconds < 1000) {
+    return `${diffInMilliseconds}ms`;
+  }
 
   if (diffInSeconds < 60) {
-    return `${Math.floor(diffInSeconds)} seconds`;
+    return `${Math.floor(diffInSeconds)}s`;
   }
 
   const diffInMinutes = diffInSeconds / 60;
   if (diffInMinutes < 60) {
-    return `${Math.floor(diffInMinutes)} minutes`;
+    return `${Math.floor(diffInMinutes)}m`;
   }
 
   const diffInHours = diffInMinutes / 60;
   if (diffInHours < 24) {
-    return `${Math.floor(diffInHours)} hours`;
+    return `${Math.floor(diffInHours)}h`;
   }
 
   const diffInDays = diffInHours / 24;
-  return `${Math.floor(diffInDays)} days`;
+  return `${Math.floor(diffInDays)}d`;
 };

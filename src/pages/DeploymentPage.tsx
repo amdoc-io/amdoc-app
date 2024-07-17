@@ -12,7 +12,7 @@ import {
 } from "../model/AccountModel";
 import { getDeploymentsByOrgId } from "../utils/AccountFetchUtils";
 import { getTimeAgo, getTimeDiff } from "../utils/DateUtils";
-import { IoHourglassOutline } from "react-icons/io5";
+import { TfiAlarmClock } from "react-icons/tfi";
 
 const ProcessStatusIcon = {
   [DeploymentStatus.FAILED]: <RxCross1 className="text-red-500" />,
@@ -120,7 +120,7 @@ export const DeploymentPage = () => {
                 {item.createdAt && item.updatedAt && (
                   <div className="flex items-start gap-2">
                     <div className="mt-[2px]">
-                      <IoHourglassOutline />
+                      <TfiAlarmClock />
                     </div>
                     {getTimeDiff(
                       new Date(item.createdAt),
