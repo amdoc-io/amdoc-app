@@ -1,18 +1,18 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Checkbox } from "../../actions/Checkbox";
 import { Link } from "../../actions/Link";
 import { PrimaryButton } from "../../actions/PrimaryButton";
 import Select from "../../actions/Select";
+import { setAccount, setSetupCompleted } from "../../features/auth/authSlice";
 import { Input } from "../../forms/Input";
 import { AuthBrandingContainer } from "../../layout/AuthBrandingContainer";
 import { DocAccount } from "../../model/AccountModel";
-import { useDispatch, useSelector } from "react-redux";
 import {
   UpdateAccountRequest,
   updateAccount,
 } from "../../utils/AccountFetchUtils";
-import { useNavigate } from "react-router-dom";
-import { setAccount, setSetupCompleted } from "../../features/auth/authSlice";
 import { isValidated } from "../../utils/ValidationUtils";
 import { CompanySizeOptions } from "../config/BusinessConfig";
 
@@ -102,6 +102,7 @@ export const CompleteSetupPage = () => {
           required
           value={formData["companySize"]}
           error={errorData["companySize"]}
+          name="companySize"
           onChange={handleInputChange}
           options={CompanySizeOptions}
           placeholder="Select your company size"

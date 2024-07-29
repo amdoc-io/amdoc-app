@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { OutlinedButton } from "../actions/OutlinedButton";
 import { PrimaryButton } from "../actions/PrimaryButton";
@@ -13,6 +13,7 @@ import {
   saveInfrastructure,
   saveOrganization,
 } from "../utils/AccountFetchUtils";
+import { handleInputChange } from "../utils/FormUtils";
 import { isValidated } from "../utils/ValidationUtils";
 
 export const CreateOrgModal = (props: {
@@ -31,16 +32,6 @@ export const CreateOrgModal = (props: {
     [key: string]: any;
   }>({});
   const [loading, setLoading] = useState<boolean>(false);
-
-  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const {
-      target: { name, value, type, checked },
-    } = event;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -115,7 +106,7 @@ export const CreateOrgModal = (props: {
           name="name"
           value={formData["name"]}
           error={errorData["name"]}
-          onChange={handleInputChange}
+          onChange={(e) => handleInputChange(e, setFormData)}
           placeholder="Enter an organization name"
           note="Your organization is a workspace where you can invite members, collaborate, and manage resources with your team. You can update this name at any time"
           required
@@ -126,13 +117,9 @@ export const CreateOrgModal = (props: {
           required
           options={Countries}
           value={formData["country"]}
+          name="country"
           error={errorData["country"]}
-          onChange={(value) =>
-            setFormData((prev) => ({
-              ...prev,
-              country: value,
-            }))
-          }
+          onChange={(e) => handleInputChange(e, setFormData)}
         />
       </form>
     </Modal>

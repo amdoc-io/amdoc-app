@@ -88,12 +88,8 @@ export const AddOrganizationPage = () => {
           options={Countries}
           value={formData["country"]}
           error={errorData["country"]}
-          onChange={(value) =>
-            setFormData((prev) => ({
-              ...prev,
-              country: value,
-            }))
-          }
+          name="country"
+          onChange={handleInputChange}
         />
         <PrimaryButton loading={loading} type="submit">
           Submit

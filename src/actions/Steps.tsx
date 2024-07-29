@@ -54,7 +54,7 @@ export const Steps = (props: {
       {steps.map((step, i) => (
         <li
           key={i}
-          className="flex overflow-hidden flex-col border-t border-t-gray-200 p-4 bg-gray-100/50"
+          className="flex overflow-hidden flex-col border-t border-t-gray-200 p-4 bg-gray-100/30"
         >
           <div
             className="flex items-start gap-3 cursor-pointer step-hover w-full"
